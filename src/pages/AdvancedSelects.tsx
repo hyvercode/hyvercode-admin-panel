@@ -10,7 +10,7 @@ import MultiSelect from '../components/ui/select/MultiSelect';
 import CountrySelect from '../components/ui/select/CountrySelect';
 import RadioSelect from '../components/ui/select/RadioSelect';
 import AutocompleteSelect from '../components/ui/select/AutocompleteSelect';
-import Modal from '../components/ui/Modal';
+import Modal from '../components/ui/overlay/Modal';
 import Select from '../components/ui/Select';
 
 const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (

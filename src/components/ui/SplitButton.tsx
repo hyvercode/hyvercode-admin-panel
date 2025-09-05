@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from './Dropdown';
+import Dropdown from './navigation/Dropdown';
 import Button from './Button';
 
 interface SplitButtonProps {

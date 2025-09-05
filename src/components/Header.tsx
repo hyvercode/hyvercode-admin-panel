@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import Dropdown from './ui/Dropdown';
+import Dropdown from './ui/navigation/Dropdown';
 import Avatar from './ui/avatar/Avatar';
 
 interface HeaderProps {

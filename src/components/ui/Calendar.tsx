@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import type { CalendarEvent } from '../../types';
-import Modal from './Modal';
+import Modal from './overlay/Modal';
 
 interface CalendarProps {
   events?: CalendarEvent[];

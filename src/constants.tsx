@@ -77,6 +77,21 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-arrow-clockwise',
   },
   {
+    path: '/navigation',
+    name: 'Navigation',
+    icon: 'bi-compass-fill',
+  },
+  {
+    path: '/overlays',
+    name: 'Overlays',
+    icon: 'bi-front',
+  },
+  {
+    path: '/content',
+    name: 'Content',
+    icon: 'bi-file-richtext-fill',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

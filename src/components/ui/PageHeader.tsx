@@ -1,35 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-interface BreadcrumbItem {
-  name: string;
-  path: string;
-}
+import Breadcrumbs, { BreadcrumbItem } from './navigation/Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
   breadcrumbs?: BreadcrumbItem[];
   actions?: React.ReactNode;
 }
-
-const Breadcrumbs: React.FC<{ items: BreadcrumbItem[] }> = ({ items }) => (
-  <nav aria-label="breadcrumb">
-    <ol className="flex items-center space-x-2 text-sm text-neutral-700 dark:text-neutral-400">
-      {items.map((item, index) => (
-        <li key={item.path} className="flex items-center">
-          {index > 0 && <i className="bi bi-chevron-right mx-2 text-xs"></i>}
-          {index === items.length - 1 ? (
-             <span className="font-medium text-neutral-800 dark:text-neutral-200">{item.name}</span>
-          ) : (
-            <Link to={item.path} className="hover:underline hover:text-primary">
-              {item.name}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ol>
-  </nav>
-);
 
 const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs, actions }) => {
   return (

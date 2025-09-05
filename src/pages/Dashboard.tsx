@@ -1,8 +1,25 @@
 import React from 'react';
-import Card from '../components/Card';
+import Card from '../components/ui/card/Card';
 import SampleChart from '../components/SampleChart';
 import Avatar from '../components/ui/avatar/Avatar';
 import IconTile from '../components/ui/icon/IconTile';
+
+const DashboardCard: React.FC<{ title: string; value: string; icon: string; colorClass: string; }> = ({ title, value, icon, colorClass }) => {
+  return (
+    <Card>
+      <Card.Body className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-neutral-700 dark:text-neutral-500 uppercase tracking-wider">{title}</p>
+          <p className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">{value}</p>
+        </div>
+        <div className={`text-3xl rounded-full p-4 ${colorClass}`}>
+          <i className={`bi ${icon}`}></i>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
 
 const Dashboard: React.FC = () => {
   return (
@@ -11,10 +28,10 @@ const Dashboard: React.FC = () => {
 
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <Card title="Total Sales" value="$24,780" icon="bi-cart-check-fill" colorClass="bg-primary-background text-primary" />
-        <Card title="New Users" value="1,204" icon="bi-person-plus-fill" colorClass="bg-success-background text-success" />
-        <Card title="Open Tickets" value="32" icon="bi-ticket-detailed-fill" colorClass="bg-warning-background text-warning-dark" />
-        <Card title="Bounce Rate" value="47.5%" icon="bi-graph-down-arrow" colorClass="bg-danger-background text-danger" />
+        <DashboardCard title="Total Sales" value="$24,780" icon="bi-cart-check-fill" colorClass="bg-primary-background text-primary" />
+        <DashboardCard title="New Users" value="1,204" icon="bi-person-plus-fill" colorClass="bg-success-background text-success" />
+        <DashboardCard title="Open Tickets" value="32" icon="bi-ticket-detailed-fill" colorClass="bg-warning-background text-warning-dark" />
+        <DashboardCard title="Bounce Rate" value="47.5%" icon="bi-graph-down-arrow" colorClass="bg-danger-background text-danger" />
       </div>
 
       {/* Chart and other info */}

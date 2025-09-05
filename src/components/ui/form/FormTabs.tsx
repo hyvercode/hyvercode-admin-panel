@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, FormErrors } from '../../../hooks/useForm';
-import Tabs from '../Tabs';
+import Tabs from '../navigation/Tabs';
 import Input from '../Input';
 import Checkbox from '../Checkbox';
 import Button from '../Button';

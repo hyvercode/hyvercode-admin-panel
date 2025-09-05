@@ -5,7 +5,7 @@ import type { User } from '../types';
 import Button from '../components/ui/Button';
 import Select from '../components/ui/Select';
 import Input from '../components/ui/Input';
-import Modal from '../components/ui/Modal';
+import Modal from '../components/ui/overlay/Modal';
 import Alert from '../components/ui/Alert';
 import Avatar from '../components/ui/avatar/Avatar';
 import Badge from '../components/ui/Badge';
