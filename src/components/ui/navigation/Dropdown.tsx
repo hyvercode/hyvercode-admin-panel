@@ -55,13 +55,14 @@ const DropdownItem: React.FC<DropdownItemProps> = ({ children, icon, to, onClick
 interface DropdownProps {
   trigger: React.ReactElement;
   children: React.ReactNode;
+  menuClassName?: string;
 }
 
 interface DropdownComponent extends React.FC<DropdownProps> {
   Item: typeof DropdownItem;
 }
 
-const Dropdown: DropdownComponent = ({ trigger, children }) => {
+const Dropdown: DropdownComponent = ({ trigger, children, menuClassName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -80,11 +81,13 @@ const Dropdown: DropdownComponent = ({ trigger, children }) => {
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
       <div className="relative inline-block" ref={wrapperRef}>
-        {React.cloneElement(trigger, { onClick: toggleDropdown, 'aria-haspopup': true, 'aria-expanded': isOpen })}
+        {/* FIX: Add generic type argument to React.cloneElement to solve TypeScript error.
+            This informs TypeScript that the trigger element can accept standard HTML attributes like onClick. */}
+        {React.cloneElement<React.HTMLAttributes<HTMLElement>>(trigger, { onClick: toggleDropdown, 'aria-haspopup': true, 'aria-expanded': isOpen })}
 
         {isOpen && (
           <div
-            className="absolute right-0 mt-2 w-56 origin-top-right bg-neutral-0 dark:bg-neutral-1000 divide-y divide-neutral-100 dark:divide-neutral-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+            className={`absolute right-0 mt-2 w-56 origin-top-right bg-neutral-0 dark:bg-neutral-1000 divide-y divide-neutral-100 dark:divide-neutral-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20 ${menuClassName}`}
             role="menu"
             aria-orientation="vertical"
           >

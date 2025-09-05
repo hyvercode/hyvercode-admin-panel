@@ -74,5 +74,5 @@ export const CONVERSATIONS_DATA: Conversation[] = [
 export const MESSAGES_DATA: Message[] = [
     { id: 1, conversationId: 2, senderId: 2, content: 'Hi, just wanted to follow up on the design mockups.', timestamp: '9:15 AM' },
     { id: 2, conversationId: 2, senderId: 0, content: 'Hey! Yes, I am almost done. Will share them by EOD.', timestamp: '9:16 AM' },
-    { id: 3, conversationId: 2, senderId: 2, content: 'Sounds good. I have finished the report. I will send it over.', timestamp: '9:18 AM' },
+    { id: 3, conversationId: 2, senderId: 2, content: 'I have finished the report. I will send it over.', timestamp: '9:18 AM' },
 ];

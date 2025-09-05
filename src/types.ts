@@ -129,3 +129,9 @@ export interface Message {
     content: string;
     timestamp: string;
 }
+
+// For AI Chat Assistant
+export interface ChatMessage {
+    role: 'user' | 'model';
+    content: string;
+}

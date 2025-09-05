@@ -7,6 +7,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import PageHeader from '../../components/ui/PageHeader';
 import { useToast } from '../../contexts/ToastContext';
+import Modal from '../../components/ui/overlay/Modal';
 
 const ProductGridItem: React.FC<{ product: POSProduct; onAddToCart: (product: POSProduct) => void }> = ({ product, onAddToCart }) => (
     <Card onClick={() => onAddToCart(product)} className="cursor-pointer hover:border-primary transition-colors">
@@ -20,6 +21,7 @@ const ProductGridItem: React.FC<{ product: POSProduct; onAddToCart: (product: PO
 
 const PointOfSale: React.FC = () => {
     const [cart, setCart] = useState<POSCartItem[]>([]);
+    const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
     const { addToast } = useToast();
 
     const addToCart = (product: POSProduct) => {
@@ -44,7 +46,8 @@ const PointOfSale: React.FC = () => {
         setCart(prev => prev.map(item => item.id === productId ? {...item, quantity} : item));
     }
 
-    const handlePayment = () => {
+    const handleConfirmPayment = () => {
+        setPaymentModalOpen(false);
         addToast('Payment successful!', 'success');
         setCart([]);
     }
@@ -97,11 +100,26 @@ const PointOfSale: React.FC = () => {
                                 <div className="flex justify-between"><span>Tax (8%)</span><span>${tax.toFixed(2)}</span></div>
                                 <div className="flex justify-between font-bold text-lg border-t dark:border-neutral-800 pt-2 mt-2"><span>Total</span><span>${total.toFixed(2)}</span></div>
                             </div>
-                            <Button fullWidth className="mt-4" onClick={handlePayment} disabled={cart.length === 0}>Charge ${total.toFixed(2)}</Button>
+                            <Button fullWidth className="mt-4" onClick={() => setPaymentModalOpen(true)} disabled={cart.length === 0}>Charge ${total.toFixed(2)}</Button>
                         </Card.Footer>
                     </Card>
                 </div>
             </div>
+
+            <Modal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setPaymentModalOpen(false)}
+                title="Process Payment"
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={() => setPaymentModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleConfirmPayment}>Confirm Payment</Button>
+                    </>
+                }
+            >
+                <p>Total amount due: <span className="font-bold text-xl">${total.toFixed(2)}</span></p>
+                {/* Payment method options can be added here */}
+            </Modal>
         </div>
     );
 };

@@ -49,6 +49,7 @@ import Blog from './pages/samples/Blog';
 import Chat from './pages/samples/Chat';
 import PointOfSale from './pages/samples/PointOfSale';
 import OnlineCourse from './pages/samples/OnlineCourse';
+import AIChatAssistant from './pages/samples/AIChatAssistant';
 
 const App: React.FC = () => {
   return (
@@ -90,6 +91,7 @@ const App: React.FC = () => {
             <Route path="/toggles" element={<Toggles />} />
             <Route path="/advanced-selects" element={<AdvancedSelects />} />
             <Route path="/sample/chat" element={<Chat />} />
+            <Route path="/sample/ai-chat" element={<AIChatAssistant />} />
             
             {/* Documentation/Component Pages */}
             <Route path="/documentation" element={<Documentation />} />
