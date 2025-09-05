@@ -26,7 +26,12 @@ import TimeRangePicker from '../components/ui/datetime/TimeRangePicker';
 import RadioGroup from '../components/ui/radio/RadioGroup';
 import Range from '../components/ui/range/Range';
 import StarRating from '../components/ui/range/StarRating';
+import Textarea from '../components/ui/textarea/Textarea';
+import RichTextArea from '../components/ui/textarea/RichTextArea';
 import { CALENDAR_EVENTS_DATA, COMMENTS_DATA } from '../constants';
+import Toggle from '../components/ui/toggle/Toggle';
+import ToggleCard from '../components/ui/toggle/ToggleCard';
+import ToggleGroup from '../components/ui/toggle/ToggleGroup';
 import { useAuth } from '../contexts/AuthContext';
 import { useForm, FormErrors } from '../hooks/useForm';
 import { Link } from 'react-router-dom';
@@ -63,6 +68,11 @@ const Documentation: React.FC = () => {
   const [radioValue, setRadioValue] = useState('basic');
   const [rating, setRating] = useState(3);
   const [rangeValue, setRangeValue] = useState(50);
+  const [richText, setRichText] = useState('<p>This is some <b>initial</b> rich text.</p>');
+
+  const handleRichTextChange = (e: React.ChangeEvent<any>) => {
+      setRichText(e.target.value);
+  };
   
   const handleCommentSubmit = (text: string, parentId: number | null) => {
     console.log(`Submitting comment: "${text}" to parent: ${parentId}`);
@@ -100,6 +110,30 @@ const Documentation: React.FC = () => {
         breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/documentation' }]}
       />
       
+      {/* Text Fields */}
+      <ComponentSection title="Text Fields">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          A suite of specialized text field components for various input scenarios, including fields with icons, images, and addons for currency or URLs.
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-neutral-800 dark:text-neutral-200">
+            <li><span className="font-semibold">Contextual Inputs:</span> Use icons, images, or text addons to provide context to the user.</li>
+            <li><span className="font-semibold">Specialized Inputs:</span> Includes dedicated components for number and currency entry.</li>
+            <li><span className="font-semibold">Validated:</span> All components integrate seamlessly with the `useForm` hook.</li>
+        </ul>
+        <div className="mt-4">
+          <Button to="/text-fields" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Text Field Demos
+          </Button>
+        </div>
+         <CodeBlock>{`// All text field components integrate with the useForm hook.
+import TextFieldIcon from './components/ui/textfield/TextFieldIcon';
+import TextFieldGroup from './components/ui/textfield/TextFieldGroup';
+
+<TextFieldIcon iconLeft={<i />} {...getFieldProps('email')} />
+<TextFieldGroup addonLeft="https://..." {...getFieldProps('website')} />
+// See the /text-fields page for detailed examples.`}</CodeBlock>
+      </ComponentSection>
+
       {/* Advanced Selects */}
       <ComponentSection title="Advanced Selects">
         <p className="mb-4 text-neutral-700 dark:text-neutral-300">
@@ -198,6 +232,30 @@ import FormWizard from './components/ui/form/FormWizard';
 <Button disabled>Disabled</Button>`}</CodeBlock>
       </ComponentSection>
 
+      {/* Toggles */}
+      <ComponentSection title="Toggles & Switches">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">A collection of toggle components for boolean state management.</p>
+        <div className="space-y-4">
+            <ToggleGroup label="Example Group">
+                <Toggle
+                    id="doc-toggle"
+                    label="Standard Toggle"
+                    description="A simple on/off switch."
+                />
+            </ToggleGroup>
+            <ToggleCard
+                id="doc-toggle-card"
+                icon={<i className="bi bi-bell-fill"></i>}
+                title="Toggle Card"
+                description="A visually rich toggle component."
+            />
+        </div>
+        <CodeBlock>{`<ToggleGroup label="...">
+  <Toggle id="..." label="..." />
+</ToggleGroup>
+<ToggleCard id="..." title="..." />`}</CodeBlock>
+      </ComponentSection>
+
       {/* ButtonGroup and SplitButton */}
        <ComponentSection title="Button Groups & Split Buttons">
           <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Button Group</h4>
@@ -221,6 +279,35 @@ import FormWizard from './components/ui/form/FormWizard';
   <Dropdown.Item>...</Dropdown.Item>
   <Dropdown.Item>...</Dropdown.Item>
 </SplitButton>`}</CodeBlock>
+      </ComponentSection>
+      
+      {/* Textareas */}
+      <ComponentSection title="Textareas">
+        <div className="space-y-6">
+            <div>
+                <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Standard Textarea</h4>
+                <Textarea
+                    label="Your Message"
+                    id="doc-textarea"
+                    rows={4}
+                    placeholder="Enter your message here..."
+                />
+                <CodeBlock>{`<Textarea label="Your Message" id="doc-textarea" />`}</CodeBlock>
+            </div>
+            <div>
+                <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Rich Text Area</h4>
+                <RichTextArea
+                    label="Article Content"
+                    id="doc-richtext"
+                    name="doc-richtext"
+                    value={richText}
+                    onChange={handleRichTextChange}
+                />
+                <CodeBlock>{`// Uses a contentEditable div and document.execCommand
+// It is integrated with the useForm hook.
+<RichTextArea label="Article Content" {...getFieldProps('content')} />`}</CodeBlock>
+            </div>
+        </div>
       </ComponentSection>
 
       {/* Date & Time Pickers */}

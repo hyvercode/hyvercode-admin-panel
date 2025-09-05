@@ -42,6 +42,21 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-chat-quote-fill',
   },
   {
+    path: '/editor',
+    name: 'Editor',
+    icon: 'bi-pencil-square',
+  },
+  {
+    path: '/text-fields',
+    name: 'Text Fields',
+    icon: 'bi-input-cursor',
+  },
+  {
+    path: '/toggles',
+    name: 'Toggles',
+    icon: 'bi-toggle-on',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

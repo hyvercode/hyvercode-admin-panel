@@ -19,6 +19,9 @@ import Appointments from './pages/Appointments';
 import Forms from './pages/Forms';
 import AdvancedSelects from './pages/AdvancedSelects';
 import Feedback from './pages/Feedback';
+import Editor from './pages/Editor';
+import TextFields from './pages/TextFields';
+import Toggles from './pages/Toggles';
 
 const App: React.FC = () => {
   return (
@@ -42,6 +45,9 @@ const App: React.FC = () => {
           <Route path="/forms" element={<Forms />} />
           <Route path="/advanced-selects" element={<AdvancedSelects />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/editor" element={<Editor />} />
+          <Route path="/text-fields" element={<TextFields />} />
+          <Route path="/toggles" element={<Toggles />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/documentation" element={<Documentation />} />

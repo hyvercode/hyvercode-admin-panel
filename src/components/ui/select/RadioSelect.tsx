@@ -9,7 +9,8 @@ interface RadioSelectProps {
   options: Option[];
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
+  // FIX: Broaden the onBlur event type to be compatible with the useForm hook.
+  onBlur?: (event: React.FocusEvent<any>) => void;
   error?: string;
   disabled?: boolean;
 }
