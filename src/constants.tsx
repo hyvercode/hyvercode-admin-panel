@@ -57,6 +57,11 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-toggle-on',
   },
   {
+    path: '/avatars',
+    name: 'Avatars',
+    icon: 'bi-person-bounding-box',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from './Avatar';
+import Avatar from '../ui/avatar/Avatar';
 import Button from './Button';
 
 interface CommentProps {

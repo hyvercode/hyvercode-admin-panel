@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Dropdown from './ui/Dropdown';
-import Avatar from './ui/Avatar';
+import Avatar from './ui/avatar/Avatar';
 
 interface HeaderProps {
   sidebarOpen: boolean;

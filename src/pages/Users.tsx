@@ -7,7 +7,7 @@ import Select from '../components/ui/Select';
 import Input from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
 import Alert from '../components/ui/Alert';
-import Avatar from '../components/ui/Avatar';
+import Avatar from '../components/ui/avatar/Avatar';
 import Badge from '../components/ui/Badge';
 import PageHeader from '../components/ui/PageHeader';
 import Table, { Column } from '../components/ui/Table';

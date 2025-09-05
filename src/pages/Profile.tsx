@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { USERS_DATA } from '../constants';
-import Avatar from '../components/ui/Avatar';
+import Avatar from '../components/ui/avatar/Avatar';
 import Button from '../components/ui/Button';
 
 const activityFeed = [

@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../components/Card';
 import SampleChart from '../components/SampleChart';
+import Avatar from '../components/ui/avatar/Avatar';
 
 const Dashboard: React.FC = () => {
   return (
@@ -36,7 +37,7 @@ const Dashboard: React.FC = () => {
             </li>
             <li className="flex items-start">
               <div className="flex-shrink-0">
-                <img className="w-10 h-10 rounded-full object-cover" src="https://picsum.photos/50/51" alt="User"/>
+                <Avatar name="Sarah" src="https://picsum.photos/50/51" />
               </div>
               <div className="ml-4">
                 <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Sarah completed a task</p>

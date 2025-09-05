@@ -20,6 +20,7 @@ const TextFieldGroup: React.FC<TextFieldGroupProps> = ({ label, addonLeft, addon
   // The original `...props` spread with a loose `[x: string]: any` type did not guarantee its presence for TypeScript.
   const inputProps = {
     ...props,
+    id: props.id,
     label: "", // The label is handled by the group wrapper
     className: `
       ${props.className || ''}

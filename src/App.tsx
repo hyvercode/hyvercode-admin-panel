@@ -22,6 +22,7 @@ import Feedback from './pages/Feedback';
 import Editor from './pages/Editor';
 import TextFields from './pages/TextFields';
 import Toggles from './pages/Toggles';
+import Avatars from './pages/Avatars';
 
 const App: React.FC = () => {
   return (
@@ -48,6 +49,7 @@ const App: React.FC = () => {
           <Route path="/editor" element={<Editor />} />
           <Route path="/text-fields" element={<TextFields />} />
           <Route path="/toggles" element={<Toggles />} />
+          <Route path="/avatars" element={<Avatars />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/documentation" element={<Documentation />} />
