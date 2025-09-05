@@ -1,34 +1,11 @@
-import { NavLinkProps } from 'react-router-dom';
-
-export interface NavItem {
-  path: string;
-  name: string;
-  icon: string;
-}
-
-export interface Option {
-  value: string;
-  label: string;
-}
-
 export interface User {
   id: number;
   name: string;
   email: string;
   role: string;
-  status: 'Active' | 'Inactive';
+  status: 'active' | 'inactive' | 'pending';
   lastLogin: string;
   bio?: string;
-}
-
-export interface Task {
-  id: number;
-  title: string;
-  project: string;
-  assigneeId: number;
-  status: 'To Do' | 'In Progress' | 'Done' | 'Cancelled';
-  priority: 'Low' | 'Medium' | 'High' | 'Urgent';
-  dueDate: string;
 }
 
 export interface CalendarEvent {
@@ -40,11 +17,10 @@ export interface CalendarEvent {
 
 export interface Comment {
   id: number;
-  taskId: number;
   authorId: number;
-  parentId: number | null;
   content: string;
   timestamp: string;
+  parentId: number | null;
   replies?: Comment[];
 }
 
@@ -53,4 +29,19 @@ export interface LineItem {
   description: string;
   quantity: number;
   price: number;
+}
+
+export interface Option {
+  value: string | number;
+  label: string;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  assigneeId: number;
+  dueDate: string;
+  priority: 'High' | 'Medium' | 'Low';
+  status: 'Completed' | 'In Progress' | 'To Do';
+  tags: string[];
 }
