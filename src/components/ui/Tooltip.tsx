@@ -4,9 +4,14 @@ interface TooltipProps {
   content: string;
   children: React.ReactElement;
   position?: 'top' | 'bottom' | 'left' | 'right';
+  disabled?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ content, children, position = 'top' }) => {
+const Tooltip: React.FC<TooltipProps> = ({ content, children, position = 'top', disabled = false }) => {
+  if (disabled) {
+    return children;
+  }
+  
   const positionClasses = {
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',

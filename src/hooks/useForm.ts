@@ -27,8 +27,11 @@ export const useForm = <T extends Record<string, any>>(
   }, [values, validateCallback]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setValues(prevValues => ({ ...prevValues, [name]: value }));
+    const { name, value, type } = e.target;
+    // The 'checked' property is only on HTMLInputElement
+    const isCheckbox = type === 'checkbox' && 'checked' in e.target;
+    const newValue = isCheckbox ? (e.target as HTMLInputElement).checked : value;
+    setValues(prevValues => ({ ...prevValues, [name]: newValue }));
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -52,14 +55,31 @@ export const useForm = <T extends Record<string, any>>(
     }
   };
   
-  const getFieldProps = (name: keyof T) => ({
+  const getFieldProps = (name: keyof T) => {
+    const commonProps = {
       name: String(name),
       id: String(name),
-      value: values[name],
       onChange: handleChange,
       onBlur: handleBlur,
       error: touched[name as string] ? errors[name as string] : undefined,
-  });
+    };
+
+    const value = values[name];
+    
+    // Check if the value is a boolean to determine if it's a checkbox
+    if (typeof value === 'boolean') {
+      return {
+        ...commonProps,
+        checked: value,
+      };
+    }
+
+    // For other input types like text, select, textarea
+    return {
+      ...commonProps,
+      value: value ?? '', // Ensure value is not null/undefined for controlled components
+    };
+  };
 
   return {
     values,

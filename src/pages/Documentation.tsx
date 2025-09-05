@@ -15,6 +15,7 @@ import ButtonGroup from '../components/ui/ButtonGroup';
 import SplitButton from '../components/ui/SplitButton';
 import Dropdown from '../components/ui/Dropdown';
 import Calendar from '../components/ui/Calendar';
+import Checkbox from '../components/ui/Checkbox';
 import { CALENDAR_EVENTS_DATA } from '../constants';
 
 const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
@@ -138,14 +139,31 @@ const Documentation: React.FC = () => {
 <Calendar events={myEvents} />`}</CodeBlock>
       </ComponentSection>
 
-      {/* Inputs */}
-      <ComponentSection title="Inputs & Selects">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Form Controls */}
+      <ComponentSection title="Form Controls">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Input label="Email Address" id="doc-email" placeholder="email@example.com" />
           <Select label="Project" id="doc-project" options={[{value: 'jira', label: 'Jira'}, {value: 'confluence', label: 'Confluence'}]} />
         </div>
-        <CodeBlock>{`<Input label="Email Address" id="doc-email" />
-<Select label="Project" id="doc-project" options={[...]} />`}</CodeBlock>
+        <div className="mt-6 space-y-4">
+            <Checkbox id="doc-check-1" label="Default Checkbox" />
+            <Checkbox id="doc-check-2" label="With Description" description="This is some helper text for the checkbox." />
+            <Checkbox id="doc-check-3" label="Pre-checked" defaultChecked />
+            <Checkbox id="doc-check-4" label="Disabled" disabled />
+            <Checkbox id="doc-check-5" label="With Error" error="This field is required." />
+        </div>
+        <CodeBlock>{`{/* Input */}
+<Input label="Email Address" id="doc-email" />
+
+{/* Select */}
+<Select label="Project" id="doc-project" options={[...]} />
+
+{/* Checkbox */}
+<Checkbox id="unique-id" label="My Label" />
+<Checkbox id="desc-id" label="With Description" description="..." />
+<Checkbox id="checked-id" label="Pre-checked" defaultChecked />
+<Checkbox id="disabled-id" label="Disabled" disabled />
+<Checkbox id="error-id" label="With Error" error="This field is required." />`}</CodeBlock>
       </ComponentSection>
 
       {/* Alerts & Badges */}

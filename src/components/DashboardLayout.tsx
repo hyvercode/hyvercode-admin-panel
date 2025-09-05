@@ -24,6 +24,7 @@ const getInitialTheme = (): string => {
 
 const DashboardLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
@@ -44,7 +45,12 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-neutral-100 dark:bg-neutral-1100 font-sans">
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar 
+        sidebarOpen={sidebarOpen} 
+        setSidebarOpen={setSidebarOpen} 
+        sidebarCollapsed={sidebarCollapsed}
+        setSidebarCollapsed={setSidebarCollapsed}
+      />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header 

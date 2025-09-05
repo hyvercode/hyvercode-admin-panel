@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Textarea from '../components/ui/Textarea';
+import Checkbox from '../components/ui/Checkbox';
 import { useForm, FormErrors } from '../hooks/useForm';
 
 const validate = (values: Record<string, string>): FormErrors => {
@@ -21,7 +22,7 @@ const validate = (values: Record<string, string>): FormErrors => {
 };
 
 const Settings: React.FC = () => {
-  const handleSettingsSubmit = (values: Record<string, string>) => {
+  const handleSettingsSubmit = (values: Record<string, any>) => {
     // In a real app, you would make an API call here.
     console.log('Form submitted successfully:', values);
     alert('Settings saved!');
@@ -34,6 +35,8 @@ const Settings: React.FC = () => {
       bio: 'Administrator and lead developer.',
       currentPassword: '',
       newPassword: '',
+      emailNotifications: true,
+      pushNotifications: false,
     },
     validate,
     handleSettingsSubmit
@@ -82,6 +85,23 @@ const Settings: React.FC = () => {
               type="password"
               {...getFieldProps('newPassword')}
             />
+            
+            {/* Notifications Settings */}
+            <div className="md:col-span-2 mt-6">
+              <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200 border-b border-neutral-200 dark:border-neutral-800 pb-2">Notifications</h3>
+            </div>
+            <div className="md:col-span-2 space-y-4">
+              <Checkbox
+                  label="Email Notifications"
+                  description="Receive important updates and summaries via email."
+                  {...getFieldProps('emailNotifications')}
+              />
+              <Checkbox
+                  label="Push Notifications"
+                  description="Get real-time alerts on your devices."
+                  {...getFieldProps('pushNotifications')}
+              />
+            </div>
           </div>
 
           <div className="mt-8 flex justify-end">
