@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../components/Card';
 import SampleChart from '../components/SampleChart';
 import Avatar from '../components/ui/avatar/Avatar';
+import IconTile from '../components/ui/icon/IconTile';
 
 const Dashboard: React.FC = () => {
   return (
@@ -25,31 +26,21 @@ const Dashboard: React.FC = () => {
           <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recent Activity</h3>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-info/20 text-info flex items-center justify-center">
-                  <i className="bi bi-file-earmark-zip-fill"></i>
-                </div>
-              </div>
+              <IconTile iconName="file-earmark-zip-fill" variant="info" shape="circle" />
               <div className="ml-4">
                 <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">New report generated</p>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400">2 hours ago</p>
               </div>
             </li>
             <li className="flex items-start">
-              <div className="flex-shrink-0">
-                <Avatar name="Sarah" src="https://picsum.photos/50/51" />
-              </div>
+              <Avatar name="Sarah" src="https://picsum.photos/50/51" />
               <div className="ml-4">
                 <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Sarah completed a task</p>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400">5 hours ago</p>
               </div>
             </li>
              <li className="flex items-start">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-danger-background text-danger flex items-center justify-center">
-                   <i className="bi bi-exclamation-triangle-fill"></i>
-                </div>
-              </div>
+              <IconTile iconName="exclamation-triangle-fill" variant="danger" shape="circle" />
               <div className="ml-4">
                 <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Server #3 requires attention</p>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400">1 day ago</p>

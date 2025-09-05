@@ -62,6 +62,21 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-person-bounding-box',
   },
   {
+    path: '/icons',
+    name: 'Icons',
+    icon: 'bi-gem',
+  },
+  {
+    path: '/images',
+    name: 'Images & Logos',
+    icon: 'bi-image-fill',
+  },
+  {
+    path: '/loaders',
+    name: 'Loaders',
+    icon: 'bi-arrow-clockwise',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

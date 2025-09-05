@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import Spinner from './ui/Spinner';
+import Spinner from './ui/loading/Spinner';
 
 const PrivateRoute: React.FC = () => {
   const { user, loading } = useAuth();

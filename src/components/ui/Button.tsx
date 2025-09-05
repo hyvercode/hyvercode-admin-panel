@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, To } from 'react-router-dom';
-import Spinner from './Spinner';
+import Spinner from './loading/Spinner';
 
 // Omit 'children' from element attributes as we handle it explicitly
 type ButtonElementProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;

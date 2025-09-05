@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { NAV_ITEMS } from '../constants';
 import { useAuth } from '../contexts/AuthContext';
 import Tooltip from './ui/Tooltip';
+import Logo from './ui/image/Logo';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -33,11 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, sidebarC
         }`}
       >
         <div className={`h-16 flex items-center border-b border-neutral-900 ${sidebarCollapsed ? 'justify-center' : 'px-4'}`}>
-            {sidebarCollapsed ? (
-                <i className="bi bi-shield-lock-fill text-3xl text-primary"></i>
-            ) : (
-                <h1 className="text-2xl font-bold text-neutral-0 whitespace-nowrap"><i className="bi bi-shield-lock-fill mr-2 text-primary"></i>Admin Panel</h1>
-            )}
+            <Logo variant={sidebarCollapsed ? 'icon' : 'full'} />
         </div>
 
         <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto overflow-x-hidden">

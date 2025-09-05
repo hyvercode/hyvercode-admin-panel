@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from '../Select';
 import { Option } from '../../../types';
-import Spinner from '../Spinner';
+import Spinner from '../loading/Spinner';
 
 interface AsyncSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
   label: string;

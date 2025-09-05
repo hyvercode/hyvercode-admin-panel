@@ -23,6 +23,9 @@ import Editor from './pages/Editor';
 import TextFields from './pages/TextFields';
 import Toggles from './pages/Toggles';
 import Avatars from './pages/Avatars';
+import Icons from './pages/Icons';
+import Images from './pages/Images';
+import Loaders from './pages/Loaders';
 
 const App: React.FC = () => {
   return (
@@ -50,6 +53,9 @@ const App: React.FC = () => {
           <Route path="/text-fields" element={<TextFields />} />
           <Route path="/toggles" element={<Toggles />} />
           <Route path="/avatars" element={<Avatars />} />
+          <Route path="/icons" element={<Icons />} />
+          <Route path="/images" element={<Images />} />
+          <Route path="/loaders" element={<Loaders />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/documentation" element={<Documentation />} />

@@ -5,7 +5,7 @@ import Input from '../components/ui/Input';
 import Select from '../components/ui/Select';
 import Alert from '../components/ui/Alert';
 import Badge from '../components/ui/Badge';
-import Spinner from '../components/ui/Spinner';
+import Spinner from '../components/ui/loading/Spinner';
 import Modal from '../components/ui/Modal';
 import Tabs from '../components/ui/Tabs';
 import Tooltip from '../components/ui/Tooltip';
@@ -15,8 +15,6 @@ import SplitButton from '../components/ui/SplitButton';
 import Dropdown from '../components/ui/Dropdown';
 import Calendar from '../components/ui/Calendar';
 import Checkbox from '../components/ui/Checkbox';
-import Comment from '../components/ui/Comment';
-import CommentInput from '../components/ui/CommentInput';
 import CommentThread from '../components/ui/CommentThread';
 import DatePicker from '../components/ui/datetime/DatePicker';
 import TimePicker from '../components/ui/datetime/TimePicker';
@@ -31,7 +29,6 @@ import { CALENDAR_EVENTS_DATA, COMMENTS_DATA } from '../constants';
 import Toggle from '../components/ui/toggle/Toggle';
 import ToggleCard from '../components/ui/toggle/ToggleCard';
 import ToggleGroup from '../components/ui/toggle/ToggleGroup';
-import { useAuth } from '../contexts/AuthContext';
 import { useForm, FormErrors } from '../hooks/useForm';
 
 const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
@@ -61,7 +58,6 @@ const tableColumns: Column<(typeof tableData)[0]>[] = [
 
 const Documentation: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { user } = useAuth();
   const [radioValue, setRadioValue] = useState('basic');
   const [rating, setRating] = useState(3);
   const [rangeValue, setRangeValue] = useState(50);
@@ -112,11 +108,6 @@ const Documentation: React.FC = () => {
         <p className="mb-4 text-neutral-700 dark:text-neutral-300">
           A suite of components for displaying user avatars, including presence indicators, groups, item layouts, and loading skeletons.
         </p>
-        <ul className="list-disc pl-5 space-y-1 text-neutral-800 dark:text-neutral-200">
-            <li><span className="font-semibold">Presence Indicators:</span> Show user status (online, away, busy, offline).</li>
-            <li><span className="font-semibold">AvatarGroup:</span> Elegantly stack multiple user avatars.</li>
-            <li><span className="font-semibold">AvatarItem:</span> A layout for combining an avatar with a name and description.</li>
-        </ul>
         <div className="mt-4">
           <Button to="/avatars" rightIcon={<i className="bi bi-arrow-right"></i>}>
             View Live Avatar Demos
@@ -127,6 +118,59 @@ import AvatarGroup from './components/ui/avatar/AvatarGroup';
 
 <Avatar name="John Doe" src="..." presence="online" />
 <AvatarGroup users={[...]} />`}</CodeBlock>
+      </ComponentSection>
+
+      {/* Icons */}
+      <ComponentSection title="Icons">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          A collection of components for displaying icons, including simple icons, styled icon tiles, and icon-object layouts for feature lists.
+        </p>
+        <div className="mt-4">
+          <Button to="/icons" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Icon Demos
+          </Button>
+        </div>
+         <CodeBlock>{`import Icon from './components/ui/icon/Icon';
+import IconTile from './components/ui/icon/IconTile';
+
+<Icon name="gear-fill" />
+<IconTile iconName="shield-lock-fill" variant="primary" />`}</CodeBlock>
+      </ComponentSection>
+
+      {/* Images & Logos */}
+      <ComponentSection title="Images & Logos">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          Components for displaying images and logos with support for captions, aspect ratios, and variants.
+        </p>
+        <div className="mt-4">
+          <Button to="/images" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Image Demos
+          </Button>
+        </div>
+         <CodeBlock>{`import Image from './components/ui/image/Image';
+import Logo from './components/ui/image/Logo';
+
+<Image src="..." alt="..." caption="An example image." />
+<Logo variant="full" />`}</CodeBlock>
+      </ComponentSection>
+
+      {/* Loaders */}
+      <ComponentSection title="Loaders & Skeletons">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          A suite of components for indicating loading states, including progress bars, spinners, and content skeletons to improve perceived performance.
+        </p>
+        <div className="mt-4">
+          <Button to="/loaders" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Loader Demos
+          </Button>
+        </div>
+         <CodeBlock>{`import ProgressBar from './components/ui/loading/ProgressBar';
+import Skeleton from './components/ui/loading/Skeleton';
+import Spinner from './components/ui/loading/Spinner';
+
+<Spinner size="lg" />
+<ProgressBar progress={50} />
+<Skeleton shape="box" />`}</CodeBlock>
       </ComponentSection>
 
       {/* Text Fields */}
@@ -385,7 +429,6 @@ import FormWizard from './components/ui/form/FormWizard';
                 error="Please select an option."
             />
         </div>
-        {/* FIX: Corrected component name casing from Code-Block to CodeBlock. */}
         <CodeBlock>{`<RadioGroup label="Options" name="my-radio" options={[...]} />`}</CodeBlock>
       </ComponentSection>
 
@@ -416,18 +459,13 @@ import FormWizard from './components/ui/form/FormWizard';
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">Badges & Spinners</h4>
+            <h4 className="font-semibold mb-2">Badges</h4>
             <div className="flex flex-wrap items-start gap-2 mb-4">
               <Badge variant="neutral">Neutral</Badge>
               <Badge variant="primary">Primary</Badge>
               <Badge variant="success">Success</Badge>
               <Badge variant="warning">Warning</Badge>
               <Badge variant="danger">Danger</Badge>
-            </div>
-            <div className="flex items-center gap-4">
-               <Spinner size="sm" />
-               <Spinner size="md" className="text-primary"/>
-               <Spinner size="lg" className="text-danger"/>
             </div>
           </div>
           <div>
