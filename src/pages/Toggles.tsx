@@ -14,6 +14,14 @@ const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> =
   </div>
 );
 
+const validateToggles = (values: { emailNotifications: boolean; pushNotifications: boolean }): FormErrors => {
+    const errors: FormErrors = {};
+    if (values.emailNotifications === false && values.pushNotifications === false) {
+        errors.notificationGroup = "At least one notification method must be enabled.";
+    }
+    return errors;
+};
+
 
 const Toggles: React.FC = () => {
     const handleSubmit = (values: any) => {
@@ -29,13 +37,7 @@ const Toggles: React.FC = () => {
             pushNotifications: false,
             notificationGroup: null, // Dummy field for group-level error
         },
-        (values: any): FormErrors => {
-            const errors: FormErrors = {};
-            if (values.emailNotifications === false && values.pushNotifications === false) {
-                errors.notificationGroup = "At least one notification method must be enabled.";
-            }
-            return errors;
-        },
+        validateToggles,
         handleSubmit
     );
 

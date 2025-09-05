@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm, FormErrors } from '../../../hooks/useForm';
 import Input from '../Input';
 import Select from '../Select';
@@ -32,9 +32,13 @@ const FormWizard: React.FC = () => {
         console.log('Wizard Form Data:', values);
     };
 
+    const validateCallback = useCallback((formValues: any) => {
+        return validate(formValues, currentStep);
+    }, [currentStep]);
+
     const { getFieldProps, handleSubmit, setTouched, values, errors, isValid } = useForm(
         { email: '', password: '', fullName: '', country: 'USA' },
-        (formValues) => validate(formValues, currentStep),
+        validateCallback,
         handleFinalSubmit
     );
 

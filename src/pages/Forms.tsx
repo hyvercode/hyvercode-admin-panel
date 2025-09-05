@@ -18,20 +18,24 @@ const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> =
   </div>
 );
 
+const validateRadioForm = (values: { plan: string }): FormErrors => {
+    const errors: FormErrors = {};
+    if (!values.plan) {
+        errors.plan = 'Please select a subscription plan.';
+    }
+    return errors;
+};
+
+const handleRadioSubmit = (values: { plan: string }) => {
+    alert(`Selected Plan: ${values.plan}`);
+    console.log(values);
+};
+
 const RadioForm: React.FC = () => {
     const { getFieldProps, handleSubmit } = useForm(
         { plan: 'free' },
-        (values: { plan: string }): FormErrors => {
-            const errors: FormErrors = {};
-            if (!values.plan) {
-                errors.plan = 'Please select a subscription plan.';
-            }
-            return errors;
-        },
-        (values) => {
-            alert(`Selected Plan: ${values.plan}`);
-            console.log(values);
-        }
+        validateRadioForm,
+        handleRadioSubmit
     );
 
     return (

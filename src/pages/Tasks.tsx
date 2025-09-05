@@ -41,14 +41,16 @@ const TaskCard: React.FC<{ task: Task; onClick: () => void }> = ({ task, onClick
   );
 };
 
+const validateTask = (values: { title: string }): FormErrors => {
+    const errors: FormErrors = {};
+    if (!values.title) errors.title = "Title is required.";
+    return errors;
+};
+
 const EditTaskForm: React.FC<{ task: Task, onSave: (values: any) => void, onCancel: () => void }> = ({ task, onSave, onCancel }) => {
     const { getFieldProps, handleSubmit } = useForm(
         task,
-        (values) => {
-            const errors: FormErrors = {};
-            if (!values.title) errors.title = "Title is required.";
-            return errors;
-        },
+        validateTask,
         onSave
     );
 

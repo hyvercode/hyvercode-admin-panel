@@ -42,6 +42,39 @@ const loadUsers = (): Promise<Option[]> => {
     });
 };
 
+// --- Validation and Submit Handlers ---
+const validateForm1 = (values: { assignee: string, tag: string }): FormErrors => {
+    const errors: FormErrors = {};
+    if (!values.assignee) errors.assignee = 'An assignee is required.';
+    if (!values.tag) errors.tag = 'A tag is required.';
+    return errors;
+};
+const handleForm1Submit = (values: any) => {
+    alert('Form 1 Submitted! Check console.');
+    console.log('Form 1 Data:', values);
+};
+
+const validateForm2 = (values: { teamMembers: string[] }): FormErrors => {
+    const errors: FormErrors = {};
+    if (values.teamMembers.length < 2) errors.teamMembers = 'Select at least two team members.';
+    return errors;
+};
+const handleForm2Submit = (values: any) => {
+    alert('Form 2 Submitted! Check console.');
+    console.log('Form 2 Data:', values);
+};
+
+const validateForm3 = (values: { priority: string }): FormErrors => {
+    const errors: FormErrors = {};
+    if (!values.priority) errors.priority = 'Priority is required.';
+    return errors;
+};
+const handleForm3Submit = (values: any) => {
+    alert('Form 3 Submitted! Check console.');
+    console.log('Form 3 Data:', values);
+};
+
+
 // --- Page Component ---
 const AdvancedSelects: React.FC = () => {
   const [tags, setTags] = useState<Option[]>(initialTags);
@@ -55,16 +88,8 @@ const AdvancedSelects: React.FC = () => {
     values: values1
   } = useForm(
     { assignee: '', tag: '' },
-    (values): FormErrors => {
-      const errors: FormErrors = {};
-      if (!values.assignee) errors.assignee = 'An assignee is required.';
-      if (!values.tag) errors.tag = 'A tag is required.';
-      return errors;
-    },
-    (values) => {
-      alert('Form 1 Submitted! Check console.');
-      console.log('Form 1 Data:', values);
-    }
+    validateForm1,
+    handleForm1Submit
   );
 
   const handleCreateTag = (newTagLabel: string) => {
@@ -85,29 +110,15 @@ const AdvancedSelects: React.FC = () => {
     values: values2
   } = useForm(
     { teamMembers: [] as string[] },
-    (values): FormErrors => {
-      const errors: FormErrors = {};
-      if (values.teamMembers.length < 2) errors.teamMembers = 'Select at least two team members.';
-      return errors;
-    },
-    (values) => {
-      alert('Form 2 Submitted! Check console.');
-      console.log('Form 2 Data:', values);
-    }
+    validateForm2,
+    handleForm2Submit
   );
   
   // Form 3: Country and Radio Select
   const { getFieldProps: getFieldProps3, handleSubmit: handleSubmit3, values: values3 } = useForm(
     { country: 'USA', priority: '' },
-    (values): FormErrors => {
-        const errors: FormErrors = {};
-        if (!values.priority) errors.priority = 'Priority is required.';
-        return errors;
-    },
-    (values) => {
-        alert('Form 3 Submitted! Check console.');
-        console.log('Form 3 Data:', values);
-    }
+    validateForm3,
+    handleForm3Submit
   );
 
   return (
