@@ -14,7 +14,8 @@ const CardFooter: React.FC<{ children: React.ReactNode; className?: string }> = 
 );
 
 // Main Card component
-interface CardProps {
+// FIX: Extended React.HTMLAttributes<HTMLDivElement> to allow passing standard div props like onClick.
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
 }
@@ -25,9 +26,9 @@ interface CardComponent extends React.FC<CardProps> {
   Footer: typeof CardFooter;
 }
 
-const Card: CardComponent = ({ children, className = '' }) => {
+const Card: CardComponent = ({ children, className = '', ...props }) => {
   return (
-    <div className={`bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 overflow-hidden ${className}`}>
+    <div className={`bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 overflow-hidden ${className}`} {...props}>
       {children}
     </div>
   );
