@@ -1,51 +1,53 @@
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
-import { KANBAN_TASKS_DATA, USERS_DATA } from '../constants';
-import Card from '../components/ui/card/Card';
-import Checkbox from '../components/ui/Checkbox';
-import Avatar from '../components/ui/avatar/Avatar';
-import Tooltip from '../components/ui/Tooltip';
+import KanbanBoard from '../components/ui/kanban/KanbanBoard';
+import { TASKS_DATA } from '../constants';
+import { Task } from '../types';
 import Button from '../components/ui/Button';
 
-const Tasks: React.FC = () => {
-    return (
-        <div>
-            <PageHeader
-                title="My Tasks"
-                breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Tasks', path: '/tasks' }]}
-                actions={<Button leftIcon={<i className="bi bi-plus-lg"></i>}>New Task</Button>}
-            />
+// Organize tasks into columns for the Kanban board
+const initialColumns = {
+  'Todo': {
+    id: 'Todo',
+    title: 'To Do',
+    taskIds: TASKS_DATA.filter(t => t.status === 'Todo').map(t => t.id),
+  },
+  'In Progress': {
+    id: 'In Progress',
+    title: 'In Progress',
+    taskIds: TASKS_DATA.filter(t => t.status === 'In Progress').map(t => t.id),
+  },
+  'Done': {
+    id: 'Done',
+    title: 'Done',
+    taskIds: TASKS_DATA.filter(t => t.status === 'Done').map(t => t.id),
+  },
+};
 
-            <Card>
-                <Card.Body>
-                    <ul className="divide-y divide-neutral-200 dark:divide-neutral-800">
-                        {KANBAN_TASKS_DATA.map(task => {
-                            const assignee = USERS_DATA.find(u => u.id === task.assigneeId);
-                            return (
-                                <li key={task.id} className="py-4 flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <Checkbox id={`task-${task.id}`} label="" checked={task.status === 'done'} onChange={() => {}} />
-                                        <div className="ml-3">
-                                            <p className={`font-medium ${task.status === 'done' ? 'line-through text-neutral-500' : ''}`}>{task.title}</p>
-                                            <p className="text-sm text-neutral-600 dark:text-neutral-400">{task.description}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        {assignee && (
-                                            <Tooltip content={`Assigned to ${assignee.name}`} position="top">
-                                                <Avatar name={assignee.name} size="sm" src={`https://picsum.photos/40/40?random=${assignee.id}`} />
-                                            </Tooltip>
-                                        )}
-                                        <Button variant="subtle" size="sm-icon"><i className="bi bi-pencil"></i></Button>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </Card.Body>
-            </Card>
-        </div>
-    );
+const tasksMap = TASKS_DATA.reduce((acc, task) => {
+  acc[task.id] = task;
+  return acc;
+}, {} as Record<string, Task>);
+
+
+const Tasks: React.FC = () => {
+  return (
+    <div>
+      <PageHeader
+        title="Tasks"
+        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Tasks' , path: '/tasks' }]}
+        actions={<Button leftIcon={<i className="bi bi-plus-lg"></i>}>New Task</Button>}
+      />
+      <p className="mb-6 text-neutral-700 dark:text-neutral-400">
+        This is a demonstration Kanban board. Drag and drop functionality is not implemented in this sample.
+      </p>
+      <KanbanBoard
+        initialTasks={tasksMap}
+        initialColumns={initialColumns}
+        columnOrder={['Todo', 'In Progress', 'Done']}
+      />
+    </div>
+  );
 };
 
 export default Tasks;

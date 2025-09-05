@@ -1,27 +1,39 @@
 import React from 'react';
-import { KanbanTask } from '../../../types';
+import { Task, User } from '../../../types';
 import { USERS_DATA } from '../../../constants';
-import Avatar from '../avatar/Avatar';
-import Tooltip from '../Tooltip';
+import Badge from '../Badge';
+import AvatarGroup from '../avatar/AvatarGroup';
+import Card from '../card/Card';
 
 interface KanbanCardProps {
-  task: KanbanTask;
+  task: Task;
 }
 
+const priorityColors = {
+  High: 'danger',
+  Medium: 'warning',
+  Low: 'success',
+} as const;
+
 const KanbanCard: React.FC<KanbanCardProps> = ({ task }) => {
-  const assignee = USERS_DATA.find(u => u.id === task.assigneeId);
+  const assignees = USERS_DATA.filter(user => task.assigneeIds.includes(user.id));
+
   return (
-    <div className="bg-neutral-0 dark:bg-neutral-1000 p-4 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-4 cursor-grab">
-      <h4 className="font-semibold text-sm">{task.title}</h4>
-      <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{task.description}</p>
-      {assignee && (
-        <div className="mt-3 flex justify-end">
-          <Tooltip content={assignee.name}>
-            <Avatar name={assignee.name} src={`https://picsum.photos/40/40?random=${assignee.id}`} size="sm" />
-          </Tooltip>
+    <Card className="mb-3">
+      <Card.Body>
+        <div className="flex justify-between items-start">
+          <h4 className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{task.title}</h4>
+          <Badge variant={priorityColors[task.priority]}>{task.priority}</Badge>
         </div>
-      )}
-    </div>
+        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{task.description}</p>
+        <div className="flex justify-between items-center mt-3">
+          <AvatarGroup users={assignees} size="sm" max={3} />
+          <span className="text-xs text-neutral-500">
+            <i className="bi bi-paperclip mr-1"></i>2
+          </span>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 

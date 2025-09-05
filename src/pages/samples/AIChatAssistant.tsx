@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { GoogleGenAI as GoogleGenAIType } from "@google/genai";
+// FIX: Use a static import for GoogleGenAI and its type.
+import { GoogleGenAI } from "@google/genai";
 import { ChatMessage } from '../../types';
 import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/card/Card';
@@ -41,20 +42,20 @@ const AIChatAssistant: React.FC = () => {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [ai, setAi] = useState<GoogleGenAIType | null>(null);
+    // FIX: Use the imported GoogleGenAI type directly.
+    const [ai, setAi] = useState<GoogleGenAI | null>(null);
     const chatEndRef = useRef<HTMLDivElement>(null);
     const { user } = useAuth();
     const apiKey = process.env.API_KEY;
     
     useEffect(() => {
-        async function initializeAi() {
+        // FIX: Initialize the AI client directly without dynamic import.
+        function initializeAi() {
             if (!apiKey) {
                 setError("AI service is not configured. An API key is required.");
                 return;
             }
             try {
-                // Use dynamic import to bypass static analysis error in some environments
-                const { GoogleGenAI } = await import('@google/genai');
                 setAi(new GoogleGenAI({ apiKey }));
             } catch(e) {
                 console.error("Failed to initialize AI:", e);
@@ -86,10 +87,12 @@ const AIChatAssistant: React.FC = () => {
         }
 
         try {
+            // FIX: Correctly structure the generateContent call.
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: input,
             });
+            // FIX: Correctly access the response text.
             const aiMessage: ChatMessage = { role: 'model', content: response.text };
             setMessages(prev => [...prev, aiMessage]);
         } catch (err) {

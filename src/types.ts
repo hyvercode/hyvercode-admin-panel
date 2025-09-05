@@ -1,60 +1,61 @@
-// Base user structure
+// src/types.ts
+
 export interface User {
   id: number;
   name: string;
   email: string;
   role: 'Admin' | 'Editor' | 'Viewer';
   status: 'active' | 'inactive';
-  avatarUrl?: string;
   bio?: string;
 }
 
-// For the calendar component
-export interface CalendarEvent {
-  id: string;
-  title: string;
-  date: string; // YYYY-MM-DD
-  category: 'primary' | 'success' | 'danger' | 'warning';
+export interface Product {
+    id: number;
+    name:string;
+    category: string;
+    price: number;
+    rating: number;
+    reviewCount: number;
+    imageUrl: string;
+    description: string;
+    specs: { [key: string]: string };
 }
 
-// For comment threads
-export interface Comment {
+export interface Review {
     id: number;
     authorId: number;
     content: string;
     timestamp: string;
     parentId: number | null;
-    replies?: Comment[];
 }
 
-export type Review = Omit<Comment, 'replies'>;
-
-
-// For product catalog
-export interface Product {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    category: string;
-    rating: number;
-    reviewCount: number;
-    imageUrl: string;
-    specs: Record<string, string>;
-}
-
-// For blog
 export interface BlogPost {
     id: number;
     title: string;
+    authorId: number;
+    category: string;
     excerpt: string;
     imageUrl: string;
-    category: string;
-    authorId: number;
     publishDate: string;
 }
 
-// For POS
+export interface Comment extends Omit<Review, 'authorId'> {
+  authorId: number;
+  replies?: Comment[];
+}
+
+export interface ChatMessage {
+  role: 'user' | 'model';
+  content: string;
+}
+
+export interface CalendarEvent {
+    id: string;
+    title: string;
+    date: string; // YYYY-MM-DD
+    category: 'primary' | 'success' | 'danger' | 'warning';
+}
+
 export interface POSProduct {
     id: number;
     name: string;
@@ -66,35 +67,26 @@ export interface POSCartItem extends POSProduct {
     quantity: number;
 }
 
-// For Online Course
-export interface CourseLecture {
+export interface Task {
     id: string;
-    title: string;
-    duration: string;
-}
-
-export interface CourseModule {
-    id: string;
-    title: string;
-    lectures: CourseLecture[];
-}
-
-export interface OnlineCourse {
-    id: number;
     title: string;
     description: string;
-    instructorId: number;
-    modules: CourseModule[];
+    status: 'Todo' | 'In Progress' | 'Done';
+    priority: 'Low' | 'Medium' | 'High';
+    assigneeIds: number[];
 }
 
+export interface KanbanColumn {
+    id: 'Todo' | 'In Progress' | 'Done';
+    title: string;
+    taskIds: string[];
+}
 
-// For forms
 export interface Option {
     value: string;
     label: string;
 }
 
-// For invoice form table
 export interface LineItem {
     id: number;
     description: string;
@@ -102,18 +94,6 @@ export interface LineItem {
     price: number;
 }
 
-// For Kanban board
-export interface KanbanTask {
-    id: string;
-    title: string;
-    description: string;
-    status: 'todo' | 'inprogress' | 'done';
-    assigneeId?: number;
-}
-export type KanbanStatus = 'todo' | 'inprogress' | 'done';
-
-
-// For Chat
 export interface Conversation {
     id: number;
     participantId: number;
@@ -128,10 +108,4 @@ export interface Message {
     senderId: number; // 0 for current user
     content: string;
     timestamp: string;
-}
-
-// For AI Chat Assistant
-export interface ChatMessage {
-    role: 'user' | 'model';
-    content: string;
 }

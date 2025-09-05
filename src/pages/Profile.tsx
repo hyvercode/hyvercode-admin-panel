@@ -1,65 +1,74 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { USERS_DATA } from '../constants';
-import Avatar from '../components/ui/avatar/Avatar';
+import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/card/Card';
-import Tabs from '../components/ui/navigation/Tabs';
+import Avatar from '../components/ui/avatar/Avatar';
 import Button from '../components/ui/Button';
+import Badge from '../components/ui/Badge';
+import Tabs from '../components/ui/navigation/Tabs';
 
 const Profile: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
-  // In a real app, you'd fetch this data. We'll use our mock data.
-  const user = USERS_DATA.find(u => u.id === parseInt(userId || '1'));
+    const { userId } = useParams<{ userId: string }>();
+    const user = USERS_DATA.find(u => u.id === parseInt(userId || ''));
 
-  if (!user) {
-    return <div>User not found.</div>;
-  }
+    if (!user) {
+        return <Navigate to="/users" replace />;
+    }
 
-  return (
-    <div>
-      <Card className="mb-8">
-        <div className="h-32 bg-primary-background" />
-        <Card.Body>
-          <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-5 -mt-16">
-            <Avatar name={user.name} src={`https://picsum.photos/200/200?random=${user.id}`} size="xl" />
-            <div className="mt-4 sm:mt-0 flex-grow">
-              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{user.name}</h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">{user.role}</p>
-            </div>
-            <div className="mt-4 sm:mt-0">
-              <Button>Edit Profile</Button>
-            </div>
-          </div>
-        </Card.Body>
-      </Card>
+    return (
+        <div>
+            <PageHeader
+                title="User Profile"
+                breadcrumbs={[
+                    { name: 'Home', path: '/' },
+                    { name: 'Users', path: '/users' },
+                    { name: user.name, path: `/profile/${user.id}` }
+                ]}
+            />
 
-      <Card>
-        <Tabs tabs={[{id: 'overview', label: 'Overview'}, {id: 'activity', label: 'Activity'}]}>
-            {(activeTab) => (
-                <div className="p-6">
-                    {activeTab === 'overview' && (
-                        <div>
-                            <h3 className="font-semibold text-lg mb-2">About</h3>
-                            <p className="text-neutral-700 dark:text-neutral-300">{user.bio || 'No biography provided.'}</p>
-                            <hr className="my-6 border-neutral-200 dark:border-neutral-800" />
-                            <h3 className="font-semibold text-lg mb-2">Details</h3>
-                            <ul className="space-y-2 text-sm">
-                                <li><strong>Email:</strong> {user.email}</li>
-                                <li><strong>Status:</strong> {user.status}</li>
-                            </ul>
-                        </div>
-                    )}
-                    {activeTab === 'activity' && (
-                        <div>
-                            <p>Recent activity will be shown here.</p>
-                        </div>
-                    )}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Profile Card */}
+                <div className="lg:col-span-1">
+                    <Card>
+                        <Card.Body className="flex flex-col items-center text-center">
+                            <Avatar name={user.name} size="xl" src={`https://picsum.photos/200/200?random=${user.id}`} />
+                            <h2 className="text-xl font-bold mt-4">{user.name}</h2>
+                            <p className="text-neutral-600 dark:text-neutral-400">{user.role}</p>
+                            <Badge variant={user.status === 'active' ? 'success' : 'neutral'} >
+                                {user.status}
+                            </Badge>
+                            <p className="text-sm mt-4 text-neutral-700 dark:text-neutral-300">{user.bio}</p>
+                            <Button className="mt-4" fullWidth>Edit Profile</Button>
+                        </Card.Body>
+                    </Card>
                 </div>
-            )}
-        </Tabs>
-      </Card>
-    </div>
-  );
+
+                {/* Details and Activity */}
+                <div className="lg:col-span-2">
+                    <Card>
+                        <Tabs tabs={[{ id: 'activity', label: 'Activity' }, { id: 'details', label: 'Details' }]}>
+                            {(activeTab) => (
+                                <div className="p-4">
+                                    {activeTab === 'activity' && (
+                                        <p>User activity feed would be displayed here.</p>
+                                    )}
+                                    {activeTab === 'details' && (
+                                        <ul className="space-y-2 text-sm">
+                                            <li className="flex justify-between"><span className="font-semibold">Full Name:</span> <span>{user.name}</span></li>
+                                            <li className="flex justify-between"><span className="font-semibold">Email:</span> <span>{user.email}</span></li>
+                                            <li className="flex justify-between"><span className="font-semibold">Role:</span> <span>{user.role}</span></li>
+                                            <li className="flex justify-between"><span className="font-semibold">Status:</span> <span>{user.status}</span></li>
+                                        </ul>
+                                    )}
+                                </div>
+                            )}
+                        </Tabs>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Profile;

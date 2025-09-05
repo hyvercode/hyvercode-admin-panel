@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
 import { Link, To } from 'react-router-dom';
 
 interface DropdownContextType {
@@ -8,67 +8,18 @@ interface DropdownContextType {
 
 const DropdownContext = createContext<DropdownContextType | undefined>(undefined);
 
-// Dropdown Item
-interface DropdownItemProps {
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-  to?: To;
-  onClick?: () => void;
-}
-
-const DropdownItem: React.FC<DropdownItemProps> = ({ children, icon, to, onClick }) => {
-  const context = useContext(DropdownContext);
-  if (!context) {
-    throw new Error('DropdownItem must be used within a Dropdown');
-  }
-
-  const handleClick = () => {
-    if (onClick) onClick();
-    context.setIsOpen(false);
-  };
-
-  const itemClasses = "flex items-center w-full px-4 py-2 text-sm text-left text-neutral-800 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900";
-
-  const content = (
-    <>
-      {icon && <span className="mr-3 text-lg">{icon}</span>}
-      {children}
-    </>
-  );
-
-  if (to) {
-    return (
-      <Link to={to} className={itemClasses} onClick={handleClick}>
-        {content}
-      </Link>
-    );
-  }
-
-  return (
-    <button onClick={handleClick} className={itemClasses}>
-      {content}
-    </button>
-  );
-};
-
-// Main Dropdown Component
 interface DropdownProps {
   trigger: React.ReactElement;
   children: React.ReactNode;
-  menuClassName?: string;
 }
 
-interface DropdownComponent extends React.FC<DropdownProps> {
-  Item: typeof DropdownItem;
-}
-
-const Dropdown: DropdownComponent = ({ trigger, children, menuClassName }) => {
+const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ trigger, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -76,18 +27,13 @@ const Dropdown: DropdownComponent = ({ trigger, children, menuClassName }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className="relative inline-block" ref={wrapperRef}>
-        {/* FIX: Add generic type argument to React.cloneElement to solve TypeScript error.
-            This informs TypeScript that the trigger element can accept standard HTML attributes like onClick. */}
-        {React.cloneElement<React.HTMLAttributes<HTMLElement>>(trigger, { onClick: toggleDropdown, 'aria-haspopup': true, 'aria-expanded': isOpen })}
-
+      <div className="relative inline-block text-left" ref={dropdownRef}>
+        <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
         {isOpen && (
           <div
-            className={`absolute right-0 mt-2 w-56 origin-top-right bg-neutral-0 dark:bg-neutral-1000 divide-y divide-neutral-100 dark:divide-neutral-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20 ${menuClassName}`}
+            className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-neutral-0 dark:bg-neutral-1000 ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
             role="menu"
             aria-orientation="vertical"
           >
@@ -99,6 +45,52 @@ const Dropdown: DropdownComponent = ({ trigger, children, menuClassName }) => {
       </div>
     </DropdownContext.Provider>
   );
+};
+
+// Item sub-component
+interface DropdownItemProps {
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+  to?: To;
+  onClick?: () => void;
+}
+
+const DropdownItem: React.FC<DropdownItemProps> = ({ children, icon, to, onClick }) => {
+    const context = useContext(DropdownContext);
+    if (!context) {
+        throw new Error('DropdownItem must be used within a Dropdown');
+    }
+
+    const { setIsOpen } = context;
+
+    const handleClick = () => {
+        if (onClick) onClick();
+        setIsOpen(false);
+    };
+
+    const classes = "group flex items-center w-full px-4 py-2 text-sm text-neutral-800 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900";
+    const iconClasses = "mr-3 h-5 w-5 text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200";
+
+    const content = (
+        <>
+            {icon && <span className={iconClasses}>{icon}</span>}
+            {children}
+        </>
+    );
+
+    if (to) {
+        return (
+            <Link to={to} className={classes} role="menuitem" onClick={handleClick}>
+                {content}
+            </Link>
+        );
+    }
+
+    return (
+        <button onClick={handleClick} className={classes} role="menuitem">
+            {content}
+        </button>
+    );
 };
 
 Dropdown.Item = DropdownItem;
