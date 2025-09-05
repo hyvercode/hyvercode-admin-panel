@@ -1,3 +1,5 @@
+// src/types.ts
+
 export interface User {
   id: number;
   name: string;
@@ -26,12 +28,19 @@ export interface CalendarEvent {
 }
 
 export interface Comment {
-  id: number;
-  authorId: number;
-  content: string;
-  timestamp: string;
-  parentId: number | null;
-  replies?: Comment[];
+    id: number;
+    authorId: number;
+    content: string;
+    timestamp: string;
+    parentId: number | null;
+    replies?: Comment[];
+}
+
+export interface Review {
+    id: number;
+    authorId: number;
+    content: string;
+    timestamp: string;
 }
 
 export interface LineItem {
@@ -49,8 +58,8 @@ export interface Option {
 export interface Product {
   id: number;
   name: string;
+  category: string;
   price: number;
-  category: 'Electronics' | 'Apparel' | 'Books' | 'Home Goods';
   rating: number;
   reviewCount: number;
   imageUrl: string;
@@ -58,33 +67,28 @@ export interface Product {
   specs: Record<string, string>;
 }
 
-export interface Review extends Omit<Comment, 'parentId' | 'replies'> {
-  rating: number;
-}
-
 export interface BlogPost {
   id: number;
   title: string;
+  category: string;
   authorId: number;
   publishDate: string;
-  category: string;
-  excerpt: string;
   imageUrl: string;
-  content: string; 
+  excerpt: string;
 }
 
 export interface Conversation {
-    id: number;
-    participantId: number;
-    lastMessage: string;
-    lastMessageTimestamp: string;
-    unreadCount: number;
+  id: number;
+  participantId: number;
+  lastMessage: string;
+  lastMessageTimestamp: string;
+  unreadCount: number;
 }
 
 export interface Message {
-    id: number;
-    conversationId: number;
-    senderId: number; // 0 for current user, otherwise participantId
-    content: string;
-    timestamp: string;
+  id: number;
+  conversationId: number;
+  senderId: number; // 0 for current user
+  content: string;
+  timestamp: string;
 }
