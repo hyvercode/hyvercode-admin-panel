@@ -8,6 +8,7 @@ export const NAV_ITEMS = [
     items: [
       { path: '/users', name: 'Users' },
       { path: '/tasks', name: 'Tasks' },
+      { path: '/appointments', name: 'Appointments' },
     ],
   },
   {
@@ -16,12 +17,11 @@ export const NAV_ITEMS = [
     items: [
       { path: '/editor', name: 'Editor' },
       { path: '/feedback', name: 'Feedback' },
+      { path: '/calendar', name: 'Calendar' },
     ],
   },
-  { path: '/calendar', name: 'Calendar', icon: 'bi-calendar-event-fill' },
-  { path: '/appointments', name: 'Appointments', icon: 'bi-clock-fill' },
   {
-    name: 'UI Components',
+    name: 'Component Demos',
     icon: 'bi-layers-fill',
     items: [
       { path: '/documentation', name: 'Docs Index' },

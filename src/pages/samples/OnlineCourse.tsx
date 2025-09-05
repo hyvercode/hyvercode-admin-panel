@@ -75,7 +75,7 @@ const OnlineCourse: React.FC = () => {
 
                 {/* Curriculum Sidebar */}
                 <aside className="lg:col-span-4">
-                    <Card className="sticky top-24">
+                    <Card className="lg:sticky top-24">
                         <Card.Header><h3 className="font-bold">Course Content</h3></Card.Header>
                         <Card.Body>
                             <Accordion allowMultiple defaultOpenIndex={[0]}>

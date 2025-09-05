@@ -1,0 +1,21 @@
+{
+  "short_name": "Admin Panel",
+  "name": "React Admin Layout",
+  "description": "A modern and responsive admin dashboard layout built with React, TypeScript, and Tailwind CSS.",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0C66E4",
+  "background_color": "#F7F8F9"
+}

@@ -69,9 +69,9 @@ const Chat: React.FC = () => {
     return (
         <div className="container mx-auto p-4 md:p-8">
             <Card className="h-[calc(100vh-120px)]">
-                <div className="grid grid-cols-12 h-full">
+                <div className="grid grid-cols-1 md:grid-cols-12 h-full">
                     {/* Conversation List */}
-                    <div className="col-span-4 border-r dark:border-neutral-800 flex flex-col">
+                    <div className="col-span-1 md:col-span-4 border-r dark:border-neutral-800 flex flex-col">
                         <div className="p-4 border-b dark:border-neutral-800">
                            <Input id="search-chat" label="" placeholder="Search conversations..." />
                         </div>
@@ -88,7 +88,7 @@ const Chat: React.FC = () => {
                     </div>
 
                     {/* Chat Panel */}
-                    <div className="col-span-8 flex flex-col h-full">
+                    <div className="col-span-1 md:col-span-8 flex flex-col h-full">
                         {activeParticipant ? (
                             <>
                                 <div className="p-4 border-b dark:border-neutral-800 flex items-center">

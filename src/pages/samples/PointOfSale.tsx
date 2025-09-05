@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { PRODUCTS_DATA } from '../../constants';
-import { Product } from '../../types';
+import { POS_PRODUCTS_DATA } from '../../constants';
+import { POSProduct, POSCartItem } from '../../types';
 import Card from '../../components/ui/card/Card';
 import Image from '../../components/ui/image/Image';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import PageHeader from '../../components/ui/PageHeader';
+import { useToast } from '../../contexts/ToastContext';
 
-const ProductGridItem: React.FC<{ product: Product; onAddToCart: (product: Product) => void }> = ({ product, onAddToCart }) => (
+const ProductGridItem: React.FC<{ product: POSProduct; onAddToCart: (product: POSProduct) => void }> = ({ product, onAddToCart }) => (
     <Card onClick={() => onAddToCart(product)} className="cursor-pointer hover:border-primary transition-colors">
         <Image src={product.imageUrl} alt={product.name} aspectRatio="1/1" rounded="none" />
         <Card.Body className="text-center p-2">
@@ -17,14 +18,11 @@ const ProductGridItem: React.FC<{ product: Product; onAddToCart: (product: Produ
     </Card>
 );
 
-interface CartItem extends Product {
-    quantity: number;
-}
-
 const PointOfSale: React.FC = () => {
-    const [cart, setCart] = useState<CartItem[]>([]);
+    const [cart, setCart] = useState<POSCartItem[]>([]);
+    const { addToast } = useToast();
 
-    const addToCart = (product: Product) => {
+    const addToCart = (product: POSProduct) => {
         setCart(prevCart => {
             const existingItem = prevCart.find(item => item.id === product.id);
             if (existingItem) {
@@ -46,6 +44,11 @@ const PointOfSale: React.FC = () => {
         setCart(prev => prev.map(item => item.id === productId ? {...item, quantity} : item));
     }
 
+    const handlePayment = () => {
+        addToast('Payment successful!', 'success');
+        setCart([]);
+    }
+
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = subtotal * 0.08;
     const total = subtotal + tax;
@@ -53,18 +56,18 @@ const PointOfSale: React.FC = () => {
     return (
         <div className="container mx-auto p-4 md:p-8">
             <PageHeader title="Point of Sale" />
-            <div className="grid grid-cols-12 gap-6 h-[calc(100vh-180px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full lg:h-[calc(100vh-180px)]">
                 {/* Product Grid */}
-                <div className="col-span-7 overflow-y-auto">
+                <div className="lg:col-span-7 h-[50vh] lg:h-full overflow-y-auto">
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {PRODUCTS_DATA.map(product => (
+                        {POS_PRODUCTS_DATA.map(product => (
                             <ProductGridItem key={product.id} product={product} onAddToCart={addToCart} />
                         ))}
                     </div>
                 </div>
 
                 {/* Cart/Checkout Panel */}
-                <div className="col-span-5">
+                <div className="lg:col-span-5">
                     <Card className="h-full flex flex-col">
                         <Card.Header><h3 className="font-bold">Current Order</h3></Card.Header>
                         <Card.Body className="flex-grow overflow-y-auto">
@@ -94,7 +97,7 @@ const PointOfSale: React.FC = () => {
                                 <div className="flex justify-between"><span>Tax (8%)</span><span>${tax.toFixed(2)}</span></div>
                                 <div className="flex justify-between font-bold text-lg border-t dark:border-neutral-800 pt-2 mt-2"><span>Total</span><span>${total.toFixed(2)}</span></div>
                             </div>
-                            <Button fullWidth className="mt-4" disabled={cart.length === 0}>Charge ${total.toFixed(2)}</Button>
+                            <Button fullWidth className="mt-4" onClick={handlePayment} disabled={cart.length === 0}>Charge ${total.toFixed(2)}</Button>
                         </Card.Footer>
                     </Card>
                 </div>
