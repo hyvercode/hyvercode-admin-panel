@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
+// FIX: Add CartProvider to manage cart state globally.
+import { CartProvider } from './contexts/CartContext';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -24,7 +26,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

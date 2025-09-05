@@ -1,4 +1,4 @@
-import { User, Product, Review, BlogPost, CalendarEvent, Task, Conversation, Message, POSProduct, ERPProduct, ERPOrder, ERPCustomer, OnlineCourse } from './types';
+import { User, Product, Review, BlogPost, CalendarEvent, Task, Conversation, Message, POSProduct, ERPProduct, ERPOrder, ERPCustomer, OnlineCourse, TimelineEvent, HierarchicalData } from './types';
 
 // --- NAVIGATION ---
 interface NavItem {
@@ -14,46 +14,48 @@ interface NavGroup {
 export type NavStructure = (NavItem | NavGroup)[];
 
 export const NAV_ITEMS: NavStructure = [
-  { to: '/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
+  { to: '/admin/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
   {
     title: 'Management',
     icon: 'bi-briefcase-fill',
     items: [
-      { to: '/users', icon: 'bi-people-fill', label: 'Users' },
-      { to: '/tasks', icon: 'bi-check2-square', label: 'Tasks' },
+      { to: '/admin/users', icon: 'bi-people-fill', label: 'Users' },
+      { to: '/admin/tasks', icon: 'bi-check2-square', label: 'Tasks' },
     ],
   },
   {
     title: 'ERP',
     icon: 'bi-building-fill',
     items: [
-      { to: '/erp/products', icon: 'bi-box-seam-fill', label: 'Products' },
-      { to: '/erp/orders', icon: 'bi-receipt-cutoff', label: 'Orders' },
-      { to: '/erp/customers', icon: 'bi-person-badge-fill', label: 'Customers' },
+      { to: '/admin/erp/products', icon: 'bi-box-seam-fill', label: 'Products' },
+      { to: '/admin/erp/orders', icon: 'bi-receipt-cutoff', label: 'Orders' },
+      { to: '/admin/erp/customers', icon: 'bi-person-badge-fill', label: 'Customers' },
     ],
   },
   {
     title: 'Component Demos',
     icon: 'bi-puzzle-fill',
     items: [
-      { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Docs Home' },
-      { to: '/boards', icon: 'bi-kanban-fill', label: 'Boards & Timeline' },
-      { to: '/forms', icon: 'bi-input-cursor-text', label: 'Forms' },
-      { to: '/tables', icon: 'bi-table', label: 'Tables' },
-      { to: '/content', icon: 'bi-card-heading', label: 'Content' },
-      { to: '/overlays', icon: 'bi-front', label: 'Overlays' },
-      { to: '/navigation', icon: 'bi-compass-fill', label: 'Navigation' },
+      { to: '/admin/documentation', icon: 'bi-file-earmark-text-fill', label: 'Docs Home' },
+      { to: '/admin/boards', icon: 'bi-kanban-fill', label: 'Boards & Timeline' },
+      { to: '/admin/forms', icon: 'bi-input-cursor-text', label: 'Forms' },
+      { to: '/admin/tables', icon: 'bi-table', label: 'Tables' },
+      { to: '/admin/content', icon: 'bi-card-heading', label: 'Content' },
+      { to: '/admin/overlays', icon: 'bi-front', label: 'Overlays' },
+      { to: '/admin/navigation', icon: 'bi-compass-fill', label: 'Navigation' },
     ],
   },
   {
     title: 'Sample Pages',
     icon: 'bi-file-earmark-richtext-fill',
     items: [
-      { to: '/sample/pos', icon: 'bi-printer-fill', label: 'Point of Sale' },
-      { to: '/sample/course', icon: 'bi-book-fill', label: 'Online Course' },
-      { to: '/sample/chat', icon: 'bi-chat-dots-fill', label: 'Chat' },
-      { to: '/sample/ai-chat', icon: 'bi-robot', label: 'AI Assistant' },
+      { to: '/admin/sample/pos', icon: 'bi-printer-fill', label: 'Point of Sale' },
+      { to: '/admin/sample/course', icon: 'bi-book-fill', label: 'Online Course' },
+      { to: '/admin/sample/chat', icon: 'bi-chat-dots-fill', label: 'Chat' },
+      { to: '/admin/sample/ai-chat', icon: 'bi-robot', label: 'AI Assistant' },
+      { to: '/sample/products', icon: 'bi-shop', label: 'Product Catalog' },
       { to: '/sample/checkout', icon: 'bi-credit-card-fill', label: 'Checkout' },
+      { to: '/sample/blog', icon: 'bi-journal-richtext', label: 'Blog' },
     ]
   }
 ];
@@ -118,7 +120,7 @@ export const POS_PRODUCTS_DATA: POSProduct[] = [
     { id: 4, name: 'Muffin', price: 3.00, imageUrl: 'https://picsum.photos/seed/pastry2/200/200' },
 ];
 
-export const TIMELINE_DATA = [
+export const TIMELINE_DATA: TimelineEvent[] = [
   { id: 1, type: 'task_completed', user: 'Bob Smith', description: "Marked 'Write API documentation' as done.", timestamp: '2 hours ago' },
   { id: 2, type: 'task_moved', user: 'Diana Prince', description: "Moved 'Design new dashboard layout' to In Progress.", timestamp: '5 hours ago' },
   { id: 3, type: 'user_added', user: 'Alice Johnson', description: 'Added a new user: Charlie Brown.', timestamp: '1 day ago' },
@@ -142,7 +144,6 @@ export const ERP_CUSTOMERS_DATA: ERPCustomer[] = [
   { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', phone: '345-678-9012', lifetimeValue: 320.00, lastOrder: '2024-05-23' },
 ];
 
-// FIX: Add missing COUNTRIES_DATA for the CountrySelect component.
 export const COUNTRIES_DATA = [
   { value: 'USA', label: 'United States' },
   { value: 'CAN', label: 'Canada' },
@@ -152,7 +153,6 @@ export const COUNTRIES_DATA = [
   { value: 'JPN', label: 'Japan' },
 ];
 
-// FIX: Add missing ONLINE_COURSE_DATA for the OnlineCourse sample page.
 export const ONLINE_COURSE_DATA: OnlineCourse = {
     id: 1,
     title: 'Advanced React Development',

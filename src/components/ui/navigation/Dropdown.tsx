@@ -33,8 +33,6 @@ const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ tri
           e.stopPropagation();
           setIsOpen(!isOpen);
           // Allow trigger to have its own onClick
-          // FIX: The props of a generic ReactElement are unknown. Cast to `any` to safely
-          // check for and call an existing onClick handler on the trigger element.
           if (trigger.props && typeof (trigger.props as any).onClick === 'function') {
             (trigger.props as any).onClick(e);
           }

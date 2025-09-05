@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import PageHeader from '../components/ui/PageHeader';
 import KanbanBoard from '../components/ui/kanban/KanbanBoard';
 import { TASKS_DATA, USERS_DATA } from '../constants';
-import { Task, KanbanColumn } from '../types';
+import { Task, KanbanColumn, TaskStatus } from '../types';
 import Button from '../components/ui/Button';
 import Table, { Column } from '../components/ui/table/Table';
 import Pagination from '../components/ui/navigation/Pagination';
@@ -95,7 +95,8 @@ const Tasks: React.FC = () => {
           [sourceColumnId]: { ...sourceColumn, taskIds: sourceTaskIds },
           [destColumnId]: { ...destColumn, taskIds: destTaskIds },
       });
-      setTasks(prev => ({...prev, [taskId]: {...prev[taskId], status: destColumn.id }}));
+      // FIX: Add type assertion to ensure the column ID string matches the TaskStatus type.
+      setTasks(prev => ({...prev, [taskId]: {...prev[taskId], status: destColumn.id as TaskStatus }}));
       addToast(`Task moved to ${destColumn.title}`, 'info');
   };
 
