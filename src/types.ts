@@ -67,6 +67,14 @@ export interface Product {
   specs: Record<string, string>;
 }
 
+export interface POSProduct extends Product {
+    stock: number;
+}
+
+export interface POSCartItem extends POSProduct {
+    quantity: number;
+}
+
 export interface BlogPost {
   id: number;
   title: string;
@@ -91,4 +99,24 @@ export interface Message {
   senderId: number; // 0 for current user
   content: string;
   timestamp: string;
+}
+
+export interface Lecture {
+  id: string;
+  title: string;
+  duration: string;
+}
+
+export interface Module {
+  id: string;
+  title: string;
+  lectures: Lecture[];
+}
+
+export interface Course {
+  id: number;
+  title: string;
+  instructorId: number;
+  description: string;
+  modules: Module[];
 }

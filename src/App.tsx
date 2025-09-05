@@ -43,6 +43,7 @@ import Checkout from './pages/samples/Checkout';
 import Blog from './pages/samples/Blog';
 import Chat from './pages/samples/Chat';
 import PointOfSale from './pages/samples/PointOfSale';
+import OnlineCourse from './pages/samples/OnlineCourse';
 import { ToastProvider } from './contexts/ToastContext';
 
 const App: React.FC = () => {
@@ -58,6 +59,7 @@ const App: React.FC = () => {
           <Route path="/sample/blog" element={<Blog />} />
           <Route path="/sample/chat" element={<Chat />} />
           <Route path="/sample/pos" element={<PointOfSale />} />
+          <Route path="/sample/course" element={<OnlineCourse />} />
         </Route>
         
         {/* Auth Routes */}
