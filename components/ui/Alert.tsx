@@ -9,28 +9,28 @@ interface AlertProps {
 const Alert: React.FC<AlertProps> = ({ variant = 'info', title, children }) => {
   const variantConfig = {
     danger: {
-      bg: 'bg-danger/10',
-      text: 'text-danger-800 dark:text-danger-200',
+      bg: 'bg-danger-background',
+      text: 'text-danger-dark dark:text-danger-light',
       icon: 'bi-exclamation-triangle-fill',
       iconColor: 'text-danger',
     },
     success: {
-      bg: 'bg-success/10',
-      text: 'text-success-800 dark:text-success-200',
+      bg: 'bg-success-background',
+      text: 'text-success-dark dark:text-success',
       icon: 'bi-check-circle-fill',
       iconColor: 'text-success',
     },
     warning: {
-      bg: 'bg-warning/10',
-      text: 'text-warning-800 dark:text-warning-200',
+      bg: 'bg-warning-background',
+      text: 'text-warning-dark dark:text-warning',
       icon: 'bi-exclamation-triangle-fill',
-      iconColor: 'text-warning',
+      iconColor: 'text-warning-dark',
     },
     info: {
-      bg: 'bg-info/10',
-      text: 'text-info-800 dark:text-info-200',
+      bg: 'bg-primary-background',
+      text: 'text-primary-dark dark:text-primary-light',
       icon: 'bi-info-circle-fill',
-      iconColor: 'text-info',
+      iconColor: 'text-primary',
     },
   };
 

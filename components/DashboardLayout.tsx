@@ -3,29 +3,19 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
-// Perform a one-time, robust check for localStorage availability and functionality.
-// This variable will be true only if localStorage can be successfully written to and read from.
-const isLocalStorageAvailable = (() => {
-  try {
-    const testKey = '__react_admin_theme_test__';
-    window.localStorage.setItem(testKey, testKey);
-    window.localStorage.removeItem(testKey);
-    return true;
-  } catch (e) {
-    return false;
-  }
-})();
-
-// Gets the initial theme. It will only try to access localStorage if it's confirmed to be available.
+// Safely get the initial theme by attempting to read from localStorage and falling back gracefully.
 const getInitialTheme = (): string => {
-  if (isLocalStorageAvailable) {
+  try {
     const storedTheme = window.localStorage.getItem('theme');
     if (storedTheme === 'dark' || storedTheme === 'light') {
       return storedTheme;
     }
+  } catch (e) {
+    // localStorage is not accessible, ignore the error.
+    console.warn('Could not access localStorage for theme:', e);
   }
 
-  // Fallback to system preference if no valid theme is in localStorage or if localStorage is unavailable.
+  // Fallback to system preference if localStorage is unavailable or doesn't have a valid theme.
   if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
     return 'dark';
   }
@@ -45,9 +35,12 @@ const DashboardLayout: React.FC = () => {
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
 
-    // Only try to persist the theme if localStorage is available.
-    if (isLocalStorageAvailable) {
+    // Safely try to persist the theme to localStorage.
+    try {
       window.localStorage.setItem('theme', theme);
+    } catch (e) {
+      // localStorage is not accessible, ignore the error.
+      console.warn('Could not persist theme to localStorage:', e);
     }
   }, [theme]);
 
@@ -56,7 +49,7 @@ const DashboardLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex h-screen bg-neutral-100 dark:bg-neutral-1100 font-sans">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -67,7 +60,7 @@ const DashboardLayout: React.FC = () => {
           toggleTheme={toggleTheme}
         />
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-900">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-neutral-100 dark:bg-neutral-1100">
           <div className="container mx-auto px-6 py-8">
             <Outlet />
           </div>

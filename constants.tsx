@@ -16,6 +16,11 @@ export const NAV_ITEMS: NavItem[] = [
     name: 'Settings',
     icon: 'bi-gear-fill',
   },
+   {
+    path: '/documentation',
+    name: 'Documentation',
+    icon: 'bi-book-fill',
+  },
 ];
 
 export const USERS_DATA: User[] = [

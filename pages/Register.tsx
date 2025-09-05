@@ -22,6 +22,7 @@ const Register: React.FC = () => {
     try {
       await register(name, email, password);
       navigate('/', { replace: true });
+    // FIX: Added curly braces to the catch block to fix syntax error.
     } catch (err: any) {
       setError(err.message || 'Failed to create an account.');
     } finally {
@@ -31,7 +32,7 @@ const Register: React.FC = () => {
 
   return (
     <>
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
+      <h2 className="mb-6 text-center text-2xl font-bold text-neutral-900 dark:text-neutral-100">
         Create a new account
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -80,7 +81,7 @@ const Register: React.FC = () => {
       <div className="mt-6 text-center">
         <Link
           to="/login"
-          className="font-medium text-primary hover:text-blue-500"
+          className="font-medium text-primary hover:text-primary-light"
         >
           Already have an account? Sign in
         </Link>

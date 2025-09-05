@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const data = [
@@ -41,9 +40,9 @@ const SampleChart: React.FC = () => {
 
   if (!recharts) {
     return (
-      <div className="bg-white dark:bg-dark rounded-lg shadow-md p-6 h-96 flex flex-col items-center justify-center">
+      <div className="bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 p-6 h-96 flex flex-col items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-        <p className="text-gray-500 dark:text-gray-400 mt-4">Loading Chart Data...</p>
+        <p className="text-neutral-600 dark:text-neutral-400 mt-4">Loading Chart Data...</p>
       </div>
     );
   }
@@ -51,8 +50,8 @@ const SampleChart: React.FC = () => {
   const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = recharts;
 
   return (
-    <div className="bg-white dark:bg-dark rounded-lg shadow-md p-6 h-96">
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Monthly Overview</h3>
+    <div className="bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 p-6 h-96">
+      <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Monthly Overview</h3>
       <ResponsiveContainer width="100%" height="90%">
         <BarChart
           data={data}
@@ -63,19 +62,20 @@ const SampleChart: React.FC = () => {
             bottom: 5,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-          <XAxis dataKey="name" stroke="rgb(107 114 128)" />
-          <YAxis stroke="rgb(107 114 128)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.2} />
+          <XAxis dataKey="name" stroke="rgb(107 114 128)" fontSize={12} />
+          <YAxis stroke="rgb(107 114 128)" fontSize={12} />
           <Tooltip 
             contentStyle={{ 
-              backgroundColor: 'rgba(31, 41, 55, 0.8)', 
-              borderColor: 'rgba(55, 65, 81, 1)',
-              color: '#fff'
+              backgroundColor: 'rgba(30, 38, 51, 0.9)', 
+              borderColor: 'rgba(68, 81, 102, 1)',
+              color: '#fff',
+              borderRadius: '0.5rem',
             }}
           />
-          <Legend />
-          <Bar dataKey="revenue" fill="#0d6efd" name="Revenue" />
-          <Bar dataKey="expenses" fill="#6c757d" name="Expenses" />
+          <Legend wrapperStyle={{ fontSize: '14px' }}/>
+          <Bar dataKey="revenue" fill="#0C66E4" name="Revenue" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="expenses" fill="#9FB0C7" name="Expenses" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

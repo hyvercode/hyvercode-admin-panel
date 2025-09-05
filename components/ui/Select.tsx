@@ -7,18 +7,18 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select: React.FC<SelectProps> = ({ label, id, options, ...props }) => {
-  const baseClasses = "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm";
-  const lightClasses = "border-gray-300 bg-white";
-  const darkClasses = "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white";
+  const baseClasses = "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm";
+  const lightClasses = "bg-neutral-100 border-neutral-300 text-neutral-900";
+  const darkClasses = "dark:bg-neutral-900 dark:border-neutral-800 dark:placeholder-neutral-500 dark:text-white";
   
   const selectClassName = `${baseClasses} ${props.className || ''} ${lightClasses} ${darkClasses}`;
 
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      <label htmlFor={id} className="block text-sm font-medium text-neutral-800 dark:text-neutral-300 mb-1">
         {label}
       </label>
-      <div className="mt-1 relative">
+      <div className="relative">
         <select
           id={id}
           {...props}
@@ -30,7 +30,7 @@ const Select: React.FC<SelectProps> = ({ label, id, options, ...props }) => {
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-700 dark:text-neutral-300">
            <i className="bi bi-chevron-down text-xs"></i>
         </div>
       </div>

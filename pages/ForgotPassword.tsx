@@ -20,12 +20,12 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
+      <h2 className="mb-6 text-center text-2xl font-bold text-neutral-900 dark:text-neutral-100">
         Reset your password
       </h2>
       {isSubmitted ? (
         <div className="text-center">
-          <p className="text-gray-600">
+          <p className="text-neutral-700 dark:text-neutral-300">
             If an account with that email exists, we have sent a password reset link to it. Please check your inbox.
           </p>
         </div>
@@ -56,7 +56,7 @@ const ForgotPassword: React.FC = () => {
       <div className="mt-6 text-center">
         <Link
           to="/login"
-          className="font-medium text-primary hover:text-blue-500"
+          className="font-medium text-primary hover:text-primary-light"
         >
           Return to sign in
         </Link>

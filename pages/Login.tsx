@@ -33,7 +33,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
+      <h2 className="mb-6 text-center text-2xl font-bold text-neutral-900 dark:text-neutral-100">
         Sign in to your account
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
         
         <div className="flex items-center justify-between">
           <div className="text-sm">
-            <Link to="/forgot-password"className="font-medium text-primary hover:text-blue-500">
+            <Link to="/forgot-password"className="font-medium text-primary hover:text-primary-light">
               Forgot your password?
             </Link>
           </div>
@@ -83,10 +83,10 @@ const Login: React.FC = () => {
       <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
+            <div className="w-full border-t border-neutral-300 dark:border-neutral-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">
+            <span className="px-2 bg-neutral-0 dark:bg-neutral-1000 text-neutral-600 dark:text-neutral-400">
               Don't have an account?
             </span>
           </div>
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
         <div className="mt-6">
           <Link
             to="/register"
-            className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="w-full inline-flex items-center justify-center border rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm border-neutral-400 text-neutral-800 bg-neutral-0 hover:bg-neutral-100 focus:ring-primary dark:bg-neutral-1000 dark:text-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-900 shadow-sm"
           >
             Create an account
           </Link>

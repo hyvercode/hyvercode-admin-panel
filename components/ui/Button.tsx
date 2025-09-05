@@ -3,8 +3,8 @@ import Spinner from './Spinner';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'ghost';
-  size?: 'default' | 'sm' | 'icon';
+  variant?: 'primary' | 'secondary' | 'danger' | 'subtle' | 'link';
+  size?: 'default' | 'sm' | 'sm-icon' | 'icon';
   isLoading?: boolean;
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
@@ -19,20 +19,21 @@ const Button: React.FC<ButtonProps> = ({
   leftIcon,
   ...props
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center border rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors duration-200';
+  const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200';
   
   const sizeClasses = {
     default: 'px-4 py-2 text-sm',
     sm: 'px-3 py-1.5 text-xs',
+    'sm-icon': 'p-1.5',
     icon: 'p-2',
   };
 
   const variantClasses = {
-    primary: 'border-transparent text-white bg-primary hover:bg-blue-600 focus:ring-primary shadow-sm',
-    secondary: 'border-transparent text-secondary-800 bg-secondary/20 hover:bg-secondary/30 focus:ring-secondary dark:text-secondary-300 shadow-sm',
-    danger: 'border-transparent text-white bg-danger hover:bg-red-600 focus:ring-danger shadow-sm',
-    outline: 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-primary dark:bg-dark dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-800 shadow-sm',
-    ghost: 'border-transparent bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-primary shadow-none',
+    primary: 'border-transparent text-white bg-primary hover:bg-primary-dark shadow-sm',
+    secondary: 'border-transparent text-neutral-900 dark:text-neutral-100 bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 shadow-sm',
+    danger: 'border-transparent text-white bg-danger hover:bg-danger-dark shadow-sm',
+    subtle: 'border-transparent bg-transparent text-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 shadow-none',
+    link: 'border-transparent bg-transparent text-primary hover:underline shadow-none p-0',
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

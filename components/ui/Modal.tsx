@@ -42,14 +42,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer 
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <div className="bg-white dark:bg-dark w-full max-w-lg rounded-lg shadow-xl transform transition-all">
-          <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-            <h3 id="modal-title" className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="bg-neutral-0 dark:bg-neutral-1000 w-full max-w-lg rounded-lg shadow-xl transform transition-all border border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-neutral-800">
+            <h3 id="modal-title" className="text-lg font-semibold text-neutral-900 dark:text-white">
               {title}
             </h3>
             <button
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-neutral-500 bg-transparent hover:bg-neutral-200 hover:text-neutral-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-neutral-800 dark:hover:text-white"
               onClick={onClose}
               aria-label="Close modal"
             >
@@ -60,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer 
             {children}
           </div>
           {footer && (
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-700 justify-end">
+            <div className="flex items-center p-6 space-x-2 border-t border-neutral-200 rounded-b dark:border-neutral-800 justify-end">
               {footer}
             </div>
           )}
