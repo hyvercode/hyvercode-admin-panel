@@ -33,6 +33,12 @@ import Content from './pages/Content';
 import Tables from './pages/Tables';
 import Boards from './pages/Boards';
 
+// ERP Pages
+import ErpProducts from './pages/erp/Products';
+import ErpOrders from './pages/erp/Orders';
+import ErpCustomers from './pages/erp/Customers';
+
+
 // Auth Pages
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -86,6 +92,11 @@ const App: React.FC = () => {
             <Route path="/overlays" element={<Overlays />} />
             <Route path="/content" element={<Content />} />
             <Route path="/tables" element={<Tables />} />
+
+            {/* ERP Routes */}
+            <Route path="/erp/products" element={<ErpProducts />} />
+            <Route path="/erp/orders" element={<ErpOrders />} />
+            <Route path="/erp/customers" element={<ErpCustomers />} />
           </Route>
         </Route>
 

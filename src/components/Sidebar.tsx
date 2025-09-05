@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from './ui/image/Logo';
 import Tooltip from './ui/Tooltip';
+import { NAV_ITEMS, NavStructure } from '../constants';
+import Dropdown from './ui/navigation/Dropdown';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -9,24 +11,6 @@ interface SidebarProps {
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (collapsed: boolean) => void;
 }
-
-const mainNavLinks = [
-  { to: '/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
-  { to: '/users', icon: 'bi-people-fill', label: 'Users' },
-  { to: '/tasks', icon: 'bi-check2-square', label: 'Tasks' },
-  { to: '/boards', icon: 'bi-kanban-fill', label: 'Boards' },
-  { to: '/calendar', icon: 'bi-calendar-event-fill', label: 'Calendar' },
-  { to: '/appointments', icon: 'bi-calendar-plus-fill', label: 'Appointments' },
-];
-
-const componentsNavLinks = [
-  { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Documentation' },
-  { to: '/forms', icon: 'bi-input-cursor-text', label: 'Forms' },
-  { to: '/tables', icon: 'bi-table', label: 'Tables' },
-  { to: '/content', icon: 'bi-card-heading', label: 'Content' },
-  { to: '/overlays', icon: 'bi-front', label: 'Overlays' },
-  { to: '/navigation', icon: 'bi-compass-fill', label: 'Navigation' },
-];
 
 const NavItem: React.FC<{ to: string, icon: string, label: string, collapsed: boolean }> = ({ to, icon, label, collapsed }) => {
     const location = useLocation();
@@ -54,6 +38,53 @@ const NavItem: React.FC<{ to: string, icon: string, label: string, collapsed: bo
     );
 };
 
+const NavGroup: React.FC<{ title: string; items: any[]; collapsed: boolean }> = ({ title, items, collapsed }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const location = useLocation();
+    const isGroupActive = items.some(item => location.pathname.startsWith(item.to));
+
+    if (collapsed) {
+        return (
+            <Dropdown
+                menuClassName="!left-full !-top-2 !ml-3"
+                trigger={
+                    <Tooltip content={title} position="right">
+                        <div className={`relative flex items-center justify-center my-2`}>
+                           <i className={`bi bi-three-dots text-neutral-500`}></i>
+                        </div>
+                    </Tooltip>
+                }
+            >
+                <div className="p-1">
+                    <span className="px-3 py-1 text-xs font-semibold text-neutral-500">{title}</span>
+                    {items.map(item => (
+                         <Dropdown.Item key={item.to} to={item.to} icon={<i className={`bi ${item.icon}`}></i>}>
+                            {item.label}
+                        </Dropdown.Item>
+                    ))}
+                </div>
+            </Dropdown>
+        );
+    }
+
+    return (
+        <div>
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center justify-between w-full p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+            >
+                <span className={`text-xs font-semibold uppercase ${isGroupActive ? 'text-primary' : ''}`}>{title}</span>
+                <i className={`bi bi-chevron-down transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96' : 'max-h-0'}`}>
+                <ul className="space-y-1 pt-2">
+                    {items.map(link => <NavItem key={link.to} {...link} collapsed={collapsed} />)}
+                </ul>
+            </div>
+        </div>
+    )
+}
+
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed }) => {
   return (
     <>
@@ -72,19 +103,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, sidebarC
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-4 space-y-6">
-            <div>
-                <h3 className={`text-xs font-semibold uppercase text-neutral-500 mb-2 transition-opacity duration-200 ${sidebarCollapsed ? 'lg:opacity-0 text-center' : ''}`}>Main</h3>
-                <ul className="space-y-1">
-                    {mainNavLinks.map(link => <NavItem key={link.to} {...link} collapsed={sidebarCollapsed} />)}
-                </ul>
-            </div>
-             <div>
-                <h3 className={`text-xs font-semibold uppercase text-neutral-500 mb-2 transition-opacity duration-200 ${sidebarCollapsed ? 'lg:opacity-0 text-center' : ''}`}>Components</h3>
-                <ul className="space-y-1">
-                    {componentsNavLinks.map(link => <NavItem key={link.to} {...link} collapsed={sidebarCollapsed} />)}
-                </ul>
-            </div>
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+            {NAV_ITEMS.map((nav, index) => {
+                if ('items' in nav) {
+                    return <NavGroup key={index} title={nav.title} items={nav.items} collapsed={sidebarCollapsed} />
+                }
+                return <ul key={index} className="space-y-1"><NavItem {...nav} collapsed={sidebarCollapsed} /></ul>
+            })}
         </nav>
 
         <div className="p-4 border-t border-neutral-200 dark:border-neutral-900">

@@ -56,6 +56,7 @@ const AIChatAssistant: React.FC = () => {
                 return;
             }
             try {
+                // FIX: Correctly initialize GoogleGenAI with a named apiKey parameter.
                 setAi(new GoogleGenAI({ apiKey }));
             } catch(e) {
                 console.error("Failed to initialize AI:", e);
@@ -87,7 +88,7 @@ const AIChatAssistant: React.FC = () => {
         }
 
         try {
-            // FIX: Correctly structure the generateContent call.
+            // FIX: Correctly structure the generateContent call according to SDK guidelines.
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: input,
@@ -95,7 +96,7 @@ const AIChatAssistant: React.FC = () => {
             // FIX: Correctly access the response text.
             const aiMessage: ChatMessage = { role: 'model', content: response.text };
             setMessages(prev => [...prev, aiMessage]);
-        } catch (err) {
+        } catch (err) => {
             console.error(err);
             setError('Sorry, something went wrong. Please try again.');
         } finally {

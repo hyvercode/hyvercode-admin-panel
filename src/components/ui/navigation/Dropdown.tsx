@@ -11,9 +11,10 @@ const DropdownContext = createContext<DropdownContextType | undefined>(undefined
 interface DropdownProps {
   trigger: React.ReactElement;
   children: React.ReactNode;
+  menuClassName?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ trigger, children }) => {
+const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ trigger, children, menuClassName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -27,13 +28,22 @@ const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ tri
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const clonedTrigger = React.cloneElement(trigger, {
+      // FIX: Add an onClick handler to the trigger element to control the dropdown's state.
+      // Cast trigger.props to allow accessing a potential existing onClick handler.
+      onClick: (e: React.MouseEvent) => {
+          setIsOpen(!isOpen);
+          (trigger.props as { onClick?: (e: React.MouseEvent) => void }).onClick?.(e);
+      },
+  });
+
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
       <div className="relative inline-block text-left" ref={dropdownRef}>
-        <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
+        {clonedTrigger}
         {isOpen && (
           <div
-            className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-neutral-0 dark:bg-neutral-1000 ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+            className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-neutral-0 dark:bg-neutral-1000 ring-1 ring-black ring-opacity-5 focus:outline-none z-20 ${menuClassName || ''}`}
             role="menu"
             aria-orientation="vertical"
           >
