@@ -3,33 +3,17 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
-// Perform a single, robust check for localStorage availability.
-const isStorageAvailable = () => {
-  try {
-    const x = '__storage_test__';
-    window.localStorage.setItem(x, x);
-    window.localStorage.removeItem(x);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-const storageAvailable = isStorageAvailable();
-
 const getInitialTheme = (): string => {
-  if (storageAvailable) {
-    try {
-      const storedTheme = window.localStorage.getItem('theme');
-      if (storedTheme === 'dark' || storedTheme === 'light') {
-        return storedTheme;
-      }
-    } catch (e) {
-      console.warn("Reading theme from localStorage failed.", e);
+  try {
+    const storedTheme = window.localStorage.getItem('theme');
+    if (storedTheme === 'dark' || storedTheme === 'light') {
+      return storedTheme;
     }
+  } catch (e) {
+    console.warn("Reading theme from localStorage failed. This can happen in sandboxed environments.", e);
   }
 
-  // Fallback to system preference if localStorage is unavailable.
+  // Fallback to system preference if localStorage is unavailable or fails.
   if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
     return 'dark';
   }
@@ -47,12 +31,10 @@ const DashboardLayout: React.FC = () => {
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
 
-    if (storageAvailable) {
-      try {
-        window.localStorage.setItem('theme', theme);
-      } catch (e) {
-        console.warn("Saving theme to localStorage failed.", e);
-      }
+    try {
+      window.localStorage.setItem('theme', theme);
+    } catch (e) {
+      console.warn("Saving theme to localStorage failed. This can happen in sandboxed environments.", e);
     }
   }, [theme]);
 
