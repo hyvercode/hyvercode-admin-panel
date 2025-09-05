@@ -1,25 +1,7 @@
-import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { NAV_ITEMS } from '../constants';
-import { useAuth } from '../contexts/AuthContext';
-import Tooltip from './ui/Tooltip';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import Logo from './ui/image/Logo';
-
-interface NavItem {
-    path: string;
-    name: string;
-    icon?: string;
-}
-
-interface NavGroup {
-    name: string;
-    icon: string;
-    items: NavItem[];
-}
-
-const isNavGroup = (item: NavItem | NavGroup): item is NavGroup => {
-    return 'items' in item;
-};
+import Tooltip from './ui/Tooltip';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -28,109 +10,87 @@ interface SidebarProps {
   setSidebarCollapsed: (collapsed: boolean) => void;
 }
 
+const navItems = [
+  { to: '/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
+  { to: '/users', icon: 'bi-people-fill', label: 'Users' },
+  { to: '/tasks', icon: 'bi-check2-square', label: 'Tasks' },
+  { to: '/boards', icon: 'bi-kanban-fill', label: 'Boards' },
+  { to: '/calendar', icon: 'bi-calendar-event-fill', label: 'Calendar' },
+  { heading: 'Sample Pages' },
+  { to: '/sample/products', icon: 'bi-box-seam-fill', label: 'Products' },
+  { to: '/sample/chat', icon: 'bi-chat-dots-fill', label: 'Chat' },
+  { heading: 'Settings' },
+  { to: '/settings', icon: 'bi-gear-fill', label: 'Settings' },
+  { to: '/profile/1', icon: 'bi-person-circle', label: 'Profile' },
+  { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Documentation' },
+];
+
+
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed }) => {
-  const { logout } = useAuth();
-  const location = useLocation();
-  
-  const [openDropdown, setOpenDropdown] = useState<string | null>(() => {
-    // Keep dropdown open on page refresh if the current path is within that group
-    const currentGroup = NAV_ITEMS.find(item => 
-      isNavGroup(item) && item.items.some(subItem => location.pathname.startsWith(subItem.path))
-    );
-    return currentGroup ? currentGroup.name : null;
-  });
-
-  const toggleCollapse = () => setSidebarCollapsed(!sidebarCollapsed);
-  const toggleDropdown = (name: string) => {
-    setOpenDropdown(openDropdown === name ? null : name);
-  };
-
-  const renderNavItem = (item: NavItem | NavGroup) => {
-    if (isNavGroup(item)) {
-        const isOpen = openDropdown === item.name;
-        return (
-            <div key={item.name}>
-                <button
-                    onClick={() => toggleDropdown(item.name)}
-                    className={`w-full flex items-center rounded-md transition-colors duration-200 text-neutral-300 hover:bg-neutral-900 hover:text-white ${sidebarCollapsed ? 'justify-center h-12' : 'px-4 py-2.5'}`}
-                >
-                    <i className={`bi ${item.icon} text-lg shrink-0`}></i>
-                    <span className={`flex-1 text-left ml-4 font-medium text-sm whitespace-nowrap transition-opacity ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>{item.name}</span>
-                    {!sidebarCollapsed && <i className={`bi bi-chevron-down shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>}
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ${isOpen && !sidebarCollapsed ? 'max-h-96' : 'max-h-0'}`}>
-                    <div className="pt-1 pl-8 pr-2 space-y-1">
-                        {item.items.map(subItem => (
-                            <NavLink
-                                key={subItem.path}
-                                to={subItem.path}
-                                onClick={() => setSidebarOpen(false)}
-                                className={({ isActive }) => `block px-4 py-2 text-sm rounded-md ${isActive ? 'bg-primary text-white' : 'text-neutral-400 hover:bg-neutral-900 hover:text-white'}`}
-                            >
-                                {subItem.name}
-                            </NavLink>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <Tooltip key={item.path} content={item.name} position="right" disabled={!sidebarCollapsed}>
-            <NavLink
-                to={item.path}
-                onClick={() => setSidebarOpen(false)}
-                className={({ isActive }) => `flex items-center rounded-md transition-colors duration-200 ${sidebarCollapsed ? 'justify-center h-12' : 'px-4 py-2.5'} ${isActive ? 'bg-primary text-white shadow-sm' : 'text-neutral-300 hover:bg-neutral-900 hover:text-white'}`}
-            >
-                <i className={`bi ${item.icon} text-lg shrink-0`}></i>
-                <span className={`ml-4 font-medium text-sm whitespace-nowrap transition-opacity ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>{item.name}</span>
-            </NavLink>
-        </Tooltip>
-    );
-  };
-
+  const sidebarClasses = `
+    absolute lg:relative z-30 lg:z-auto h-screen
+    bg-neutral-0 dark:bg-neutral-1000 
+    border-r border-neutral-200 dark:border-neutral-900 
+    flex-col flex-shrink-0
+    transition-all duration-300 ease-in-out
+    ${sidebarCollapsed ? 'w-20' : 'w-64'}
+    ${sidebarOpen ? 'flex' : 'hidden lg:flex'}
+  `;
 
   return (
-    <>
-      {/* Mobile overlay */}
-      <div
-        className={`fixed inset-0 bg-neutral-1000 bg-opacity-50 z-20 transition-opacity lg:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setSidebarOpen(false)}
-      ></div>
+    <aside className={sidebarClasses}>
+      {/* Header */}
+      <div className={`flex items-center justify-between h-16 px-4 border-b border-neutral-200 dark:border-neutral-900 flex-shrink-0 ${sidebarCollapsed ? 'justify-center' : ''}`}>
+        <Logo variant={sidebarCollapsed ? 'icon' : 'full'} />
+        <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
+          <i className="bi bi-x-lg"></i>
+        </button>
+      </div>
 
-      <aside
-        className={`fixed lg:relative inset-y-0 left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 bg-neutral-1000 text-neutral-200 flex-shrink-0 transition-all duration-300 ease-in-out z-30 flex flex-col ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
-      >
-        <div className={`h-16 flex items-center border-b border-neutral-900 ${sidebarCollapsed ? 'justify-center' : 'px-4'}`}>
-            <Logo variant={sidebarCollapsed ? 'icon' : 'full'} />
-        </div>
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto px-4 py-4">
+        <ul>
+          {navItems.map((item, index) => (
+            item.heading ? (
+              <li key={index} className={`px-3 py-2 text-xs font-bold uppercase text-neutral-500 tracking-wider ${sidebarCollapsed ? 'text-center' : ''} ${index > 0 ? 'mt-4' : ''}`}>
+                {sidebarCollapsed ? item.heading.substring(0,1) : item.heading}
+              </li>
+            ) : (
+              <li key={item.to}>
+                <Tooltip content={item.label || ''} position="right" disabled={!sidebarCollapsed}>
+                  <NavLink
+                    to={item.to || '#'}
+                    end
+                    className={({ isActive }) => `
+                      flex items-center p-3 my-1 rounded-lg transition-colors
+                      ${isActive ? 'bg-primary-background text-primary' : 'hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-800 dark:text-neutral-300'}
+                      ${sidebarCollapsed ? 'justify-center' : ''}
+                    `}
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    {item.icon && <i className={`bi ${item.icon} text-lg`}></i>}
+                    {!sidebarCollapsed && <span className="ml-3 font-medium text-sm">{item.label}</span>}
+                  </NavLink>
+                </Tooltip>
+              </li>
+            )
+          ))}
+        </ul>
+      </nav>
 
-        <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
-          {NAV_ITEMS.map(renderNavItem)}
-        </nav>
-
-        <div className="p-2 border-t border-neutral-900">
-          <Tooltip content={sidebarCollapsed ? 'Expand' : 'Collapse'} position="right" disabled={!sidebarCollapsed}>
-            <button 
-              onClick={toggleCollapse} 
-              className={`hidden lg:flex w-full items-center text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-md transition-all duration-200 ${sidebarCollapsed ? 'justify-center h-12' : 'px-4 py-2.5'}`}
-              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-             >
-              <i className={`bi ${sidebarCollapsed ? 'bi-layout-sidebar-inset' : 'bi-layout-sidebar-inset-reverse'} text-lg shrink-0`}></i>
-              <span className={`ml-4 font-medium text-sm whitespace-nowrap transition-opacity ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>Collapse</span>
-            </button>
-          </Tooltip>
-           
-          <Tooltip content="Logout" position="right" disabled={!sidebarCollapsed}>
-            <button onClick={logout} className={`w-full flex items-center text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-md transition-all duration-200 mt-1 ${sidebarCollapsed ? 'justify-center h-12' : 'px-4 py-2.5'}`}>
-              <i className="bi bi-box-arrow-left text-lg shrink-0"></i>
-              <span className={`ml-4 font-medium text-sm whitespace-nowrap transition-opacity ${sidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>Logout</span>
-            </button>
-          </Tooltip>
-        </div>
-      </aside>
-    </>
+      {/* Footer / Collapse Toggle */}
+      <div className="px-4 py-3 border-t border-neutral-200 dark:border-neutral-900">
+        <Tooltip content={sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'} position="right" disabled={!sidebarCollapsed}>
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className={`flex items-center p-3 my-1 rounded-lg w-full transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-800 dark:text-neutral-300 ${sidebarCollapsed ? 'justify-center' : ''}`}
+          >
+            <i className={`bi ${sidebarCollapsed ? 'bi-arrow-right-square-fill' : 'bi-arrow-left-square-fill'} text-lg`}></i>
+            {!sidebarCollapsed && <span className="ml-3 font-medium text-sm">Collapse</span>}
+          </button>
+        </Tooltip>
+      </div>
+    </aside>
   );
 };
 

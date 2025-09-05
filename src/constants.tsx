@@ -1,152 +1,78 @@
-import { User, Task, CalendarEvent, Product, POSProduct, Review, BlogPost, Conversation, Message, Course } from './types';
-
-export const NAV_ITEMS = [
-  { path: '/dashboard', name: 'Dashboard', icon: 'bi-grid-1x2-fill' },
-  {
-    name: 'Management',
-    icon: 'bi-briefcase-fill',
-    items: [
-      { path: '/users', name: 'Users' },
-      { path: '/tasks', name: 'Tasks' },
-      { path: '/appointments', name: 'Appointments' },
-    ],
-  },
-  {
-    name: 'Content',
-    icon: 'bi-file-earmark-text-fill',
-    items: [
-      { path: '/editor', name: 'Editor' },
-      { path: '/feedback', name: 'Feedback' },
-      { path: '/calendar', name: 'Calendar' },
-    ],
-  },
-  {
-    name: 'Component Demos',
-    icon: 'bi-layers-fill',
-    items: [
-      { path: '/documentation', name: 'Docs Index' },
-      { path: '/avatars', name: 'Avatars' },
-      { path: '/content', name: 'Content' },
-      { path: '/forms', name: 'Forms' },
-      { path: '/advanced-selects', name: 'Advanced Selects' },
-      { path: '/icons', name: 'Icons' },
-      { path: '/images', name: 'Images' },
-      { path: '/loaders', name: 'Loaders' },
-      { path: '/navigation', name: 'Navigation' },
-      { path: '/overlays', name: 'Overlays' },
-      { path: '/tables', name: 'Tables' },
-      { path: '/text-fields', name: 'Text Fields' },
-      { path: '/toggles', name: 'Toggles' },
-    ],
-  },
-  {
-    name: 'Sample Pages',
-    icon: 'bi-window-stack',
-    items: [
-        { path: '/sample/products', name: 'Products' },
-        { path: '/sample/chat', name: 'Chat' },
-        { path: '/sample/blog', name: 'Blog' },
-        { path: '/sample/pos', name: 'Point of Sale' },
-        { path: '/sample/course', name: 'Online Course' },
-    ]
-  }
-];
+import { User, CalendarEvent, Product, BlogPost, Review, POSProduct, OnlineCourse, KanbanTask, Conversation, Message } from './types';
 
 export const USERS_DATA: User[] = [
-  { id: 1, name: 'Admin User', email: 'admin@example.com', role: 'Admin', status: 'active', lastLogin: '2024-07-21 10:00 AM', bio: 'Administrator with full access. Diana is a seasoned web developer with over 10 years of experience in building scalable and maintainable applications. She is passionate about clean code, modern JavaScript frameworks, and sharing her knowledge with the community. As the instructor for this course, she brings a wealth of practical experience from her time at several top tech companies.' },
-  { id: 2, name: 'Bob Smith', email: 'bob.smith@example.com', role: 'Editor', status: 'active', lastLogin: '2024-07-21 09:30 AM', bio: 'Content editor and writer.' },
-  { id: 3, name: 'Charlie Brown', email: 'charlie.brown@example.com', role: 'Viewer', status: 'inactive', lastLogin: '2024-07-19 02:00 PM', bio: 'Standard viewer account.' },
-  { id: 4, name: 'Diana Prince', email: 'diana.prince@example.com', role: 'Editor', status: 'active', lastLogin: '2024-07-20 11:00 AM', bio: 'Responsible for marketing content.' },
-];
-
-export const TASKS_DATA: Task[] = [
-    { id: 1, title: "Deploy new feature", status: "In Progress", priority: "High", dueDate: "2024-08-01", assigneeId: 1, tags: ["Frontend", "Deployment"] },
-    { id: 2, title: "Write blog post", status: "To Do", priority: "Medium", dueDate: "2024-07-25", assigneeId: 2, tags: ["Content"] },
-    { id: 3, title: "Update documentation", status: "Completed", priority: "Low", dueDate: "2024-07-20", assigneeId: 4, tags: ["Docs"] },
-    { id: 4, title: "Fix login bug", status: "In Progress", priority: "High", dueDate: "2024-07-23", assigneeId: 1, tags: ["Backend", "Bug"] },
-];
-
-export const REVIEWS_DATA: Review[] = [
-    { id: 1, authorId: 2, content: "This is a great product, highly recommend!", timestamp: "2 days ago" },
-    { id: 2, authorId: 3, content: "Could be better, the color is slightly off.", timestamp: "3 days ago" },
+  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'active', bio: 'Lead developer and project manager.' },
+  { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'active', bio: 'Content editor for the main blog.' },
+  { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'Viewer', status: 'inactive', bio: 'Intern, learning the ropes.' },
+  { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'Editor', status: 'active', bio: 'Marketing specialist.' },
 ];
 
 export const CALENDAR_EVENTS_DATA: CalendarEvent[] = [
-    { id: 1, title: 'Team Meeting', date: new Date().toISOString().slice(0, 10), category: 'primary' },
-    { id: 2, title: 'Project Deadline', date: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().slice(0, 10), category: 'danger' },
-    { id: 3, title: 'Feature Launch', date: new Date(new Date().setDate(new Date().getDate() + 10)).toISOString().slice(0, 10), category: 'success' },
-];
-
-export const COUNTRIES_DATA = [
-    { value: 'USA', label: 'United States' },
-    { value: 'CAN', label: 'Canada' },
-    { value: 'GBR', label: 'United Kingdom' },
-    { value: 'AUS', label: 'Australia' },
+    { id: '1', title: 'Team Meeting', date: '2024-07-20', category: 'primary' },
+    { id: '2', title: 'Project Deadline', date: '2024-07-22', category: 'danger' },
+    { id: '3', title: 'Client Call', date: '2024-07-22', category: 'warning' },
+    { id: '4', title: 'Deploy v2.0', date: '2024-07-28', category: 'success' },
 ];
 
 export const PRODUCTS_DATA: Product[] = [
-    { id: 1, name: 'Wireless Headphones', category: 'Electronics', price: 99.99, rating: 4.5, reviewCount: 150, imageUrl: 'https://picsum.photos/seed/product1/400/300', description: 'High-quality sound and long battery life.', specs: { 'Color': 'Black', 'Battery': '20 hours' } },
-    { id: 2, name: 'Running Shoes', category: 'Apparel', price: 120.00, rating: 4.8, reviewCount: 210, imageUrl: 'https://picsum.photos/seed/product2/400/300', description: 'Lightweight and comfortable for daily runs.', specs: { 'Material': 'Mesh', 'Weight': '250g' } },
-    { id: 3, name: 'Coffee Maker', category: 'Home Goods', price: 75.50, rating: 4.3, reviewCount: 80, imageUrl: 'https://picsum.photos/seed/product3/400/300', description: 'Brews up to 12 cups of delicious coffee.', specs: { 'Capacity': '1.5L', 'Power': '900W' } },
-    { id: 4, name: 'Ergonomic Keyboard', category: 'Electronics', price: 150.00, rating: 4.9, reviewCount: 95, imageUrl: 'https://picsum.photos/seed/product4/400/300', description: 'Comfortable typing experience for long hours.', specs: { 'Connectivity': 'Bluetooth', 'Layout': 'Split' } },
-    { id: 5, name: 'Yoga Mat', category: 'Fitness', price: 40.00, rating: 4.6, reviewCount: 120, imageUrl: 'https://picsum.photos/seed/product5/400/300', description: 'Non-slip and eco-friendly.', specs: { 'Thickness': '6mm', 'Material': 'TPE' } },
-    { id: 6, name: 'Smart Watch', category: 'Electronics', price: 250.00, rating: 4.7, reviewCount: 300, imageUrl: 'https://picsum.photos/seed/product6/400/300', description: 'Track your fitness and stay connected.', specs: { 'Display': 'AMOLED', 'Water Resistance': '5ATM' } },
-    { id: 7, name: 'Winter Jacket', category: 'Apparel', price: 200.00, rating: 4.9, reviewCount: 180, imageUrl: 'https://picsum.photos/seed/product7/400/300', description: 'Waterproof and insulated for cold weather.', specs: { 'Insulation': 'Down', 'Pockets': '5' } },
+    { id: 1, name: 'Wireless Headphones', description: 'High-fidelity wireless headphones with noise-cancellation.', price: 199.99, category: 'Electronics', rating: 4.8, reviewCount: 120, imageUrl: 'https://picsum.photos/seed/product1/400/300', specs: { 'Connectivity': 'Bluetooth 5.0', 'Battery Life': '20 hours' } },
+    { id: 2, name: 'Smart Watch', description: 'Track your fitness and stay connected on the go.', price: 249.50, category: 'Wearables', rating: 4.6, reviewCount: 95, imageUrl: 'https://picsum.photos/seed/product2/400/300', specs: { 'Display': 'OLED', 'Water Resistance': '50m' } },
+    { id: 3, name: 'Mechanical Keyboard', description: 'Clicky and responsive keyboard for coders and gamers.', price: 120.00, category: 'Peripherals', rating: 4.9, reviewCount: 250, imageUrl: 'https://picsum.photos/seed/product3/400/300', specs: { 'Switches': 'Cherry MX Blue', 'Backlight': 'RGB' } },
+    { id: 4, name: '4K Monitor', description: 'Ultra-HD monitor with vibrant colors and sharp details.', price: 450.00, category: 'Monitors', rating: 4.7, reviewCount: 150, imageUrl: 'https://picsum.photos/seed/product4/400/300', specs: { 'Resolution': '3840x2160', 'Refresh Rate': '60Hz' } },
+    { id: 5, name: 'Ergonomic Mouse', description: 'Comfortable mouse designed for long hours of use.', price: 79.99, category: 'Peripherals', rating: 4.5, reviewCount: 180, imageUrl: 'https://picsum.photos/seed/product5/400/300', specs: { 'DPI': '16000', 'Buttons': '6 programmable' } },
+    { id: 6, name: 'Webcam Pro', description: '1080p webcam with a built-in ring light.', price: 99.00, category: 'Peripherals', rating: 4.6, reviewCount: 110, imageUrl: 'https://picsum.photos/seed/product6/400/300', specs: { 'Resolution': '1080p', 'Frame Rate': '30fps' } },
 ];
 
-export const POS_PRODUCTS_DATA: POSProduct[] = PRODUCTS_DATA.map(p => ({ ...p, stock: Math.floor(Math.random() * 100)}));
+export const REVIEWS_DATA: Review[] = [
+    { id: 1, authorId: 2, content: 'Excellent product, the sound quality is amazing!', timestamp: '2 days ago', parentId: null },
+    { id: 2, authorId: 4, content: 'Good value for the price. The noise cancellation could be a bit better though.', timestamp: '1 week ago', parentId: null },
+];
 
 export const BLOG_POSTS_DATA: BlogPost[] = [
-    { id: 1, title: 'Getting Started with React Hooks', category: 'Technology', authorId: 1, publishDate: 'July 20, 2024', imageUrl: 'https://picsum.photos/seed/blog1/800/450', excerpt: 'A deep dive into useState, useEffect, and other essential React Hooks.' },
-    { id: 2, title: 'Top 5 Design Trends for 2024', category: 'Design', authorId: 4, publishDate: 'July 18, 2024', imageUrl: 'https://picsum.photos/seed/blog2/800/450', excerpt: 'Discover the latest trends shaping the future of web and mobile design.' },
-    { id: 3, title: 'Our Company\'s Journey', category: 'Business', authorId: 2, publishDate: 'July 15, 2024', imageUrl: 'https://picsum.photos/seed/blog3/800/450', excerpt: 'A look back at our achievements and what lies ahead.' },
+    { id: 1, title: 'Getting Started with React Hooks', excerpt: 'A deep dive into useState, useEffect, and other essential React hooks for modern web development.', imageUrl: 'https://picsum.photos/seed/blog1/800/400', category: 'Tutorials', authorId: 1, publishDate: 'July 15, 2024' },
+    { id: 2, title: 'UI/UX Design Trends in 2024', excerpt: 'Explore the latest trends in user interface and user experience design, from glassmorphism to AI-driven interfaces.', imageUrl: 'https://picsum.photos/seed/blog2/800/400', category: 'Design', authorId: 4, publishDate: 'July 10, 2024' },
+];
+
+export const COUNTRIES_DATA = [
+  { value: 'USA', label: 'United States' },
+  { value: 'CAN', label: 'Canada' },
+  { value: 'GBR', label: 'United Kingdom' },
+  { value: 'AUS', label: 'Australia' },
+];
+
+export const POS_PRODUCTS_DATA: POSProduct[] = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    name: `Product #${i + 1}`,
+    price: parseFloat((Math.random() * 20 + 5).toFixed(2)),
+    imageUrl: `https://picsum.photos/seed/pos${i + 1}/200/200`,
+}));
+
+export const ONLINE_COURSE_DATA: OnlineCourse = {
+    id: 1,
+    title: 'Modern Web Development Bootcamp',
+    description: 'A comprehensive course covering everything you need to know to become a full-stack web developer in 2024.',
+    instructorId: 1,
+    modules: [
+        { id: 'm1', title: 'Introduction to HTML & CSS', lectures: [{ id: 'l1-1', title: 'Basic Structure', duration: '10:32' }, { id: 'l1-2', title: 'Styling with CSS', duration: '15:45' }] },
+        { id: 'm2', title: 'JavaScript Fundamentals', lectures: [{ id: 'l2-1', title: 'Variables and Data Types', duration: '12:05' }, { id: 'l2-2', title: 'Functions and Scope', duration: '18:20' }] },
+    ]
+};
+
+export const KANBAN_TASKS_DATA: KanbanTask[] = [
+  { id: 'task-1', title: 'Design new dashboard layout', description: 'Create mockups in Figma', status: 'todo', assigneeId: 4 },
+  { id: 'task-2', title: 'Develop login page component', description: 'Use React and TypeScript', status: 'inprogress', assigneeId: 1 },
+  { id: 'task-3', title: 'Setup CI/CD pipeline', description: 'Use GitHub Actions', status: 'done', assigneeId: 1 },
+  { id: 'task-4', title: 'Write API documentation', description: 'Use Swagger/OpenAPI spec', status: 'todo' },
 ];
 
 export const CONVERSATIONS_DATA: Conversation[] = [
-    { id: 1, participantId: 1, lastMessage: "Yes, I'll get that done.", lastMessageTimestamp: "10:30 AM", unreadCount: 0 },
-    { id: 2, participantId: 2, lastMessage: "Can you review this document?", lastMessageTimestamp: "Yesterday", unreadCount: 2 },
-    { id: 3, participantId: 4, lastMessage: "Sounds good!", lastMessageTimestamp: "3:15 PM", unreadCount: 0 },
+    { id: 1, participantId: 1, lastMessage: 'Hey, are you free for a quick call?', lastMessageTimestamp: '10:30 AM', unreadCount: 0 },
+    { id: 2, participantId: 2, lastMessage: 'I have finished the report. I will send it over.', lastMessageTimestamp: 'Yesterday', unreadCount: 2 },
+    { id: 3, participantId: 4, lastMessage: 'Great, thanks!', lastMessageTimestamp: '3 days ago', unreadCount: 0 },
 ];
 
 export const MESSAGES_DATA: Message[] = [
-    { id: 1, conversationId: 2, senderId: 2, content: "Hey, can you take a look at the latest design mockups?", timestamp: "9:00 AM" },
-    { id: 2, conversationId: 2, senderId: 0, content: "Sure, sending my feedback now.", timestamp: "9:05 AM" },
-    { id: 3, conversationId: 2, senderId: 2, content: "Thanks!", timestamp: "9:06 AM" },
-    { id: 4, conversationId: 2, senderId: 0, content: "Can you review this document?", timestamp: "9:10 AM" },
+    { id: 1, conversationId: 2, senderId: 2, content: 'Hi, just wanted to follow up on the design mockups.', timestamp: '9:15 AM' },
+    { id: 2, conversationId: 2, senderId: 0, content: 'Hey! Yes, I am almost done. Will share them by EOD.', timestamp: '9:16 AM' },
+    { id: 3, conversationId: 2, senderId: 2, content: 'Sounds good. I have finished the report. I will send it over.', timestamp: '9:18 AM' },
 ];
-
-export const ONLINE_COURSE_DATA: Course = {
-    id: 1,
-    title: 'Advanced React and TypeScript',
-    instructorId: 4,
-    description: 'Take your React skills to the next level by mastering TypeScript. This course covers advanced patterns, performance optimization, and building a complete, type-safe application from scratch. You will learn how to leverage TypeScript’s powerful features to write more robust and maintainable React code.',
-    modules: [
-        {
-            id: 'm1',
-            title: 'Introduction to TypeScript with React',
-            lectures: [
-                { id: 'l1-1', title: 'Course Overview', duration: '3:45' },
-                { id: 'l1-2', title: 'Setting up the Development Environment', duration: '8:12' },
-                { id: 'l1-3', title: 'Basic Types and Interfaces', duration: '12:30' },
-            ]
-        },
-        {
-            id: 'm2',
-            title: 'Advanced Components and Props',
-            lectures: [
-                { id: 'l2-1', title: 'Typing Functional Components', duration: '9:55' },
-                { id: 'l2-2', title: 'Generics with Components', duration: '15:20' },
-                { id: 'l2-3', title: 'Render Props and Higher-Order Components', duration: '18:05' },
-            ]
-        },
-        {
-            id: 'm3',
-            title: 'State Management',
-            lectures: [
-                { id: 'l3-1', title: 'Typing useState and useReducer', duration: '11:40' },
-                { id: 'l3-2', title: 'Context API with TypeScript', duration: '14:00' },
-                { id: 'l3-3', title: 'Integrating with Redux Toolkit', duration: '22:15' },
-            ]
-        }
-    ]
-};

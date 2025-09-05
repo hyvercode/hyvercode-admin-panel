@@ -1,32 +1,23 @@
-// src/types.ts
-
+// Base user structure
 export interface User {
   id: number;
   name: string;
   email: string;
   role: 'Admin' | 'Editor' | 'Viewer';
-  status: 'active' | 'inactive' | 'pending';
-  lastLogin: string;
+  status: 'active' | 'inactive';
+  avatarUrl?: string;
   bio?: string;
 }
 
-export interface Task {
-  id: number;
-  title: string;
-  status: 'To Do' | 'In Progress' | 'Completed';
-  priority: 'High' | 'Medium' | 'Low';
-  dueDate: string;
-  assigneeId: number;
-  tags: string[];
-}
-
+// For the calendar component
 export interface CalendarEvent {
-  id: number;
+  id: string;
   title: string;
   date: string; // YYYY-MM-DD
   category: 'primary' | 'success' | 'danger' | 'warning';
 }
 
+// For comment threads
 export interface Comment {
     id: number;
     authorId: number;
@@ -36,87 +27,105 @@ export interface Comment {
     replies?: Comment[];
 }
 
-export interface Review {
-    id: number;
-    authorId: number;
-    content: string;
-    timestamp: string;
-}
+export type Review = Omit<Comment, 'replies'>;
 
-export interface LineItem {
-  id: number;
-  description: string;
-  quantity: number;
-  price: number;
-}
 
-export interface Option {
-  value: string;
-  label: string;
-}
-
+// For product catalog
 export interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  rating: number;
-  reviewCount: number;
-  imageUrl: string;
-  description: string;
-  specs: Record<string, string>;
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    category: string;
+    rating: number;
+    reviewCount: number;
+    imageUrl: string;
+    specs: Record<string, string>;
 }
 
-export interface POSProduct extends Product {
-    stock: number;
+// For blog
+export interface BlogPost {
+    id: number;
+    title: string;
+    excerpt: string;
+    imageUrl: string;
+    category: string;
+    authorId: number;
+    publishDate: string;
+}
+
+// For POS
+export interface POSProduct {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
 }
 
 export interface POSCartItem extends POSProduct {
     quantity: number;
 }
 
-export interface BlogPost {
-  id: number;
-  title: string;
-  category: string;
-  authorId: number;
-  publishDate: string;
-  imageUrl: string;
-  excerpt: string;
+// For Online Course
+export interface CourseLecture {
+    id: string;
+    title: string;
+    duration: string;
 }
 
+export interface CourseModule {
+    id: string;
+    title: string;
+    lectures: CourseLecture[];
+}
+
+export interface OnlineCourse {
+    id: number;
+    title: string;
+    description: string;
+    instructorId: number;
+    modules: CourseModule[];
+}
+
+
+// For forms
+export interface Option {
+    value: string;
+    label: string;
+}
+
+// For invoice form table
+export interface LineItem {
+    id: number;
+    description: string;
+    quantity: number;
+    price: number;
+}
+
+// For Kanban board
+export interface KanbanTask {
+    id: string;
+    title: string;
+    description: string;
+    status: 'todo' | 'inprogress' | 'done';
+    assigneeId?: number;
+}
+export type KanbanStatus = 'todo' | 'inprogress' | 'done';
+
+
+// For Chat
 export interface Conversation {
-  id: number;
-  participantId: number;
-  lastMessage: string;
-  lastMessageTimestamp: string;
-  unreadCount: number;
+    id: number;
+    participantId: number;
+    lastMessage: string;
+    lastMessageTimestamp: string;
+    unreadCount: number;
 }
 
 export interface Message {
-  id: number;
-  conversationId: number;
-  senderId: number; // 0 for current user
-  content: string;
-  timestamp: string;
-}
-
-export interface Lecture {
-  id: string;
-  title: string;
-  duration: string;
-}
-
-export interface Module {
-  id: string;
-  title: string;
-  lectures: Lecture[];
-}
-
-export interface Course {
-  id: number;
-  title: string;
-  instructorId: number;
-  description: string;
-  modules: Module[];
+    id: number;
+    conversationId: number;
+    senderId: number; // 0 for current user
+    content: string;
+    timestamp: string;
 }
