@@ -100,6 +100,30 @@ const Documentation: React.FC = () => {
         breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/documentation' }]}
       />
       
+      {/* Advanced Selects */}
+      <ComponentSection title="Advanced Selects">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          A collection of powerful select components for handling complex data inputs like asynchronous loading, multi-selection, and dynamic option creation.
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-neutral-800 dark:text-neutral-200">
+            <li><span className="font-semibold">Async & Creatable:</span> Fetch options remotely or add new ones on the fly.</li>
+            <li><span className="font-semibold">Multi-Select & Radio Select:</span> User-friendly interfaces for multiple or single choices.</li>
+            <li><span className="font-semibold">Specialized Inputs:</span> Includes pre-populated Country select and a lightweight Autocomplete.</li>
+        </ul>
+        <div className="mt-4">
+          <Button to="/advanced-selects" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Select Demos
+          </Button>
+        </div>
+         <CodeBlock>{`// All select components integrate with the useForm hook.
+import AsyncSelect from './components/ui/select/AsyncSelect';
+import MultiSelect from './components/ui/select/MultiSelect';
+
+<AsyncSelect loadOptions={...} {...getFieldProps('assignee')} />
+<MultiSelect options={...} selectedValues={...} onChange={...} />
+// See the /advanced-selects page for detailed examples.`}</CodeBlock>
+      </ComponentSection>
+
       {/* Forms */}
       <ComponentSection title="Forms">
         <p className="mb-4 text-neutral-700 dark:text-neutral-300">

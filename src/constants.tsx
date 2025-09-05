@@ -1,4 +1,4 @@
-import type { NavItem, User, Task, CalendarEvent, Comment } from './types';
+import type { NavItem, User, Task, CalendarEvent, Comment, Option } from './types';
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -32,6 +32,11 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-input-cursor-text',
   },
   {
+    path: '/advanced-selects',
+    name: 'Advanced Selects',
+    icon: 'bi-menu-button-wide-fill',
+  },
+  {
     path: '/feedback',
     name: 'Feedback',
     icon: 'bi-chat-quote-fill',
@@ -54,6 +59,18 @@ export const USERS_DATA: User[] = [
   { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', role: 'Viewer', status: 'Inactive', lastLogin: '2024-07-15 03:20 PM', bio: 'A casual viewer who occasionally checks in on project progress.' },
   { id: 4, name: 'Diana Prince', email: 'diana@example.com', role: 'Editor', status: 'Active', lastLogin: '2024-07-20 11:30 AM', bio: 'An editor with a keen eye for detail and a commitment to quality.' },
   { id: 5, name: 'Ethan Hunt', email: 'ethan@example.com', role: 'Admin', status: 'Active', lastLogin: '2024-07-19 08:00 AM', bio: 'System administrator responsible for security and infrastructure.' },
+];
+
+export const COUNTRIES_DATA: Option[] = [
+  { value: 'USA', label: 'United States' },
+  { value: 'CAN', label: 'Canada' },
+  { value: 'MEX', label: 'Mexico' },
+  { value: 'GBR', label: 'United Kingdom' },
+  { value: 'DEU', label: 'Germany' },
+  { value: 'FRA', label: 'France' },
+  { value: 'JPN', label: 'Japan' },
+  { value: 'AUS', label: 'Australia' },
+  { value: 'IND', label: 'India' },
 ];
 
 export const TASKS_DATA: Task[] = [

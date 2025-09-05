@@ -17,6 +17,7 @@ import Tasks from './pages/Tasks';
 import CalendarPage from './pages/CalendarPage';
 import Appointments from './pages/Appointments';
 import Forms from './pages/Forms';
+import AdvancedSelects from './pages/AdvancedSelects';
 import Feedback from './pages/Feedback';
 
 const App: React.FC = () => {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/forms" element={<Forms />} />
+          <Route path="/advanced-selects" element={<AdvancedSelects />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile/:userId" element={<Profile />} />

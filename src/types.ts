@@ -6,6 +6,11 @@ export interface NavItem {
   icon: string;
 }
 
+export interface Option {
+  value: string;
+  label: string;
+}
+
 export interface User {
   id: number;
   name: string;
