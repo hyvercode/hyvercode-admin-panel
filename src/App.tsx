@@ -44,7 +44,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 
-// Sample Public Pages
+// Sample Pages
 import LandingPage from './pages/LandingPage';
 import ProductCatalog from './pages/samples/ProductCatalog';
 import ProductDetail from './pages/samples/ProductDetail';
@@ -97,6 +97,13 @@ const App: React.FC = () => {
             <Route path="/erp/products" element={<ErpProducts />} />
             <Route path="/erp/orders" element={<ErpOrders />} />
             <Route path="/erp/customers" element={<ErpCustomers />} />
+            
+            {/* Sample Page Routes (Private) */}
+            <Route path="/sample/checkout" element={<Checkout />} />
+            <Route path="/sample/chat" element={<Chat />} />
+            <Route path="/sample/pos" element={<PointOfSale />} />
+            <Route path="/sample/course" element={<OnlineCourse />} />
+            <Route path="/sample/ai-chat" element={<AIChatAssistant />} />
           </Route>
         </Route>
 
@@ -105,12 +112,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/sample/products" element={<ProductCatalog />} />
             <Route path="/sample/products/:productId" element={<ProductDetail />} />
-            <Route path="/sample/checkout" element={<Checkout />} />
             <Route path="/sample/blog" element={<Blog />} />
-            <Route path="/sample/chat" element={<Chat />} />
-            <Route path="/sample/pos" element={<PointOfSale />} />
-            <Route path="/sample/course" element={<OnlineCourse />} />
-            <Route path="/sample/ai-chat" element={<AIChatAssistant />} />
         </Route>
         
         {/* Fallback */}

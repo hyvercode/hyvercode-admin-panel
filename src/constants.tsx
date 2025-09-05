@@ -8,6 +8,7 @@ interface NavItem {
 }
 interface NavGroup {
   title: string;
+  icon: string;
   items: NavItem[];
 }
 export type NavStructure = (NavItem | NavGroup)[];
@@ -16,6 +17,7 @@ export const NAV_ITEMS: NavStructure = [
   { to: '/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
   {
     title: 'Management',
+    icon: 'bi-briefcase-fill',
     items: [
       { to: '/users', icon: 'bi-people-fill', label: 'Users' },
       { to: '/tasks', icon: 'bi-check2-square', label: 'Tasks' },
@@ -23,6 +25,7 @@ export const NAV_ITEMS: NavStructure = [
   },
   {
     title: 'ERP',
+    icon: 'bi-building-fill',
     items: [
       { to: '/erp/products', icon: 'bi-box-seam-fill', label: 'Products' },
       { to: '/erp/orders', icon: 'bi-receipt-cutoff', label: 'Orders' },
@@ -31,8 +34,9 @@ export const NAV_ITEMS: NavStructure = [
   },
   {
     title: 'Component Demos',
+    icon: 'bi-puzzle-fill',
     items: [
-      { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Documentation' },
+      { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Docs Home' },
       { to: '/boards', icon: 'bi-kanban-fill', label: 'Boards & Timeline' },
       { to: '/forms', icon: 'bi-input-cursor-text', label: 'Forms' },
       { to: '/tables', icon: 'bi-table', label: 'Tables' },
@@ -41,6 +45,17 @@ export const NAV_ITEMS: NavStructure = [
       { to: '/navigation', icon: 'bi-compass-fill', label: 'Navigation' },
     ],
   },
+  {
+    title: 'Sample Pages',
+    icon: 'bi-file-earmark-richtext-fill',
+    items: [
+      { to: '/sample/pos', icon: 'bi-printer-fill', label: 'Point of Sale' },
+      { to: '/sample/course', icon: 'bi-book-fill', label: 'Online Course' },
+      { to: '/sample/chat', icon: 'bi-chat-dots-fill', label: 'Chat' },
+      { to: '/sample/ai-chat', icon: 'bi-robot', label: 'AI Assistant' },
+      { to: '/sample/checkout', icon: 'bi-credit-card-fill', label: 'Checkout' },
+    ]
+  }
 ];
 
 
