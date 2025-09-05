@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import PageHeader from '../components/ui/PageHeader';
 import Table, { Column } from '../components/ui/table/Table';
 import TableExpandable from '../components/ui/table/TableExpandable';
@@ -7,6 +7,9 @@ import { USERS_DATA } from '../constants';
 import { User } from '../types';
 import Badge from '../components/ui/Badge';
 import Card from '../components/ui/card/Card';
+import Input from '../components/ui/Input';
+import Select from '../components/ui/Select';
+import Pagination from '../components/ui/navigation/Pagination';
 
 const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="bg-neutral-0 dark:bg-neutral-1000 p-6 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-8">
@@ -61,7 +64,33 @@ const fileColumns: Column<(typeof nestedData)[0]>[] = [
     { id: 'size', header: 'Size', accessor: (item) => item.size },
 ]
 
+const ITEMS_PER_PAGE = 5;
+
 const Tables: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({ search: '', status: 'all' });
+
+  const filteredUsers = useMemo(() => {
+    return USERS_DATA.filter(user => {
+        const searchMatch = user.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+                            user.email.toLowerCase().includes(filters.search.toLowerCase());
+        const statusMatch = filters.status === 'all' || user.status === filters.status;
+        return searchMatch && statusMatch;
+    });
+  }, [filters]);
+
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredUsers, currentPage]);
+
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+
+  const handleFilterChange = (key: keyof typeof filters, value: string) => {
+    setCurrentPage(1);
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
   return (
     <div>
       <PageHeader
@@ -69,8 +98,35 @@ const Tables: React.FC = () => {
         breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Tables', path: '/tables' }]}
       />
 
-      <ComponentSection title="Standard Table">
-        <Table columns={userColumns} data={USERS_DATA} getRowId={(item) => item.id} />
+      <ComponentSection title="Standard Table with Filters & Pagination">
+        <div className="flex items-center gap-4 mb-4">
+            <Input 
+                id="user-search"
+                label=""
+                placeholder="Search by name or email..."
+                value={filters.search}
+                onChange={(e) => handleFilterChange('search', e.target.value)}
+                className="max-w-xs"
+            />
+            <Select
+                id="status-filter"
+                label=""
+                value={filters.status}
+                onChange={(e) => handleFilterChange('status', e.target.value)}
+                options={[
+                    { value: 'all', label: 'All Statuses' },
+                    { value: 'active', label: 'Active' },
+                    { value: 'inactive', label: 'Inactive' },
+                ]}
+            />
+        </div>
+        <Table columns={userColumns} data={paginatedUsers} getRowId={(item) => item.id} />
+        <Pagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            className="mt-4 flex justify-end"
+        />
       </ComponentSection>
 
       <ComponentSection title="Expandable Rows Table">
