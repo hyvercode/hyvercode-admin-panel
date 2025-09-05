@@ -2,7 +2,8 @@ import React from 'react';
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'neutral' | 'primary' | 'success' | 'warning' | 'danger';
+  // FIX: Add 'info' to the list of accepted variants to match usage in CalendarPage.
+  variant?: 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
 }
 
 const Badge: React.FC<BadgeProps> = ({ children, variant = 'neutral' }) => {
@@ -14,6 +15,8 @@ const Badge: React.FC<BadgeProps> = ({ children, variant = 'neutral' }) => {
     success: 'bg-success-background text-success-dark',
     warning: 'bg-warning-background text-warning-dark',
     danger: 'bg-danger-background text-danger-dark',
+    // FIX: Add styles for the new 'info' variant, consistent with other components.
+    info: 'bg-info/20 text-info',
   };
 
   return (

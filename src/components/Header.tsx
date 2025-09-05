@@ -67,10 +67,10 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen, theme, tog
               <strong className="text-neutral-900 dark:text-neutral-100">{user?.email}</strong>
             </div>
             <hr className="border-neutral-200 dark:border-neutral-800"/>
-            <Dropdown.Item icon={<i className="bi bi-person-circle"></i>} to={`/profile/${user?.id || 1}`}>
+            <Dropdown.Item icon={<i className="bi bi-person-circle"></i>} to={`/admin/profile/${user?.id || 1}`}>
               Profile
             </Dropdown.Item>
-            <Dropdown.Item icon={<i className="bi bi-gear-fill"></i>} to="/settings">
+            <Dropdown.Item icon={<i className="bi bi-gear-fill"></i>} to="/admin/settings">
               Settings
             </Dropdown.Item>
             <hr className="border-neutral-200 dark:border-neutral-800"/>

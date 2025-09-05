@@ -1,99 +1,84 @@
-// src/types.ts
+// --- Generic / Utility Types ---
+export interface Option {
+  value: string;
+  label: string;
+}
 
+
+// --- Core Data Models ---
 export interface User {
   id: number;
   name: string;
   email: string;
-  role: 'Admin' | 'Editor' | 'Viewer';
+  role: string;
   status: 'active' | 'inactive';
-  bio?: string;
+  bio: string;
 }
 
 export interface Product {
-    id: number;
-    name:string;
-    category: string;
-    price: number;
-    rating: number;
-    reviewCount: number;
-    imageUrl: string;
-    description: string;
-    specs: { [key: string]: string };
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  rating: number;
+  reviewCount: number;
+  imageUrl: string;
+  description: string;
+  specs: Record<string, string>;
+}
+
+export interface CartItem extends Product {
+  quantity: number;
 }
 
 export interface Review {
-    id: number;
-    authorId: number;
-    content: string;
-    timestamp: string;
-    parentId: number | null;
+  id: number;
+  authorId: number;
+  content: string;
+  timestamp: string;
+  parentId: number | null;
+  replies?: Review[];
 }
 
 export interface BlogPost {
-    id: number;
-    title: string;
-    authorId: number;
-    category: string;
-    excerpt: string;
-    imageUrl: string;
-    publishDate: string;
-}
-
-export interface Comment extends Omit<Review, 'authorId'> {
+  id: number;
+  title: string;
   authorId: number;
-  replies?: Comment[];
-}
-
-export interface ChatMessage {
-  role: 'user' | 'model';
-  content: string;
+  category: string;
+  excerpt: string;
+  imageUrl: string;
+  publishDate: string;
 }
 
 export interface CalendarEvent {
     id: string;
     title: string;
-    date: string; // YYYY-MM-DD
-    category: 'primary' | 'success' | 'danger' | 'warning';
+    date: string;
+    category: 'primary' | 'success' | 'danger' | 'warning' | 'info';
 }
 
-export interface POSProduct {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
-}
 
-export interface POSCartItem extends POSProduct {
-    quantity: number;
-}
+// --- Task Management / Kanban ---
+export type TaskStatus = 'Todo' | 'In Progress' | 'Done';
+export type TaskPriority = 'High' | 'Medium' | 'Low';
 
 export interface Task {
     id: string;
     title: string;
     description: string;
-    status: 'Todo' | 'In Progress' | 'Done';
-    priority: 'Low' | 'Medium' | 'High';
+    status: TaskStatus;
+    priority: TaskPriority;
     assigneeIds: number[];
 }
 
 export interface KanbanColumn {
-    id: 'Todo' | 'In Progress' | 'Done';
+    id: string;
     title: string;
     taskIds: string[];
 }
 
-export interface Option {
-    value: string;
-    label: string;
-}
 
-export interface LineItem {
-    id: number;
-    description: string;
-    quantity: number;
-    price: number;
-}
-
+// --- Chat / Messaging ---
 export interface Conversation {
     id: number;
     participantId: number;
@@ -105,54 +90,108 @@ export interface Conversation {
 export interface Message {
     id: number;
     conversationId: number;
-    senderId: number; // 0 for current user
+    senderId: number;
     content: string;
     timestamp: string;
 }
 
-// ERP Module Types
-export interface ERPProduct {
-    id: string;
-    name: string;
-    category: string;
-    price: number;
-    stock: number;
-    sku: string;
+export interface ChatMessage {
+  role: 'user' | 'model';
+  content: string;
 }
 
+
+// --- E-commerce / POS ---
+export interface POSProduct {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+}
+
+export interface POSCartItem extends POSProduct {
+    quantity: number;
+}
+
+export interface LineItem {
+  id: number;
+  description: string;
+  quantity: number;
+  price: number;
+}
+
+
+// --- ERP System ---
+export interface ERPProduct {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  sku: string;
+}
+
+export type OrderStatus = 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
+
 export interface ERPOrder {
-    id: string;
-    customerName: string;
-    date: string;
-    status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
-    total: number;
-    itemCount: number;
+  id: string;
+  customerName: string;
+  date: string;
+  status: OrderStatus;
+  total: number;
+  itemCount: number;
 }
 
 export interface ERPCustomer {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    lifetimeValue: number;
-    lastOrder: string;
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  lifetimeValue: number;
+  lastOrder: string;
 }
 
-// FIX: Add types for the Online Course sample page.
-export interface CourseLecture {
-    id: string;
-    title: string;
-    duration: string;
-}
-export interface CourseModule {
-    id: string;
-    title: string;
-    lectures: CourseLecture[];
-}
+
+// --- Education / Courses ---
 export interface OnlineCourse {
     id: number;
     title: string;
     description: string;
     instructorId: number;
-    modules: CourseModule[];
+    modules: {
+        id: string;
+        title: string;
+        lectures: {
+            id: string;
+            title: string;
+            duration: string;
+        }[];
+    }[];
+}
+
+// Commenting for Blog/Posts
+export interface Comment {
+  id: number;
+  authorId: number;
+  content: string;
+  timestamp: string;
+  parentId: number | null;
+  replies?: Comment[];
+}
+
+// Timeline
+export interface TimelineEvent {
+    id: number;
+    type: string;
+    user: string;
+    description: string;
+    timestamp: string;
+}
+
+// Hierarchical Data for Nested Table
+export interface HierarchicalData {
+  id: string | number;
+  name: string;
+  children?: HierarchicalData[];
+  [key: string]: any;
 }

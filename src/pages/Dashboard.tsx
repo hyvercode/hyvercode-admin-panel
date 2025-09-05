@@ -3,6 +3,7 @@ import Card from '../components/ui/card/Card';
 import SampleChart from '../components/SampleChart';
 import Avatar from '../components/ui/avatar/Avatar';
 import IconTile from '../components/ui/icon/IconTile';
+import SamplePieChart from '../components/SamplePieChart';
 
 const DashboardCard: React.FC<{ title: string; value: string; icon: string; colorClass: string; }> = ({ title, value, icon, colorClass }) => {
   return (
@@ -39,31 +40,34 @@ const Dashboard: React.FC = () => {
         <div className="lg:col-span-2">
           <SampleChart />
         </div>
-        <div className="bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 p-6">
-          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recent Activity</h3>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <IconTile iconName="file-earmark-zip-fill" variant="info" shape="circle" />
-              <div className="ml-4">
-                <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">New report generated</p>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">2 hours ago</p>
-              </div>
-            </li>
-            <li className="flex items-start">
-              <Avatar name="Sarah" src="https://picsum.photos/50/51" />
-              <div className="ml-4">
-                <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Sarah completed a task</p>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">5 hours ago</p>
-              </div>
-            </li>
-             <li className="flex items-start">
-              <IconTile iconName="exclamation-triangle-fill" variant="danger" shape="circle" />
-              <div className="ml-4">
-                <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Server #3 requires attention</p>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">1 day ago</p>
-              </div>
-            </li>
-          </ul>
+        <div className="lg:col-span-1 space-y-6">
+          <div className="bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 p-6">
+            <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recent Activity</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <IconTile iconName="file-earmark-zip-fill" variant="info" shape="circle" />
+                <div className="ml-4">
+                  <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">New report generated</p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">2 hours ago</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Avatar name="Sarah" src="https://picsum.photos/50/51" />
+                <div className="ml-4">
+                  <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Sarah completed a task</p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">5 hours ago</p>
+                </div>
+              </li>
+               <li className="flex items-start">
+                <IconTile iconName="exclamation-triangle-fill" variant="danger" shape="circle" />
+                <div className="ml-4">
+                  <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">Server #3 requires attention</p>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">1 day ago</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <SamplePieChart />
         </div>
       </div>
     </div>
