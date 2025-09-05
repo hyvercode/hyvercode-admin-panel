@@ -32,6 +32,11 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-input-cursor-text',
   },
   {
+    path: '/feedback',
+    name: 'Feedback',
+    icon: 'bi-chat-quote-fill',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

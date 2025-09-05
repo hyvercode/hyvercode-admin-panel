@@ -24,6 +24,8 @@ import TimePicker from '../components/ui/datetime/TimePicker';
 import DateRangePicker from '../components/ui/datetime/DateRangePicker';
 import TimeRangePicker from '../components/ui/datetime/TimeRangePicker';
 import RadioGroup from '../components/ui/radio/RadioGroup';
+import Range from '../components/ui/range/Range';
+import StarRating from '../components/ui/range/StarRating';
 import { CALENDAR_EVENTS_DATA, COMMENTS_DATA } from '../constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useForm, FormErrors } from '../hooks/useForm';
@@ -59,6 +61,8 @@ const Documentation: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { user } = useAuth();
   const [radioValue, setRadioValue] = useState('basic');
+  const [rating, setRating] = useState(3);
+  const [rangeValue, setRangeValue] = useState(50);
   
   const handleCommentSubmit = (text: string, parentId: number | null) => {
     console.log(`Submitting comment: "${text}" to parent: ${parentId}`);
@@ -323,6 +327,47 @@ import FormWizard from './components/ui/form/FormWizard';
 />`}</CodeBlock>
       </ComponentSection>
 
+      {/* Range & Rating */}
+      <ComponentSection title="Range & Rating">
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Range Slider</h4>
+            <Range 
+              label="Volume" 
+              id="doc-range" 
+              min={0} 
+              max={100} 
+              value={rangeValue} 
+              onChange={(e) => setRangeValue(Number(e.target.value))} 
+            />
+          </div>
+           <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Star Rating</h4>
+            <StarRating 
+              label="Product Rating" 
+              id="doc-rating" 
+              value={rating} 
+              onChange={setRating} 
+            />
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">With Error</h4>
+             <StarRating 
+              label="Required Rating" 
+              id="doc-rating-error" 
+              value={0} 
+              onChange={() => {}} 
+              error="This field is required."
+            />
+          </div>
+        </div>
+         <CodeBlock>{`// Range Slider
+<Range label="Volume" {...getFieldProps('volume')} />
+
+// Star Rating
+<StarRating label="Rating" {...getFieldProps('rating')} onChange={(val) => setValues(...)} />
+`}</CodeBlock>
+      </ComponentSection>
 
       {/* Alerts & Badges */}
       <ComponentSection title="Alerts & Badges">
