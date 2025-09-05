@@ -18,6 +18,7 @@ const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> =
   </div>
 );
 
+// --- RadioForm logic moved outside component ---
 const validateRadioForm = (values: { plan: string }): FormErrors => {
     const errors: FormErrors = {};
     if (!values.plan) {

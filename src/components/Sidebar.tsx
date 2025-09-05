@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from './ui/image/Logo';
 import Tooltip from './ui/Tooltip';
-import { NAV_ITEMS, NavStructure } from '../constants';
+import { NAV_ITEMS } from '../constants';
 import Dropdown from './ui/navigation/Dropdown';
+import Button from './ui/Button';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -49,9 +50,9 @@ const NavGroup: React.FC<{ title: string; items: any[]; collapsed: boolean }> = 
                 menuClassName="!left-full !-top-2 !ml-3"
                 trigger={
                     <Tooltip content={title} position="right">
-                        <div className={`relative flex items-center justify-center my-2`}>
+                        <Button variant="subtle" size="icon" className="w-full">
                            <i className={`bi bi-three-dots text-neutral-500`}></i>
-                        </div>
+                        </Button>
                     </Tooltip>
                 }
             >

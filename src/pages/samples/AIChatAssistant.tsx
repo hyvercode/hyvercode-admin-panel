@@ -45,7 +45,6 @@ const AIChatAssistant: React.FC = () => {
     // FIX: Use the imported GoogleGenAI type directly.
     const [ai, setAi] = useState<GoogleGenAI | null>(null);
     const chatEndRef = useRef<HTMLDivElement>(null);
-    const { user } = useAuth();
     const apiKey = process.env.API_KEY;
     
     useEffect(() => {
@@ -96,7 +95,7 @@ const AIChatAssistant: React.FC = () => {
             // FIX: Correctly access the response text.
             const aiMessage: ChatMessage = { role: 'model', content: response.text };
             setMessages(prev => [...prev, aiMessage]);
-        } catch (err) => {
+        } catch (err) {
             console.error(err);
             setError('Sorry, something went wrong. Please try again.');
         } finally {

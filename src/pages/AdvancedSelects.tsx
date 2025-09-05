@@ -42,7 +42,7 @@ const loadUsers = (): Promise<Option[]> => {
     });
 };
 
-// --- Validation and Submit Handlers ---
+// --- Validation and Submit Handlers (Moved outside component) ---
 const validateForm1 = (values: { assignee: string, tag: string }): FormErrors => {
     const errors: FormErrors = {};
     if (!values.assignee) errors.assignee = 'An assignee is required.';

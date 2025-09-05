@@ -28,11 +28,13 @@ const Dropdown: React.FC<DropdownProps> & { Item: typeof DropdownItem } = ({ tri
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const clonedTrigger = React.cloneElement(trigger, {
-      // FIX: Add an onClick handler to the trigger element to control the dropdown's state.
-      // Cast trigger.props to allow accessing a potential existing onClick handler.
+  // FIX: Cast `trigger` to `React.ReactElement<any>` to resolve a TypeScript error where `onClick`
+  // is not a known property on a generic React.ReactElement. This allows adding the necessary
+  // click handler to toggle the dropdown's visibility.
+  const clonedTrigger = React.cloneElement(trigger as React.ReactElement<any>, {
       onClick: (e: React.MouseEvent) => {
           setIsOpen(!isOpen);
+          // Allow trigger to have its own onClick
           (trigger.props as { onClick?: (e: React.MouseEvent) => void }).onClick?.(e);
       },
   });
