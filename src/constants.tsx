@@ -1,5 +1,50 @@
-import { User, Product, Review, BlogPost, CalendarEvent, Task, KanbanColumn, Conversation, Message, POSProduct } from './types';
+import { User, Product, Review, BlogPost, CalendarEvent, Task, Conversation, Message, POSProduct, ERPProduct, ERPOrder, ERPCustomer, OnlineCourse } from './types';
 
+// --- NAVIGATION ---
+interface NavItem {
+  to: string;
+  icon: string;
+  label: string;
+}
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+export type NavStructure = (NavItem | NavGroup)[];
+
+export const NAV_ITEMS: NavStructure = [
+  { to: '/dashboard', icon: 'bi-grid-1x2-fill', label: 'Dashboard' },
+  {
+    title: 'Management',
+    items: [
+      { to: '/users', icon: 'bi-people-fill', label: 'Users' },
+      { to: '/tasks', icon: 'bi-check2-square', label: 'Tasks' },
+    ],
+  },
+  {
+    title: 'ERP',
+    items: [
+      { to: '/erp/products', icon: 'bi-box-seam-fill', label: 'Products' },
+      { to: '/erp/orders', icon: 'bi-receipt-cutoff', label: 'Orders' },
+      { to: '/erp/customers', icon: 'bi-person-badge-fill', label: 'Customers' },
+    ],
+  },
+  {
+    title: 'Component Demos',
+    items: [
+      { to: '/documentation', icon: 'bi-file-earmark-text-fill', label: 'Documentation' },
+      { to: '/boards', icon: 'bi-kanban-fill', label: 'Boards & Timeline' },
+      { to: '/forms', icon: 'bi-input-cursor-text', label: 'Forms' },
+      { to: '/tables', icon: 'bi-table', label: 'Tables' },
+      { to: '/content', icon: 'bi-card-heading', label: 'Content' },
+      { to: '/overlays', icon: 'bi-front', label: 'Overlays' },
+      { to: '/navigation', icon: 'bi-compass-fill', label: 'Navigation' },
+    ],
+  },
+];
+
+
+// --- MOCK DATA ---
 export const USERS_DATA: User[] = [
   { id: 0, name: 'Current User', email: 'me@example.com', role: 'Admin', status: 'active', bio: 'The current logged in user.' },
   { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'active', bio: 'Lead administrator and project manager.' },
@@ -14,8 +59,6 @@ export const PRODUCTS_DATA: Product[] = [
   { id: 3, name: 'Mechanical Keyboard', category: 'Peripherals', price: 120.00, rating: 4.9, reviewCount: 952, imageUrl: 'https://picsum.photos/seed/product3/400/300', description: 'A tactile and responsive keyboard for coders and gamers.', specs: { 'Switches': 'Cherry MX Brown', 'Backlight': 'RGB' } },
   { id: 4, name: '4K Ultra HD Monitor', category: 'Electronics', price: 450.00, rating: 4.7, reviewCount: 653, imageUrl: 'https://picsum.photos/seed/product4/400/300', description: 'Experience stunning visuals with this 27-inch 4K monitor.', specs: { 'Resolution': '3840x2160', 'Panel Type': 'IPS' } },
   { id: 5, name: 'Ergonomic Office Chair', category: 'Furniture', price: 320.00, rating: 4.5, reviewCount: 541, imageUrl: 'https://picsum.photos/seed/product5/400/300', description: 'Stay comfortable during long work sessions.', specs: { 'Material': 'Mesh', 'Adjustability': 'Fully adjustable' } },
-  { id: 6, name: 'Portable SSD 1TB', category: 'Storage', price: 130.00, rating: 4.8, reviewCount: 1500, imageUrl: 'https://picsum.photos/seed/product6/400/300', description: 'Fast and reliable storage on the go.', specs: { 'Read Speed': '1050MB/s', 'Interface': 'USB-C' } },
-  { id: 7, name: 'Webcam Pro', category: 'Peripherals', price: 99.99, rating: 4.6, reviewCount: 789, imageUrl: 'https://picsum.photos/seed/product7/400/300', description: 'Crystal clear video for your meetings and streams.', specs: { 'Resolution': '1080p 60fps', 'Field of View': '90 degrees' } },
 ];
 
 export const REVIEWS_DATA: Review[] = [
@@ -28,13 +71,11 @@ export const REVIEWS_DATA: Review[] = [
 export const BLOG_POSTS_DATA: BlogPost[] = [
     { id: 1, title: 'Getting Started with Our New API', authorId: 1, category: 'Technology', excerpt: 'Learn how to integrate our powerful new API into your applications.', imageUrl: 'https://picsum.photos/seed/blog1/800/450', publishDate: 'October 26, 2023' },
     { id: 2, title: '10 Tips for Better Project Management', authorId: 4, category: 'Productivity', excerpt: 'Boost your team\'s efficiency with these proven strategies.', imageUrl: 'https://picsum.photos/seed/blog2/800/450', publishDate: 'October 24, 2023' },
-    { id: 3, title: 'UI/UX Design Trends of 2024', authorId: 4, category: 'Design', excerpt: 'A look into the future of user interface and experience design.', imageUrl: 'https://picsum.photos/seed/blog3/800/450', publishDate: 'October 22, 2023' },
 ];
 
 export const CALENDAR_EVENTS_DATA: CalendarEvent[] = [
     { id: '1', title: 'Team Sync', date: new Date().toISOString().split('T')[0], category: 'primary' },
     { id: '2', title: 'Project Deadline', date: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0], category: 'danger' },
-    { id: '3', title: 'Client Meeting', date: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0], category: 'success' },
 ];
 
 export const TASKS_DATA: Task[] = [
@@ -45,43 +86,80 @@ export const TASKS_DATA: Task[] = [
     { id: 'task-5', title: 'Plan Q4 marketing campaign', description: 'Coordinate with the marketing team.', status: 'Todo', priority: 'Low', assigneeIds: [4, 2] },
 ];
 
+export const CONVERSATIONS_DATA: Conversation[] = [
+    { id: 1, participantId: 1, lastMessage: "Hey, can we sync up about the new designs?", lastMessageTimestamp: "10:30 AM", unreadCount: 0 },
+    { id: 2, participantId: 2, lastMessage: "The blog post draft is ready for your review.", lastMessageTimestamp: "9:45 AM", unreadCount: 2 },
+];
+
+export const MESSAGES_DATA: Message[] = [
+    { id: 1, conversationId: 2, senderId: 2, content: "The blog post draft is ready for your review.", timestamp: "9:45 AM" },
+    { id: 2, conversationId: 2, senderId: 0, content: "Awesome, I'll take a look now.", timestamp: "9:46 AM" },
+];
+
+export const POS_PRODUCTS_DATA: POSProduct[] = [
+    { id: 1, name: 'Espresso', price: 3.50, imageUrl: 'https://picsum.photos/seed/coffee1/200/200' },
+    { id: 2, name: 'Latte', price: 4.50, imageUrl: 'https://picsum.photos/seed/coffee2/200/200' },
+    { id: 3, name: 'Croissant', price: 2.75, imageUrl: 'https://picsum.photos/seed/pastry1/200/200' },
+    { id: 4, name: 'Muffin', price: 3.00, imageUrl: 'https://picsum.photos/seed/pastry2/200/200' },
+];
+
+export const TIMELINE_DATA = [
+  { id: 1, type: 'task_completed', user: 'Bob Smith', description: "Marked 'Write API documentation' as done.", timestamp: '2 hours ago' },
+  { id: 2, type: 'task_moved', user: 'Diana Prince', description: "Moved 'Design new dashboard layout' to In Progress.", timestamp: '5 hours ago' },
+  { id: 3, type: 'user_added', user: 'Alice Johnson', description: 'Added a new user: Charlie Brown.', timestamp: '1 day ago' },
+];
+
+export const ERP_PRODUCTS_DATA: ERPProduct[] = [
+  { id: 'prod-001', name: 'Wireless Headphones', category: 'Electronics', price: 199.99, stock: 150, sku: 'WH-1000XM4' },
+  { id: 'prod-002', name: 'Mechanical Keyboard', category: 'Peripherals', price: 129.50, stock: 80, sku: 'MK-87' },
+  { id: 'prod-003', name: 'Ergonomic Mouse', category: 'Peripherals', price: 79.00, stock: 250, sku: 'EM-MX3' },
+];
+
+export const ERP_ORDERS_DATA: ERPOrder[] = [
+  { id: 'ORD-2024-001', customerName: 'Alice Johnson', date: '2024-05-20', status: 'Delivered', total: 199.99, itemCount: 1 },
+  { id: 'ORD-2024-002', customerName: 'Bob Smith', date: '2024-05-22', status: 'Shipped', total: 208.50, itemCount: 2 },
+  { id: 'ORD-2024-003', customerName: 'Charlie Brown', date: '2024-05-23', status: 'Pending', total: 79.00, itemCount: 1 },
+];
+
+export const ERP_CUSTOMERS_DATA: ERPCustomer[] = [
+  { id: 1, name: 'Alice Johnson', email: 'alice@example.com', phone: '123-456-7890', lifetimeValue: 1250.75, lastOrder: '2024-05-20' },
+  { id: 2, name: 'Bob Smith', email: 'bob@example.com', phone: '234-567-8901', lifetimeValue: 875.50, lastOrder: '2024-05-22' },
+  { id: 3, name: 'Charlie Brown', email: 'charlie@example.com', phone: '345-678-9012', lifetimeValue: 320.00, lastOrder: '2024-05-23' },
+];
+
+// FIX: Add missing COUNTRIES_DATA for the CountrySelect component.
 export const COUNTRIES_DATA = [
   { value: 'USA', label: 'United States' },
   { value: 'CAN', label: 'Canada' },
   { value: 'GBR', label: 'United Kingdom' },
   { value: 'AUS', label: 'Australia' },
   { value: 'DEU', label: 'Germany' },
+  { value: 'JPN', label: 'Japan' },
 ];
 
-export const CONVERSATIONS_DATA: Conversation[] = [
-    { id: 1, participantId: 1, lastMessage: "Hey, can we sync up about the new designs?", lastMessageTimestamp: "10:30 AM", unreadCount: 0 },
-    { id: 2, participantId: 2, lastMessage: "The blog post draft is ready for your review.", lastMessageTimestamp: "9:45 AM", unreadCount: 2 },
-    { id: 3, participantId: 4, lastMessage: "I've pushed the latest changes to the staging branch.", lastMessageTimestamp: "Yesterday", unreadCount: 0 },
-];
-
-export const MESSAGES_DATA: Message[] = [
-    { id: 1, conversationId: 2, senderId: 2, content: "The blog post draft is ready for your review.", timestamp: "9:45 AM" },
-    { id: 2, conversationId: 2, senderId: 2, content: "Let me know what you think!", timestamp: "9:45 AM" },
-    { id: 3, conversationId: 2, senderId: 0, content: "Awesome, I'll take a look now.", timestamp: "9:46 AM" },
-];
-
-export const POS_PRODUCTS_DATA: POSProduct[] = [
-    { id: 1, name: 'Espresso', price: 3.50, imageUrl: 'https://picsum.photos/seed/coffee1/200/200' },
-    { id: 2, name: 'Latte', price: 4.50, imageUrl: 'https://picsum.photos/seed/coffee2/200/200' },
-    { id: 3, name: 'Cappuccino', price: 4.50, imageUrl: 'https://picsum.photos/seed/coffee3/200/200' },
-    { id: 4, name: 'Americano', price: 3.75, imageUrl: 'https://picsum.photos/seed/coffee4/200/200' },
-    { id: 5, name: 'Croissant', price: 2.75, imageUrl: 'https://picsum.photos/seed/pastry1/200/200' },
-    { id: 6, name: 'Muffin', price: 3.00, imageUrl: 'https://picsum.photos/seed/pastry2/200/200' },
-    { id: 7, name: 'Bagel', price: 3.25, imageUrl: 'https://picsum.photos/seed/pastry3/200/200' },
-    { id: 8, name: 'Iced Tea', price: 3.00, imageUrl: 'https://picsum.photos/seed/drink1/200/200' },
-];
-
-export const ONLINE_COURSE_DATA = {
-    title: 'Introduction to Modern React',
-    description: 'Learn the fundamentals of React, including hooks, components, and state management.',
-    instructorId: 4,
+// FIX: Add missing ONLINE_COURSE_DATA for the OnlineCourse sample page.
+export const ONLINE_COURSE_DATA: OnlineCourse = {
+    id: 1,
+    title: 'Advanced React Development',
+    description: 'Take your React skills to the next level with this advanced course covering hooks, performance, and state management.',
+    instructorId: 1, // Alice Johnson
     modules: [
-        { id: 'm1', title: 'Module 1: Getting Started', lectures: [{id: 'l1-1', title: 'Course Introduction', duration: '5:30'}, {id: 'l1-2', title: 'Setting up your environment', duration: '12:15'}] },
-        { id: 'm2', title: 'Module 2: Core Concepts', lectures: [{id: 'l2-1', title: 'Understanding JSX', duration: '8:45'}, {id: 'l2-2', title: 'Components and Props', duration: '15:00'}] },
+        {
+            id: 'm1',
+            title: 'Module 1: Deep Dive into Hooks',
+            lectures: [
+                { id: 'l1-1', title: 'useState and useEffect In-Depth', duration: '15:30' },
+                { id: 'l1-2', title: 'useContext for Global State', duration: '12:45' },
+                { id: 'l1-3', title: 'useReducer for Complex State', duration: '20:10' },
+            ]
+        },
+        {
+            id: 'm2',
+            title: 'Module 2: Performance Optimization',
+            lectures: [
+                { id: 'l2-1', title: 'Memoization with useMemo and useCallback', duration: '18:00' },
+                { id: 'l2-2', title: 'Code Splitting with React.lazy', duration: '14:25' },
+            ]
+        }
     ]
 };

@@ -109,3 +109,50 @@ export interface Message {
     content: string;
     timestamp: string;
 }
+
+// ERP Module Types
+export interface ERPProduct {
+    id: string;
+    name: string;
+    category: string;
+    price: number;
+    stock: number;
+    sku: string;
+}
+
+export interface ERPOrder {
+    id: string;
+    customerName: string;
+    date: string;
+    status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
+    total: number;
+    itemCount: number;
+}
+
+export interface ERPCustomer {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    lifetimeValue: number;
+    lastOrder: string;
+}
+
+// FIX: Add types for the Online Course sample page.
+export interface CourseLecture {
+    id: string;
+    title: string;
+    duration: string;
+}
+export interface CourseModule {
+    id: string;
+    title: string;
+    lectures: CourseLecture[];
+}
+export interface OnlineCourse {
+    id: number;
+    title: string;
+    description: string;
+    instructorId: number;
+    modules: CourseModule[];
+}

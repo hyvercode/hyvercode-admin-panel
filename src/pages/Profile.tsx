@@ -1,12 +1,13 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { USERS_DATA } from '../constants';
+import { USERS_DATA, TIMELINE_DATA } from '../constants';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/card/Card';
 import Avatar from '../components/ui/avatar/Avatar';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Tabs from '../components/ui/navigation/Tabs';
+import Timeline from '../components/ui/Timeline';
 
 const Profile: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
@@ -14,6 +15,12 @@ const Profile: React.FC = () => {
 
     if (!user) {
         return <Navigate to="/users" replace />;
+    }
+    
+    const iconMap = {
+        task_completed: { icon: <i className="bi bi-check-lg" />, bg: 'bg-success' },
+        task_moved: { icon: <i className="bi bi-arrow-right" />, bg: 'bg-primary' },
+        user_added: { icon: <i className="bi bi-person-plus-fill" />, bg: 'bg-info' },
     }
 
     return (
@@ -51,7 +58,19 @@ const Profile: React.FC = () => {
                             {(activeTab) => (
                                 <div className="p-4">
                                     {activeTab === 'activity' && (
-                                        <p>User activity feed would be displayed here.</p>
+                                        <Timeline>
+                                            {TIMELINE_DATA.map(event => (
+                                                <Timeline.Item
+                                                    key={event.id}
+                                                    icon={iconMap[event.type as keyof typeof iconMap].icon}
+                                                    iconBgClass={iconMap[event.type as keyof typeof iconMap].bg}
+                                                    title={event.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                                    timestamp={event.timestamp}
+                                                >
+                                                    <p>{event.description}</p>
+                                                </Timeline.Item>
+                                            ))}
+                                        </Timeline>
                                     )}
                                     {activeTab === 'details' && (
                                         <ul className="space-y-2 text-sm">

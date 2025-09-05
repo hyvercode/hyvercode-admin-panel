@@ -47,7 +47,10 @@ const Timeline: React.FC<TimelineProps> & { Item: typeof TimelineItem } = ({ chi
             <ul>
                 {items.map((child, index) =>
                     React.isValidElement(child)
-                        ? React.cloneElement(child, { ...child.props, isLast: index === items.length - 1 })
+                        // FIX: Use Object.assign to safely merge props. The spread operator `...`
+                        // can cause a "Spread types may only be created from object types" error
+                        // if TypeScript cannot guarantee that child.props is an object.
+                        ? React.cloneElement(child, Object.assign({}, child.props, { isLast: index === items.length - 1 }))
                         : child
                 )}
             </ul>
