@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI } from "@google/genai";
+import type { GoogleGenAI as GoogleGenAIType } from "@google/genai";
 import { ChatMessage } from '../../types';
 import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/card/Card';
@@ -41,12 +41,29 @@ const AIChatAssistant: React.FC = () => {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [ai, setAi] = useState<GoogleGenAIType | null>(null);
     const chatEndRef = useRef<HTMLDivElement>(null);
-    
-    // In a real application, the API key would be securely managed and not exposed client-side.
-    // For this demo, we assume it's available as an environment variable.
+    const { user } = useAuth();
     const apiKey = process.env.API_KEY;
-    const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+    
+    useEffect(() => {
+        async function initializeAi() {
+            if (!apiKey) {
+                setError("AI service is not configured. An API key is required.");
+                return;
+            }
+            try {
+                // Use dynamic import to bypass static analysis error in some environments
+                const { GoogleGenAI } = await import('@google/genai');
+                setAi(new GoogleGenAI({ apiKey }));
+            } catch(e) {
+                console.error("Failed to initialize AI:", e);
+                setError("Could not load the AI service. Please check the console for details.");
+            }
+        }
+        initializeAi();
+    }, [apiKey]);
+
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -63,7 +80,7 @@ const AIChatAssistant: React.FC = () => {
         setError('');
 
         if (!ai) {
-            setError("AI service is not configured. Please add an API key.");
+            setError("AI service is not available or still loading.");
             setIsLoading(false);
             return;
         }
@@ -123,10 +140,10 @@ const AIChatAssistant: React.FC = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type your message..."
-                            disabled={isLoading}
+                            disabled={isLoading || !ai}
                             className="flex-grow w-full px-3 py-2 border rounded-md shadow-sm bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary"
                         />
-                        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                        <Button type="submit" size="icon" disabled={isLoading || !input.trim() || !ai}>
                             <i className="bi bi-send-fill"></i>
                         </Button>
                     </form>
