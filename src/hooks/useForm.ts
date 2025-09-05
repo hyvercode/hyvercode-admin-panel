@@ -81,11 +81,13 @@ export const useForm = <T extends Record<string, any>>(
     };
   };
 
+  // FIX: Expose `setTouched` to allow the FormWizard component to manually trigger validation on step changes.
   return {
     values,
     setValues,
     errors,
     touched,
+    setTouched,
     handleSubmit,
     getFieldProps,
     isValid: Object.values(errors).every(error => error === undefined),

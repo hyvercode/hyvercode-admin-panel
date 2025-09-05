@@ -27,6 +27,11 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'bi-clock-history',
   },
   {
+    path: '/forms',
+    name: 'Forms',
+    icon: 'bi-input-cursor-text',
+  },
+  {
     path: '/settings',
     name: 'Settings',
     icon: 'bi-gear-fill',

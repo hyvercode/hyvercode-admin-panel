@@ -42,3 +42,10 @@ export interface Comment {
   timestamp: string;
   replies?: Comment[];
 }
+
+export interface LineItem {
+  id: number;
+  description: string;
+  quantity: number;
+  price: number;
+}

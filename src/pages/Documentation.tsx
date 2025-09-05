@@ -23,9 +23,11 @@ import DatePicker from '../components/ui/datetime/DatePicker';
 import TimePicker from '../components/ui/datetime/TimePicker';
 import DateRangePicker from '../components/ui/datetime/DateRangePicker';
 import TimeRangePicker from '../components/ui/datetime/TimeRangePicker';
+import RadioGroup from '../components/ui/radio/RadioGroup';
 import { CALENDAR_EVENTS_DATA, COMMENTS_DATA } from '../constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useForm, FormErrors } from '../hooks/useForm';
+import { Link } from 'react-router-dom';
 
 
 const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
@@ -56,6 +58,7 @@ const tableColumns: Column<(typeof tableData)[0]>[] = [
 const Documentation: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { user } = useAuth();
+  const [radioValue, setRadioValue] = useState('basic');
   
   const handleCommentSubmit = (text: string, parentId: number | null) => {
     console.log(`Submitting comment: "${text}" to parent: ${parentId}`);
@@ -80,6 +83,11 @@ const Documentation: React.FC = () => {
         return err;
     }, () => {});
 
+  const radioOptions = [
+    { value: 'basic', label: 'Basic' },
+    { value: 'standard', label: 'Standard' },
+    { value: 'premium', label: 'Premium' },
+  ];
 
   return (
     <div>
@@ -87,6 +95,30 @@ const Documentation: React.FC = () => {
         title="Component Documentation"
         breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/documentation' }]}
       />
+      
+      {/* Forms */}
+      <ComponentSection title="Forms">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+          A suite of advanced, reusable form layouts with built-in validation. These components provide robust starting points for various data entry scenarios.
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-neutral-800 dark:text-neutral-200">
+            <li><span className="font-semibold">Simple & Complex Layouts:</span> For basic needs and multi-column arrangements.</li>
+            <li><span className="font-semibold">Wizard & Tabbed Forms:</span> To guide users through steps or organize complex data.</li>
+            <li><span className="font-semibold">Dynamic & Upload Forms:</span> For creating line items on the fly or handling file uploads.</li>
+        </ul>
+        <div className="mt-4">
+          <Button to="/forms" rightIcon={<i className="bi bi-arrow-right"></i>}>
+            View Live Form Demos
+          </Button>
+        </div>
+         <CodeBlock>{`// All forms are built using the useForm hook and reusable UI components.
+import FormSimple from './components/ui/form/FormSimple';
+import FormWizard from './components/ui/form/FormWizard';
+
+<FormSimple />
+<FormWizard />
+// See the /forms page for detailed examples.`}</CodeBlock>
+      </ComponentSection>
 
        {/* Buttons - REVISED SECTION */}
       <ComponentSection title="Buttons">
@@ -242,6 +274,55 @@ const Documentation: React.FC = () => {
 {/* Checkbox */}
 <Checkbox id="unique-id" label="My Label" />`}</CodeBlock>
       </ComponentSection>
+
+      {/* Radio Buttons */}
+      <ComponentSection title="Radio Buttons">
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Default (Vertical)</h4>
+            <RadioGroup
+              label="Select a Plan"
+              name="plan-vertical"
+              options={radioOptions}
+              value={radioValue}
+              onChange={(e) => setRadioValue(e.target.value)}
+            />
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Horizontal</h4>
+            <RadioGroup
+              label="Select a Plan"
+              name="plan-horizontal"
+              options={radioOptions}
+              value={radioValue}
+              onChange={(e) => setRadioValue(e.target.value)}
+              direction="horizontal"
+            />
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">With Error</h4>
+            <RadioGroup
+              label="Select a Plan"
+              name="plan-error"
+              options={radioOptions}
+              value=""
+              onChange={() => {}}
+              error="This field is required."
+            />
+          </div>
+        </div>
+        <CodeBlock>{`const options = [
+  { value: 'basic', label: 'Basic' },
+  { value: 'premium', label: 'Premium' },
+];
+<RadioGroup
+  label="Select a Plan"
+  name="plan"
+  options={options}
+  {...getFieldProps('plan')}
+/>`}</CodeBlock>
+      </ComponentSection>
+
 
       {/* Alerts & Badges */}
       <ComponentSection title="Alerts & Badges">
