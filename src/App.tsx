@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 import Documentation from './pages/Documentation';
 import Tasks from './pages/Tasks';
 import CalendarPage from './pages/CalendarPage';
+import Appointments from './pages/Appointments';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/appointments" element={<Appointments />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/documentation" element={<Documentation />} />

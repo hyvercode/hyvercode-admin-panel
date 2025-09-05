@@ -16,7 +16,17 @@ import SplitButton from '../components/ui/SplitButton';
 import Dropdown from '../components/ui/Dropdown';
 import Calendar from '../components/ui/Calendar';
 import Checkbox from '../components/ui/Checkbox';
-import { CALENDAR_EVENTS_DATA } from '../constants';
+import Comment from '../components/ui/Comment';
+import CommentInput from '../components/ui/CommentInput';
+import CommentThread from '../components/ui/CommentThread';
+import DatePicker from '../components/ui/datetime/DatePicker';
+import TimePicker from '../components/ui/datetime/TimePicker';
+import DateRangePicker from '../components/ui/datetime/DateRangePicker';
+import TimeRangePicker from '../components/ui/datetime/TimeRangePicker';
+import { CALENDAR_EVENTS_DATA, COMMENTS_DATA } from '../constants';
+import { useAuth } from '../contexts/AuthContext';
+import { useForm, FormErrors } from '../hooks/useForm';
+
 
 const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
   <pre className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-4 text-sm text-neutral-800 dark:text-neutral-200 overflow-x-auto">
@@ -45,6 +55,31 @@ const tableColumns: Column<(typeof tableData)[0]>[] = [
 
 const Documentation: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { user } = useAuth();
+  
+  const handleCommentSubmit = (text: string, parentId: number | null) => {
+    console.log(`Submitting comment: "${text}" to parent: ${parentId}`);
+    alert('Comment submitted! Check the console.');
+  };
+
+  const { getFieldProps, errors } = useForm({
+      singleDate: '',
+      singleTime: '',
+      startDate: '2024-08-15',
+      endDate: '2024-08-10', // intentional error for demo
+      startTime: '14:00',
+      endTime: '11:00', // intentional error for demo
+    }, (values): FormErrors => {
+        const err: FormErrors = {};
+        if (values.startDate && values.endDate && values.startDate > values.endDate) {
+            err.rangeError = 'End date cannot be before start date.';
+        }
+         if (values.startTime && values.endTime && values.startTime > values.endTime) {
+            err.timeRangeError = 'End time must be after start time.';
+        }
+        return err;
+    }, () => {});
+
 
   return (
     <div>
@@ -128,6 +163,52 @@ const Documentation: React.FC = () => {
 </SplitButton>`}</CodeBlock>
       </ComponentSection>
 
+      {/* Date & Time Pickers */}
+      <ComponentSection title="Date & Time Pickers">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">A suite of components for selecting dates and times, with validation support.</p>
+        <div className="space-y-4">
+          <DatePicker label="Appointment Date" {...getFieldProps('singleDate')} />
+          <TimePicker label="Appointment Time" {...getFieldProps('singleTime')} />
+          <DateRangePicker
+            label="Date Range (with validation)"
+            startFieldProps={getFieldProps('startDate')}
+            endFieldProps={getFieldProps('endDate')}
+            rangeError={errors.rangeError}
+          />
+           <TimeRangePicker
+            label="Time Range (with validation)"
+            startFieldProps={getFieldProps('startTime')}
+            endFieldProps={getFieldProps('endTime')}
+            rangeError={errors.timeRangeError}
+          />
+        </div>
+        <CodeBlock>{`// Single Pickers
+<DatePicker label="Date" {...getFieldProps('date')} />
+<TimePicker label="Time" {...getFieldProps('time')} />
+
+// Range Pickers
+<DateRangePicker
+  label="Date Range"
+  startFieldProps={getFieldProps('startDate')}
+  endFieldProps={getFieldProps('endDate')}
+  rangeError={errors.rangeError}
+/>`}</CodeBlock>
+      </ComponentSection>
+
+      {/* Comments */}
+      <ComponentSection title="Comments">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">A suite of components for discussions and threads.</p>
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2 mt-4">Single Comment</h4>
+        <Comment author="Alice" timestamp="2 hours ago" avatarSrc="https://picsum.photos/50/50?random=1" actions={<Button variant="link" size="sm">Reply</Button>}>
+          This is a sample comment to demonstrate the component's appearance.
+        </Comment>
+        <CodeBlock>{`<Comment author="Alice" timestamp="2h ago" avatarSrc="...">...</Comment>`}</CodeBlock>
+        
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2 mt-6">Comment Thread</h4>
+        <CommentThread comments={COMMENTS_DATA.filter(c => c.taskId === 1)} onCommentSubmit={handleCommentSubmit} />
+        <CodeBlock>{`<CommentThread comments={...} onCommentSubmit={...} />`}</CodeBlock>
+      </ComponentSection>
+
       {/* Calendar */}
       <ComponentSection title="Calendar">
         <p className="mb-4 text-neutral-700 dark:text-neutral-300">A component to display events in a monthly view.</p>
@@ -159,11 +240,7 @@ const Documentation: React.FC = () => {
 <Select label="Project" id="doc-project" options={[...]} />
 
 {/* Checkbox */}
-<Checkbox id="unique-id" label="My Label" />
-<Checkbox id="desc-id" label="With Description" description="..." />
-<Checkbox id="checked-id" label="Pre-checked" defaultChecked />
-<Checkbox id="disabled-id" label="Disabled" disabled />
-<Checkbox id="error-id" label="With Error" error="This field is required." />`}</CodeBlock>
+<Checkbox id="unique-id" label="My Label" />`}</CodeBlock>
       </ComponentSection>
 
       {/* Alerts & Badges */}
@@ -203,11 +280,7 @@ const Documentation: React.FC = () => {
       {/* Table */}
       <ComponentSection title="Table">
         <Table columns={tableColumns} data={tableData} />
-        <CodeBlock>{`const columns = [
-  { header: 'Name', accessor: 'name' },
-  { header: 'Type', accessor: 'type' },
-  { header: 'Status', accessor: item => <Badge ... /> }
-];
+        <CodeBlock>{`const columns = [...];
 <Table columns={columns} data={data} />`}</CodeBlock>
       </ComponentSection>
       
@@ -233,11 +306,7 @@ const Documentation: React.FC = () => {
                   </div>
               )}
           </Tabs>
-          <CodeBlock>{`<Tabs tabs={[...]}>
-  {(activeTab) => (
-    //... render content based on activeTab
-  )}
-</Tabs>`}</CodeBlock>
+          <CodeBlock>{`<Tabs tabs={[...]} />`}</CodeBlock>
       </ComponentSection>
       
     </div>

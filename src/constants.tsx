@@ -1,4 +1,4 @@
-import type { NavItem, User, Task, CalendarEvent } from './types';
+import type { NavItem, User, Task, CalendarEvent, Comment } from './types';
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -20,6 +20,11 @@ export const NAV_ITEMS: NavItem[] = [
     path: '/calendar',
     name: 'Calendar',
     icon: 'bi-calendar-event-fill',
+  },
+  {
+    path: '/appointments',
+    name: 'Appointments',
+    icon: 'bi-clock-history',
   },
   {
     path: '/settings',
@@ -63,4 +68,12 @@ export const CALENDAR_EVENTS_DATA: CalendarEvent[] = [
     { id: 4, title: 'Server Maintenance', date: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-10`, category: 'danger' },
     { id: 5, title: 'Quarterly Report Due', date: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-15`, category: 'warning' },
     { id: 6, title: 'All-Hands Meeting', date: `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-22`, category: 'primary' },
+];
+
+export const COMMENTS_DATA: Omit<Comment, 'replies'>[] = [
+  { id: 1, taskId: 1, authorId: 1, parentId: null, content: "Great start on the mockups, Bob! Can we explore a version with a darker color palette?", timestamp: "2 hours ago" },
+  { id: 2, taskId: 1, authorId: 2, parentId: 1, content: "Absolutely, Alice. I'll work on a dark-themed version and share it by EOD.", timestamp: "1 hour ago" },
+  { id: 3, taskId: 1, authorId: 4, parentId: null, content: "Looking forward to seeing the final designs. Let me know if you need any copy suggestions.", timestamp: "3 hours ago" },
+  { id: 4, taskId: 2, authorId: 5, parentId: null, content: "The authentication flow is more complex than initially thought. We need to account for OAuth providers.", timestamp: "1 day ago" },
+  { id: 5, taskId: 1, authorId: 1, parentId: 2, content: "Perfect, thanks Bob!", timestamp: "30 minutes ago" },
 ];

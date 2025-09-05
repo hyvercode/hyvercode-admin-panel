@@ -1,3 +1,4 @@
+import { NavLinkProps } from 'react-router-dom';
 
 export interface NavItem {
   path: string;
@@ -30,4 +31,14 @@ export interface CalendarEvent {
   title: string;
   date: string; // YYYY-MM-DD
   category: 'primary' | 'success' | 'danger' | 'warning';
+}
+
+export interface Comment {
+  id: number;
+  taskId: number;
+  authorId: number;
+  parentId: number | null;
+  content: string;
+  timestamp: string;
+  replies?: Comment[];
 }
