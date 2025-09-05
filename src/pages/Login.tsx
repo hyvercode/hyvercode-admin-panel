@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useForm, FormErrors } from '../hooks/useForm';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Alert from '../components/ui/Alert';
 
+const validate = (values: { email: string; password: string }): FormErrors => {
+  const errors: FormErrors = {};
+  if (!values.email) {
+    errors.email = 'Email address is required.';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address.';
+  }
+  if (!values.password) {
+    errors.password = 'Password is required.';
+  }
+  return errors;
+};
+
+
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [apiError, setApiError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -17,19 +30,24 @@ const Login: React.FC = () => {
 
   const from = location.state?.from?.pathname || '/';
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const handleLoginSubmit = async (values: {email: string, password: string}) => {
+    setApiError('');
     setIsLoading(true);
     try {
-      await login(email, password);
+      await login(values.email, values.password);
       navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err.message || 'Failed to log in.');
+      setApiError(err.message || 'Failed to log in.');
     } finally {
       setIsLoading(false);
     }
   };
+  
+  const { getFieldProps, handleSubmit } = useForm(
+    { email: '', password: '' },
+    validate,
+    handleLoginSubmit
+  );
 
   return (
     <>
@@ -37,29 +55,21 @@ const Login: React.FC = () => {
         Sign in to your account
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <Alert variant="danger">{error}</Alert>}
+        {apiError && <Alert variant="danger">{apiError}</Alert>}
         <Input
           label="Email address"
-          id="email"
-          name="email"
           type="email"
           autoComplete="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="admin@example.com"
+          {...getFieldProps('email')}
         />
 
         <Input
           label="Password"
-          id="password"
-          name="password"
           type="password"
           autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
+          {...getFieldProps('password')}
         />
         
         <div className="flex items-center justify-between">

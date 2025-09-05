@@ -11,6 +11,11 @@ import Tabs from '../components/ui/Tabs';
 import Avatar from '../components/ui/Avatar';
 import Tooltip from '../components/ui/Tooltip';
 import Table, { Column } from '../components/ui/Table';
+import ButtonGroup from '../components/ui/ButtonGroup';
+import SplitButton from '../components/ui/SplitButton';
+import Dropdown from '../components/ui/Dropdown';
+import Calendar from '../components/ui/Calendar';
+import { CALENDAR_EVENTS_DATA } from '../constants';
 
 const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
   <pre className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg mt-4 text-sm text-neutral-800 dark:text-neutral-200 overflow-x-auto">
@@ -47,24 +52,90 @@ const Documentation: React.FC = () => {
         breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Documentation', path: '/documentation' }]}
       />
 
-      {/* Buttons */}
+       {/* Buttons - REVISED SECTION */}
       <ComponentSection title="Buttons">
-        <div className="space-x-2 space-y-2">
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Variants</h4>
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="danger">Danger</Button>
           <Button variant="subtle">Subtle</Button>
           <Button variant="link">Link</Button>
+        </div>
+        <CodeBlock>{`<Button variant="primary">Primary</Button>`}</CodeBlock>
+
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mt-6 mb-2">With Icons</h4>
+         <div className="flex flex-wrap items-center gap-2">
+            <Button variant="primary" leftIcon={<i className="bi bi-star-fill"></i>}>Left Icon</Button>
+            <Button variant="secondary" rightIcon={<i className="bi bi-arrow-right"></i>}>Right Icon</Button>
+        </div>
+        <CodeBlock>{`<Button leftIcon={<i />} rightIcon={<i />}>...</Button>`}</CodeBlock>
+
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mt-6 mb-2">Icon-only Buttons</h4>
+        <div className="flex flex-wrap items-center gap-2">
+          <Tooltip content="Add Item">
+            <Button variant="primary" size="icon" aria-label="Add Item"><i className="bi bi-plus-lg"></i></Button>
+          </Tooltip>
+          <Tooltip content="Settings">
+            <Button variant="secondary" size="icon" aria-label="Settings"><i className="bi bi-gear-fill"></i></Button>
+          </Tooltip>
+          <Tooltip content="Delete">
+            <Button variant="danger" size="icon" aria-label="Delete"><i className="bi bi-trash-fill"></i></Button>
+          </Tooltip>
+        </div>
+        <CodeBlock>{`<Button size="icon" aria-label="..."><i /></Button>`}</CodeBlock>
+
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mt-6 mb-2">Link Buttons</h4>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button to="/settings" variant="primary">Internal Link</Button>
+          <Button href="https://google.com" target="_blank" variant="secondary">External Link</Button>
+        </div>
+        <CodeBlock>{`<Button to="/internal">...</Button>
+<Button href="https://..." target="_blank">...</Button>`}</CodeBlock>
+
+        <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mt-6 mb-2">States</h4>
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="primary" isLoading>Loading</Button>
           <Button variant="primary" disabled>Disabled</Button>
         </div>
-        <CodeBlock>{`<Button variant="primary">Primary</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="danger">Danger</Button>
-<Button variant="subtle">Subtle</Button>
-<Button variant="link">Link</Button>
-<Button variant="primary" isLoading>Loading</Button>
-<Button variant="primary" disabled>Disabled</Button>`}</CodeBlock>
+        <CodeBlock>{`<Button isLoading>Loading</Button>
+<Button disabled>Disabled</Button>`}</CodeBlock>
+      </ComponentSection>
+
+      {/* ButtonGroup and SplitButton */}
+       <ComponentSection title="Button Groups & Split Buttons">
+          <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Button Group</h4>
+          <ButtonGroup>
+            <Button variant="secondary">Years</Button>
+            <Button variant="secondary">Months</Button>
+            <Button variant="secondary">Days</Button>
+          </ButtonGroup>
+          <CodeBlock>{`<ButtonGroup>
+  <Button>...</Button>
+  <Button>...</Button>
+</ButtonGroup>`}</CodeBlock>
+
+          <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200 mt-6 mb-2">Split Button</h4>
+          <SplitButton label="Primary Action" onClick={() => alert('Primary action!')}>
+              <Dropdown.Item>Action One</Dropdown.Item>
+              <Dropdown.Item>Action Two</Dropdown.Item>
+              <Dropdown.Item>Another Action</Dropdown.Item>
+          </SplitButton>
+          <CodeBlock>{`<SplitButton label="Primary Action" onClick={...}>
+  <Dropdown.Item>...</Dropdown.Item>
+  <Dropdown.Item>...</Dropdown.Item>
+</SplitButton>`}</CodeBlock>
+      </ComponentSection>
+
+      {/* Calendar */}
+      <ComponentSection title="Calendar">
+        <p className="mb-4 text-neutral-700 dark:text-neutral-300">A component to display events in a monthly view.</p>
+        <Calendar events={CALENDAR_EVENTS_DATA.slice(0, 3)} />
+        <CodeBlock>{`const myEvents = [
+  { id: 1, title: 'Team Meeting', date: '2024-08-02', category: 'primary' },
+  { id: 2, title: 'Product Launch', date: '2024-08-05', category: 'success' },
+];
+<Calendar events={myEvents} />`}</CodeBlock>
       </ComponentSection>
 
       {/* Inputs */}

@@ -1,13 +1,23 @@
 import React from 'react';
+import { Link, To } from 'react-router-dom';
 import Spinner from './Spinner';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+// Omit 'children' from element attributes as we handle it explicitly
+type ButtonElementProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;
+type AnchorElementProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'children'>;
+
+interface ButtonProps extends ButtonElementProps {
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'danger' | 'subtle' | 'link';
   size?: 'default' | 'sm' | 'sm-icon' | 'icon';
   isLoading?: boolean;
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  to?: To;
+  href?: string;
+  // FIX: Added to support target attribute for links, resolving an error in Documentation.tsx
+  target?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +27,9 @@ const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   fullWidth = false,
   leftIcon,
+  rightIcon,
+  to,
+  href,
   ...props
 }) => {
   const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed transition-colors duration-200';
@@ -39,20 +52,50 @@ const Button: React.FC<ButtonProps> = ({
   const widthClass = fullWidth ? 'w-full' : '';
   const disabled = props.disabled || isLoading;
 
-  return (
-    <button
-      {...props}
-      disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${props.className || ''}`}
-    >
+  const className = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${props.className || ''}`;
+
+  const content = (
+    <>
       {isLoading ? (
         <Spinner size="sm" />
       ) : (
         <>
           {leftIcon && <span className={children ? 'mr-2' : ''}>{leftIcon}</span>}
           {children}
+          {rightIcon && <span className={children ? 'ml-2' : ''}>{rightIcon}</span>}
         </>
       )}
+    </>
+  );
+
+  if (to) {
+    // Note: React Router's Link doesn't have a 'disabled' prop in the same way a button does.
+    // We can prevent navigation using styles and by stopping the event, but for simplicity,
+    // we rely on the disabled styles to indicate its state.
+    // FIX: Corrected type casting to resolve type incompatibility between Button and Anchor props.
+    return (
+      <Link to={to} className={className} {...(props as unknown as AnchorElementProps)} aria-disabled={disabled}>
+        {content}
+      </Link>
+    );
+  }
+
+  if (href) {
+    // FIX: Corrected type casting to resolve type incompatibility between Button and Anchor props.
+    return (
+      <a href={href} className={className} {...(props as unknown as AnchorElementProps)} aria-disabled={disabled}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      {...(props as ButtonElementProps)}
+      disabled={disabled}
+      className={className}
+    >
+      {content}
     </button>
   );
 };
