@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useForm, FormErrors } from '../hooks/useForm';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 
+const validate = (values: { email: string }): FormErrors => {
+  const errors: FormErrors = {};
+  if (!values.email) {
+    errors.email = 'Email address is required.';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address.';
+  }
+  return errors;
+};
+
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleForgotSubmit = () => {
     setIsLoading(true);
     // Mock API call
     setTimeout(() => {
@@ -17,6 +26,12 @@ const ForgotPassword: React.FC = () => {
       setIsSubmitted(true);
     }, 1000);
   };
+  
+  const { getFieldProps, handleSubmit } = useForm(
+    { email: '' },
+    validate,
+    handleForgotSubmit
+  );
 
   return (
     <>
@@ -33,13 +48,9 @@ const ForgotPassword: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <Input
             label="Email address"
-            id="email"
-            name="email"
             type="email"
             autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...getFieldProps('email')}
           />
           <div>
             <Button

@@ -1,14 +1,50 @@
 import React from 'react';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import Textarea from '../components/ui/Textarea';
+import { useForm, FormErrors } from '../hooks/useForm';
+
+const validate = (values: Record<string, string>): FormErrors => {
+  const errors: FormErrors = {};
+  if (!values.fullName) {
+    errors.fullName = 'Full name is required.';
+  }
+  if (!values.email) {
+    errors.email = 'Email is required.';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address.';
+  }
+  if (values.newPassword && values.newPassword.length < 6) {
+    errors.newPassword = 'New password must be at least 6 characters.';
+  }
+  return errors;
+};
 
 const Settings: React.FC = () => {
+  const handleSettingsSubmit = (values: Record<string, string>) => {
+    // In a real app, you would make an API call here.
+    console.log('Form submitted successfully:', values);
+    alert('Settings saved!');
+  };
+
+  const { getFieldProps, handleSubmit } = useForm(
+    {
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      bio: 'Administrator and lead developer.',
+      currentPassword: '',
+      newPassword: '',
+    },
+    validate,
+    handleSettingsSubmit
+  );
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Settings</h2>
 
       <div className="bg-neutral-0 dark:bg-neutral-1000 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 p-8">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Profile Settings */}
             <div className="md:col-span-2">
@@ -16,24 +52,20 @@ const Settings: React.FC = () => {
             </div>
             <Input
               label="Full Name"
-              id="fullName"
               type="text"
-              defaultValue="John Doe"
+              {...getFieldProps('fullName')}
             />
             <Input
               label="Email Address"
-              id="email"
               type="email"
-              defaultValue="john.doe@example.com"
+              {...getFieldProps('email')}
             />
             <div className="md:col-span-2">
-              <label htmlFor="bio" className="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-300">Biography</label>
-              <textarea 
-                id="bio" 
-                rows={4} 
-                className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white"
-                defaultValue="Administrator and lead developer."
-              ></textarea>
+               <Textarea
+                  label="Biography"
+                  rows={4}
+                  {...getFieldProps('bio')}
+                />
             </div>
 
             {/* Security Settings */}
@@ -42,13 +74,13 @@ const Settings: React.FC = () => {
             </div>
              <Input
               label="Current Password"
-              id="currentPassword"
               type="password"
+              {...getFieldProps('currentPassword')}
             />
              <Input
               label="New Password"
-              id="newPassword"
               type="password"
+              {...getFieldProps('newPassword')}
             />
           </div>
 
