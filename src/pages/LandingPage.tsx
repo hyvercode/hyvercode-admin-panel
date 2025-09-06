@@ -12,7 +12,7 @@ const LandingPage: React.FC = () => {
           A powerful and feature-rich dashboard built with modern web technologies to manage your application with ease.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <Button to="/dashboard" size="default">Go to Dashboard</Button>
+          <Button to="/admin/dashboard" size="default">Go to Dashboard</Button>
           <Button to="/sample/products" variant="secondary" size="default">View Sample Pages</Button>
         </div>
       </div>

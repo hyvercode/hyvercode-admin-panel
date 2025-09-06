@@ -45,7 +45,7 @@ const Toggles: React.FC = () => {
         <div>
             <PageHeader
                 title="Toggle & Switch Components"
-                breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Toggles', path: '/toggles' }]}
+                breadcrumbs={[{ name: 'Home', path: '/admin/dashboard' }, { name: 'Toggles', path: '/admin/toggles' }]}
             />
 
             <form onSubmit={handleFormSubmit}>

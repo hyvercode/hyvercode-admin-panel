@@ -125,7 +125,7 @@ const AdvancedSelects: React.FC = () => {
     <div>
       <PageHeader
         title="Advanced Selects"
-        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Advanced Selects', path: '/advanced-selects' }]}
+        breadcrumbs={[{ name: 'Home', path: '/admin/dashboard' }, { name: 'Advanced Selects', path: '/admin/advanced-selects' }]}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
