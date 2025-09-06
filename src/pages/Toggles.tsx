@@ -1,98 +1,88 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
-import Button from '../components/ui/Button';
-import { useForm, FormErrors } from '../hooks/useForm';
-
+import Card from '../components/ui/card/Card';
 import Toggle from '../components/ui/toggle/Toggle';
 import ToggleCard from '../components/ui/toggle/ToggleCard';
 import ToggleGroup from '../components/ui/toggle/ToggleGroup';
-
-const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="bg-neutral-0 dark:bg-neutral-1000 p-6 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-8">
-    <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">{title}</h3>
-    {children}
-  </div>
-);
-
-const validateToggles = (values: { emailNotifications: boolean; pushNotifications: boolean }): FormErrors => {
-    const errors: FormErrors = {};
-    if (values.emailNotifications === false && values.pushNotifications === false) {
-        errors.notificationGroup = "At least one notification method must be enabled.";
-    }
-    return errors;
-};
-
+import { useForm } from '../hooks/useForm';
+import Button from '../components/ui/Button';
 
 const Toggles: React.FC = () => {
-    const handleSubmit = (values: any) => {
-        alert('Toggle settings saved! Check console.');
-        console.log('Toggle Form Data:', values);
+
+     const handleSubmit = (values: any) => {
+        alert('Settings saved! Check console.');
+        console.log('Toggle Settings:', values);
     };
 
     const { getFieldProps, handleSubmit: handleFormSubmit } = useForm(
         {
-            darkMode: true,
-            autoSave: false,
             emailNotifications: true,
             pushNotifications: false,
-            notificationGroup: null, // Dummy field for group-level error
+            smsNotifications: false,
+            darkMode: true,
+            autoSave: false,
         },
-        validateToggles,
+        () => ({}), // No validation
         handleSubmit
     );
 
     return (
         <div>
             <PageHeader
-                title="Toggle & Switch Components"
-                breadcrumbs={[{ name: 'Home', path: '/admin/dashboard' }, { name: 'Toggles', path: '/admin/toggles' }]}
+                title="Toggles & Switches"
+                breadcrumbs={[{ name: 'UI Components', path: '#' }, { name: 'Toggles', path: '/admin/components/toggles' }]}
             />
+            <Card>
+                <Card.Header><h3 className="font-semibold">Notification Settings</h3></Card.Header>
+                <Card.Body>
+                    <form onSubmit={handleFormSubmit}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <ToggleGroup label="Standard Toggles">
+                                <Toggle
+                                    label="Email Notifications"
+                                    description="Receive updates via email."
+                                    {...getFieldProps('emailNotifications')}
+                                />
+                                <Toggle
+                                    label="Push Notifications"
+                                    description="Get real-time alerts on your devices."
+                                    {...getFieldProps('pushNotifications')}
+                                />
+                                <Toggle
+                                    label="SMS Notifications"
+                                    description="Receive critical alerts via text."
+                                    {...getFieldProps('smsNotifications')}
+                                />
+                                <Toggle
+                                    label="Disabled Option"
+                                    description="This option cannot be changed."
+                                    id="disabled-toggle"
+                                    disabled
+                                />
+                            </ToggleGroup>
 
-            <form onSubmit={handleFormSubmit}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <ComponentSection title="Standard Toggles">
-                        <ToggleGroup label="General Settings">
-                            <Toggle
-                                label="Dark Mode"
-                                description="Enable the dark theme."
-                                {...getFieldProps('darkMode')}
-                            />
-                            <Toggle
-                                label="Auto-Save"
-                                description="Automatically save your changes."
-                                {...getFieldProps('autoSave')}
-                            />
-                            <Toggle
-                                label="Disabled Toggle"
-                                description="This option is currently unavailable."
-                                id="disabled-toggle"
-                                name="disabled-toggle"
-                                disabled
-                            />
-                        </ToggleGroup>
-                    </ComponentSection>
-
-                    <ComponentSection title="Toggle Cards">
-                        <ToggleGroup label="Notification Preferences" error={getFieldProps('notificationGroup').error}>
-                            <ToggleCard
-                                icon={<i className="bi bi-envelope-fill"></i>}
-                                title="Email Notifications"
-                                description="Receive updates in your inbox."
-                                {...getFieldProps('emailNotifications')}
-                            />
-                            <ToggleCard
-                                icon={<i className="bi bi-phone-fill"></i>}
-                                title="Push Notifications"
-                                description="Get alerts on your mobile device."
-                                {...getFieldProps('pushNotifications')}
-                            />
-                        </ToggleGroup>
-                    </ComponentSection>
-                </div>
-                <div className="mt-8 flex justify-end">
-                    <Button type="submit">Save Preferences</Button>
-                </div>
-            </form>
+                            <ToggleGroup label="Toggle Cards">
+                                <ToggleCard
+                                    icon={<i className="bi bi-moon-stars-fill"></i>}
+                                    title="Enable Dark Mode"
+                                    description="Switch to a darker, eye-friendly interface."
+                                    {...getFieldProps('darkMode')}
+                                />
+                                 <ToggleCard
+                                    icon={<i className="bi bi-save-fill"></i>}
+                                    title="Auto-Save Drafts"
+                                    description="Automatically save your work in the background."
+                                    {...getFieldProps('autoSave')}
+                                />
+                            </ToggleGroup>
+                        </div>
+                        <div className="flex justify-end mt-8 pt-4 border-t dark:border-neutral-800">
+                            <Button type="submit">Save Preferences</Button>
+                        </div>
+                    </form>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

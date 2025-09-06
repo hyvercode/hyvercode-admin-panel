@@ -1,83 +1,68 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
+import Card from '../components/ui/card/Card';
 import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-import DateRangePicker from '../components/ui/datetime/DateRangePicker';
-import TimeRangePicker from '../components/ui/datetime/TimeRangePicker';
-import { useForm, FormErrors } from '../hooks/useForm';
+import { USERS_DATA } from '../constants';
+import Avatar from '../components/ui/avatar/Avatar';
+import DatePicker from '../components/ui/datetime/DatePicker';
 
-const validate = (values: any): FormErrors => {
-  const errors: FormErrors = {};
-  if (!values.requestType) errors.requestType = 'Request type is required.';
-  if (!values.startDate) errors.startDate = 'Start date is required.';
-  if (!values.endDate) errors.endDate = 'End date is required.';
-  
-  if (values.startDate && values.endDate && values.startDate > values.endDate) {
-    errors.rangeError = 'End date cannot be before start date.';
-  }
-
-  if (values.startTime && values.endTime && values.startTime >= values.endTime) {
-    errors.timeRangeError = 'End time must be after start time.';
-  }
-  
-  return errors;
-};
+const appointments = [
+    { time: '9:00 AM', user: USERS_DATA[1], service: 'Frontend Consultation' },
+    { time: '11:00 AM', user: USERS_DATA[3], service: 'Backend Architecture Review' },
+    { time: '2:00 PM', user: USERS_DATA[2], service: 'UI/UX Design Sync' },
+];
 
 const Appointments: React.FC = () => {
-  const handleSubmit = (values: Record<string, any>) => {
-    console.log('Form Submitted:', values);
-    alert('Request submitted successfully! Check the console.');
-  };
+    return (
+        <div>
+            <PageHeader
+                title="Appointments"
+                breadcrumbs={[{ name: 'Scheduling', path: '#' }, { name: 'Appointments', path: '/admin/appointments' }]}
+                actions={<Button leftIcon={<i className="bi bi-plus-lg"></i>}>New Appointment</Button>}
+            />
 
-  const { getFieldProps, handleSubmit: handleFormSubmit, errors } = useForm(
-    {
-      requestType: 'Vacation',
-      startDate: '',
-      endDate: '',
-      startTime: '09:00',
-      endTime: '17:00',
-    },
-    validate,
-    handleSubmit
-  );
-
-  return (
-    <div>
-      <PageHeader
-        title="Schedule Appointment"
-        // FIX: Added missing 'path' property to breadcrumb item to match BreadcrumbItem type.
-        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Appointments', path: '/appointments' }]}
-      />
-
-      <div className="bg-neutral-0 dark:bg-neutral-1000 p-8 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900">
-        <form onSubmit={handleFormSubmit} className="space-y-6">
-          <Input
-            label="Request Type / Title"
-            id="requestType"
-            {...getFieldProps('requestType')}
-          />
-          <DateRangePicker
-            label="Date Range"
-            startFieldProps={getFieldProps('startDate')}
-            endFieldProps={getFieldProps('endDate')}
-            rangeError={errors.rangeError}
-          />
-          <TimeRangePicker
-            label="Time Range (Optional)"
-            startFieldProps={getFieldProps('startTime')}
-            endFieldProps={getFieldProps('endTime')}
-            rangeError={errors.timeRangeError}
-          />
-          
-          <div className="pt-4 flex justify-end">
-            <Button type="submit">
-              Submit Request
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                    <Card>
+                        <Card.Header>
+                            <h3 className="font-semibold">Today's Schedule</h3>
+                        </Card.Header>
+                        <Card.Body>
+                            <ul className="divide-y divide-neutral-200 dark:divide-neutral-800">
+                                {appointments.map(appt => (
+                                    <li key={appt.time} className="py-4 flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            <span className="font-mono text-sm bg-neutral-100 dark:bg-neutral-900 px-3 py-1 rounded-md">{appt.time}</span>
+                                            <div className="ml-4">
+                                                <p className="font-semibold">{appt.service}</p>
+                                                <div className="flex items-center text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                                                    <Avatar name={appt.user.name} size="sm" src={`https://i.pravatar.cc/40?u=${appt.user.email}`} />
+                                                    <span className="ml-2">{appt.user.name}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button variant="subtle" size="sm">Details</Button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Card.Body>
+                    </Card>
+                </div>
+                <div className="lg:col-span-1">
+                     <Card>
+                        <Card.Header>
+                           <h3 className="font-semibold">Check Availability</h3>
+                        </Card.Header>
+                        <Card.Body className="space-y-4">
+                            <DatePicker id="appointment-date" label="Select a Date" defaultValue={new Date().toISOString().split('T')[0]} />
+                            <Button fullWidth>Find Slots</Button>
+                        </Card.Body>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Appointments;

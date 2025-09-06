@@ -1,133 +1,128 @@
-import React from 'react';
+
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// Layouts
-import AuthLayout from './components/AuthLayout';
-import DashboardLayout from './components/DashboardLayout';
-import PublicLayout from './components/PublicLayout';
-
-// Route Guards
 import PrivateRoute from './components/PrivateRoute';
+import DashboardLayout from './components/DashboardLayout';
+import AuthLayout from './components/AuthLayout';
+import PublicLayout from './components/PublicLayout';
+import Spinner from './components/ui/loading/Spinner';
+import { ToastProvider } from './contexts/ToastContext';
 
-// Pages
-import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-import Tasks from './pages/Tasks';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import Documentation from './pages/Documentation';
-import Boards from './pages/Boards';
-import Forms from './pages/Forms';
-import Tables from './pages/Tables';
-import Content from './pages/Content';
-import Overlays from './pages/Overlays';
-import Navigation from './pages/Navigation';
-import Avatars from './pages/Avatars';
-import Icons from './pages/Icons';
-import Images from './pages/Images';
-import Loaders from './pages/Loaders';
-import TextFields from './pages/TextFields';
-import Toggles from './pages/Toggles';
-import Feedback from './pages/Feedback';
-import AdvancedSelects from './pages/AdvancedSelects';
-import Editor from './pages/Editor';
-import Appointments from './pages/Appointments';
-import CalendarPage from './pages/CalendarPage';
-
-// Sample Pages
-import PointOfSale from './pages/samples/PointOfSale';
-import OnlineCourse from './pages/samples/OnlineCourse';
-import Chat from './pages/samples/Chat';
-import AIChatAssistant from './pages/samples/AIChatAssistant';
-import Checkout from './pages/samples/Checkout';
-import ProductCatalog from './pages/samples/ProductCatalog';
-import ProductDetail from './pages/samples/ProductDetail';
-import Blog from './pages/samples/Blog';
-import LandingPage from './pages/LandingPage';
+// Lazy load pages for better performance
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Users = lazy(() => import('./pages/Users'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Settings = lazy(() => import('./pages/Settings'));
+const Forms = lazy(() => import('./pages/Forms'));
+const Tables = lazy(() => import('./pages/Tables'));
+const AdvancedSelects = lazy(() => import('./pages/AdvancedSelects'));
+const Avatars = lazy(() => import('./pages/Avatars'));
+const Boards = lazy(() => import('./pages/Boards'));
+const CalendarPage = lazy(() => import('./pages/CalendarPage'));
+const Content = lazy(() => import('./pages/Content'));
+const Documentation = lazy(() => import('./pages/Documentation'));
+const Editor = lazy(() => import('./pages/Editor'));
+const Feedback = lazy(() => import('./pages/Feedback'));
+const Icons = lazy(() => import('./pages/Icons'));
+const Images = lazy(() => import('./pages/Images'));
+const Loaders = lazy(() => import('./pages/Loaders'));
+const Navigation = lazy(() => import('./pages/Navigation'));
+const Overlays = lazy(() => import('./pages/Overlays'));
+const Tasks = lazy(() => import('./pages/Tasks'));
+const TextFields = lazy(() => import('./pages/TextFields'));
+const Toggles = lazy(() => import('./pages/Toggles'));
+const Appointments = lazy(() => import('./pages/Appointments'));
 
 // ERP Pages
-import ErpProducts from './pages/erp/Products';
-import ErpOrders from './pages/erp/Orders';
-import ErpCustomers from './pages/erp/Customers';
+const ERPProducts = lazy(() => import('./pages/erp/Products'));
+const ERPOrders = lazy(() => import('./pages/erp/Orders'));
+const ERPCustomers = lazy(() => import('./pages/erp/Customers'));
 
-import { ToastProvider } from './contexts/ToastContext';
+
+// Auth Pages
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+
+// Public / Sample Pages
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const ProductCatalog = lazy(() => import('./pages/samples/ProductCatalog'));
+const ProductDetail = lazy(() => import('./pages/samples/ProductDetail'));
+const Checkout = lazy(() => import('./pages/samples/Checkout'));
+const Blog = lazy(() => import('./pages/samples/Blog'));
+const Chat = lazy(() => import('./pages/samples/Chat'));
+const POS = lazy(() => import('./pages/samples/PointOfSale'));
+const OnlineCourse = lazy(() => import('./pages/samples/OnlineCourse'));
+const AIChatAssistant = lazy(() => import('./pages/samples/AIChatAssistant'));
+
 
 const App: React.FC = () => {
   return (
     <ToastProvider>
-      <Routes>
-        {/* Public Routes with Cart */}
-        <Route element={<PublicLayout />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/sample/products" element={<ProductCatalog />} />
-            <Route path="/sample/products/:productId" element={<ProductDetail />} />
-            <Route path="/sample/checkout" element={<Checkout />} />
-            <Route path="/sample/blog" element={<Blog />} />
-            <Route path="/sample/course" element={<OnlineCourse />} />
-        </Route>
-        
-        {/* Auth Routes */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-        </Route>
+      <Suspense fallback={
+        <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
+          <Spinner size="lg" className="text-primary" />
+        </div>
+      }>
+        <Routes>
+          {/* Auth Routes */}
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Route>
 
-        {/* Private Routes (Dashboard) */}
-        {/* FIX: Refactored to use idiomatic react-router-dom v6 private routes.
-            The PrivateRoute component acts as a layout route, which then renders
-            the DashboardLayout for all nested admin routes. This resolves the type error. */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/admin" element={<DashboardLayout />}>
-              <Route index element={<Navigate to="dashboard" replace />} />
+          {/* Private Admin Routes */}
+          <Route path="/admin" element={<PrivateRoute />}>
+            <Route element={<DashboardLayout />}>
               <Route path="dashboard" element={<Dashboard />} />
-              
-              {/* Management */}
               <Route path="users" element={<Users />} />
               <Route path="profile/:userId" element={<Profile />} />
-              <Route path="tasks" element={<Tasks />} />
-
-              {/* ERP */}
-              <Route path="erp/products" element={<ErpProducts />} />
-              <Route path="erp/orders" element={<ErpOrders />} />
-              <Route path="erp/customers" element={<ErpCustomers />} />
-
-              {/* Demos */}
-              <Route path="documentation" element={<Documentation />} />
-              <Route path="boards" element={<Boards />} />
-              <Route path="forms" element={<Forms />} />
-              <Route path="tables" element={<Tables />} />
-              <Route path="content" element={<Content />} />
-              <Route path="overlays" element={<Overlays />} />
-              <Route path="navigation" element={<Navigation />} />
-              <Route path="avatars" element={<Avatars />} />
-              <Route path="icons" element={<Icons />} />
-              <Route path="images" element={<Images />} />
-              <Route path="loaders" element={<Loaders />} />
-              <Route path="text-fields" element={<TextFields />} />
-              <Route path="toggles" element={<Toggles />} />
-              <Route path="feedback" element={<Feedback />} />
-              <Route path="advanced-selects" element={<AdvancedSelects />} />
-              <Route path="editor" element={<Editor />} />
-              <Route path="appointments" element={<Appointments />} />
-              <Route path="calendar" element={<CalendarPage />} />
-              
-              {/* Sample Pages (Internal) */}
-              <Route path="sample/pos" element={<PointOfSale />} />
-              <Route path="sample/chat" element={<Chat />} />
-              <Route path="sample/ai-chat" element={<AIChatAssistant />} />
-              
-              {/* Settings */}
               <Route path="settings" element={<Settings />} />
-          </Route>
-        </Route>
+              <Route path="tasks" element={<Tasks />} />
+              <Route path="appointments" element={<Appointments />} />
+              <Route path="boards" element={<Boards />} />
+              <Route path="calendar" element={<CalendarPage />} />
+              <Route path="documentation" element={<Documentation />} />
+              <Route path="components/forms" element={<Forms />} />
+              <Route path="components/tables" element={<Tables />} />
+              <Route path="components/advanced-selects" element={<AdvancedSelects />} />
+              <Route path="components/avatars" element={<Avatars />} />
+              <Route path="components/content" element={<Content />} />
+              <Route path="components/editor" element={<Editor />} />
+              <Route path="components/feedback" element={<Feedback />} />
+              <Route path="components/icons" element={<Icons />} />
+              <Route path="components/images" element={<Images />} />
+              <Route path="components/loaders" element={<Loaders />} />
+              <Route path="components/navigation" element={<Navigation />} />
+              <Route path="components/overlays" element={<Overlays />} />
+              <Route path="components/text-fields" element={<TextFields />} />
+              <Route path="components/toggles" element={<Toggles />} />
 
-        {/* Not Found Route */}
-        <Route path="*" element={<div className="flex items-center justify-center h-screen">404 Not Found</div>} />
-      </Routes>
+              <Route path="erp/products" element={<ERPProducts />} />
+              <Route path="erp/orders" element={<ERPOrders />} />
+              <Route path="erp/customers" element={<ERPCustomers />} />
+              
+              <Route index element={<Navigate to="dashboard" />} />
+            </Route>
+          </Route>
+          
+          {/* Public Sample Routes */}
+          <Route path="/" element={<PublicLayout />}>
+              <Route index element={<LandingPage />} />
+              <Route path="sample/products" element={<ProductCatalog />} />
+              <Route path="sample/products/:productId" element={<ProductDetail />} />
+              <Route path="sample/checkout" element={<Checkout />} />
+              <Route path="sample/blog" element={<Blog />} />
+              <Route path="sample/chat" element={<Chat />} />
+              <Route path="sample/pos" element={<POS />} />
+              <Route path="sample/course" element={<OnlineCourse />} />
+              <Route path="sample/ai-assistant" element={<AIChatAssistant />} />
+          </Route>
+
+        </Routes>
+      </Suspense>
     </ToastProvider>
   );
 };

@@ -1,110 +1,71 @@
-import React, { useState, useMemo } from 'react';
+
+import React from 'react';
 import { ONLINE_COURSE_DATA, USERS_DATA } from '../../constants';
-import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/card/Card';
-import Accordion from '../../components/ui/navigation/Accordion';
-import Checkbox from '../../components/ui/Checkbox';
-import ProgressBar from '../../components/ui/loading/ProgressBar';
-import Tabs from '../../components/ui/navigation/Tabs';
 import AvatarItem from '../../components/ui/avatar/AvatarItem';
+import Button from '../../components/ui/Button';
+import ProgressBar from '../../components/ui/loading/ProgressBar';
+import Accordion from '../../components/ui/navigation/Accordion';
 
 const OnlineCourse: React.FC = () => {
     const course = ONLINE_COURSE_DATA;
     const instructor = USERS_DATA.find(u => u.id === course.instructorId);
 
-    const [activeLecture, setActiveLecture] = useState(course.modules[0].lectures[0].id);
-    const [completedLectures, setCompletedLectures] = useState<Set<string>>(new Set(['l1-1']));
-
-    const handleLectureToggle = (lectureId: string) => {
-        setCompletedLectures(prev => {
-            const newSet = new Set(prev);
-            if (newSet.has(lectureId)) {
-                newSet.delete(lectureId);
-            } else {
-                newSet.add(lectureId);
-            }
-            return newSet;
-        });
-    };
-
-    const { totalLectures, completionPercentage } = useMemo(() => {
-        const total = course.modules.reduce((sum, module) => sum + module.lectures.length, 0);
-        const completedCount = completedLectures.size;
-        const percentage = total > 0 ? (completedCount / total) * 100 : 0;
-        return { totalLectures: total, completionPercentage: percentage };
-    }, [course.modules, completedLectures]);
-
     return (
-        <div className="container mx-auto px-6 py-8">
-            <PageHeader title={course.title} />
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Main Content */}
-                <main className="lg:col-span-8">
-                    <Card>
-                        {/* Video Player Placeholder */}
-                        <div className="bg-neutral-900 aspect-video w-full flex items-center justify-center">
-                            <i className="bi bi-play-circle-fill text-6xl text-white/50"></i>
-                        </div>
-                        <Card.Body>
-                            <h2 className="text-2xl font-bold">{course.title}</h2>
-                            <div className="my-4">
-                                <ProgressBar progress={completionPercentage} showLabel />
-                                <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                                    {completedLectures.size} / {totalLectures} lectures completed
-                                </p>
-                            </div>
-                             <Tabs tabs={[{id: 'overview', label: 'Overview'}, {id: 'instructor', label: 'Instructor'}]}>
-                                {(activeTab) => (
-                                    <div>
-                                        {activeTab === 'overview' && <p className="text-neutral-700 dark:text-neutral-300">{course.description}</p>}
-                                        {activeTab === 'instructor' && instructor && (
-                                            <AvatarItem
-                                                avatarProps={{ name: instructor.name, src: `https://picsum.photos/80/80?random=${instructor.id}`, size: 'lg' }}
-                                                name={instructor.name}
-                                                description={instructor.role}
-                                            >
-                                                <p className="text-sm mt-2 text-neutral-700 dark:text-neutral-300">{instructor.bio}</p>
-                                            </AvatarItem>
-                                        )}
+        <div className="bg-neutral-100 dark:bg-neutral-1100">
+            <div className="container mx-auto px-6 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Course Content */}
+                    <div className="lg:col-span-2">
+                        <Card>
+                            <Card.Body>
+                                <h1 className="text-3xl font-bold">{course.title}</h1>
+                                <p className="mt-2 text-neutral-600 dark:text-neutral-400">{course.description}</p>
+                                {instructor && 
+                                    <div className="mt-4">
+                                        <AvatarItem 
+                                            avatarProps={{ name: instructor.name, src: `https://i.pravatar.cc/50?u=${instructor.email}` }}
+                                            name={instructor.name}
+                                            description="Lead Developer @ Company"
+                                        />
                                     </div>
-                                )}
-                             </Tabs>
-                        </Card.Body>
-                    </Card>
-                </main>
-
-                {/* Curriculum Sidebar */}
-                <aside className="lg:col-span-4">
-                    <Card className="lg:sticky top-24">
-                        <Card.Header><h3 className="font-bold">Course Content</h3></Card.Header>
-                        <Card.Body>
-                            <Accordion allowMultiple defaultOpenIndex={[0]}>
+                                }
+                            </Card.Body>
+                        </Card>
+                        
+                        <div className="mt-6">
+                            <h2 className="text-xl font-bold mb-4">Course Curriculum</h2>
+                            <Accordion allowMultiple>
                                 {course.modules.map(module => (
-                                    <Accordion.Item key={module.id} title={`${module.title} (${module.lectures.length} lectures)`}>
-                                        <ul className="space-y-2">
+                                    <Accordion.Item key={module.id} title={module.title}>
+                                        <ul className="space-y-3">
                                             {module.lectures.map(lecture => (
-                                                <li key={lecture.id}>
-                                                    <div 
-                                                        onClick={() => setActiveLecture(lecture.id)}
-                                                        className={`p-2 rounded-md cursor-pointer ${activeLecture === lecture.id ? 'bg-primary-background' : ''}`}
-                                                    >
-                                                        <Checkbox
-                                                            id={lecture.id}
-                                                            label={<span className="font-semibold">{lecture.title}</span>}
-                                                            checked={completedLectures.has(lecture.id)}
-                                                            onChange={() => handleLectureToggle(lecture.id)}
-                                                        />
-                                                        <p className="text-xs text-neutral-500 pl-7">{lecture.duration}</p>
+                                                <li key={lecture.id} className="flex items-center justify-between p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-900">
+                                                    <div className="flex items-center">
+                                                        <i className="bi bi-play-circle-fill text-primary mr-3"></i>
+                                                        <span>{lecture.title}</span>
                                                     </div>
+                                                    <span className="text-sm text-neutral-500">{lecture.duration}</span>
                                                 </li>
                                             ))}
                                         </ul>
                                     </Accordion.Item>
                                 ))}
                             </Accordion>
-                        </Card.Body>
-                    </Card>
-                </aside>
+                        </div>
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="lg:col-span-1">
+                        <Card>
+                            <Card.Body>
+                                <ProgressBar progress={25} showLabel />
+                                <p className="text-sm text-center my-2">25% Complete</p>
+                                <Button fullWidth size="default">Continue Learning</Button>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
             </div>
         </div>
     );

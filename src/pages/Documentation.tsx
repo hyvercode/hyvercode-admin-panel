@@ -1,59 +1,47 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/card/Card';
 import Button from '../components/ui/Button';
-import { Link } from 'react-router-dom';
-
-const ComponentCard: React.FC<{ title: string; description: string; to: string }> = ({ title, description, to }) => (
-    <Card>
-        <Card.Header>
-            <h3 className="text-lg font-bold">{title}</h3>
-        </Card.Header>
-        <Card.Body>
-            <p className="text-sm text-neutral-700 dark:text-neutral-400">{description}</p>
-        </Card.Body>
-        <Card.Footer>
-            {/* FIX: Removed the unsupported 'as' prop. The 'to' prop is sufficient. */}
-            <Button to={to} variant="subtle">View Components</Button>
-        </Card.Footer>
-    </Card>
-);
 
 const Documentation: React.FC = () => {
-    const componentGroups = [
-        { title: 'Avatars', description: 'Components for displaying user profile images and presence.', to: '/avatars' },
-        { title: 'Content', description: 'Components for displaying primary content like cards and carousels.', to: '/content' },
-        { title: 'Forms', description: 'A comprehensive suite of form layouts and inputs.', to: '/forms' },
-        { title: 'Icons', description: 'Components for rendering icons and icon-based layouts.', to: '/icons' },
-        { title: 'Images & Logos', description: 'Components for displaying images and brand assets.', to: '/images' },
-        { title: 'Loaders', description: 'Spinners, progress bars, and skeletons for loading states.', to: '/loaders' },
-        { title: 'Navigation', description: 'Components for app navigation like accordions and pagination.', to: '/navigation' },
-        { title: 'Overlays', description: 'Modals, drawers, and toasts for overlaying content.', to: '/overlays' },
-        { title: 'Tables', description: 'A powerful set of components for displaying tabular data.', to: '/tables' },
-    ];
-    
-    return (
-        <div>
-            <PageHeader
-                title="Documentation"
-                breadcrumbs={[{ name: 'Home', path: '/dashboard' }, { name: 'Documentation', path: '/documentation' }]}
-            />
+  return (
+    <div>
+      <PageHeader
+        title="Documentation"
+        breadcrumbs={[{ name: 'Dashboard', path: '/admin/dashboard' }, { name: 'Documentation', path: '/admin/documentation' }]}
+      />
+      <Card>
+        <Card.Body>
+          <h2 className="text-xl font-semibold mb-4">Welcome to the Admin Panel Documentation</h2>
+          <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+            This documentation provides a comprehensive guide to using and customizing the admin panel. Here you'll find information about the project structure, available UI components, and how to integrate your own backend services.
+          </p>
 
-            <Card className="mb-8">
-                <Card.Body className="space-y-4 text-neutral-800 dark:text-neutral-300">
-                    <p>
-                        Welcome! This page serves as an index for the reusable UI components available in this admin panel. Each section below links to a dedicated page with live, interactive demonstrations.
-                    </p>
-                </Card.Body>
-            </Card>
+          <h3 className="text-lg font-semibold mt-6 mb-2">Getting Started</h3>
+          <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+            The application is built with React, TypeScript, and Tailwind CSS. To get started, clone the repository and install the dependencies using your favorite package manager.
+          </p>
+          <pre className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-md text-sm text-neutral-800 dark:text-neutral-200 overflow-x-auto">
+            <code>
+              {`git clone <repository-url>\ncd <project-folder>\nnpm install\nnpm run dev`}
+            </code>
+          </pre>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {componentGroups.map(group => (
-                    <ComponentCard key={group.to} {...group} />
-                ))}
-            </div>
-        </div>
-    );
+          <h3 className="text-lg font-semibold mt-6 mb-2">UI Component Library</h3>
+          <p className="mb-4 text-neutral-700 dark:text-neutral-300">
+            We provide a rich library of pre-built UI components to accelerate your development. You can find examples of all components under the "UI Components" section in the sidebar. These components are fully themeable and support dark mode out of the box.
+          </p>
+          
+          <div className="mt-8">
+            <Button href="https://github.com" target="_blank" variant="secondary" leftIcon={<i className="bi bi-github"></i>}>
+              View on GitHub
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 };
 
 export default Documentation;

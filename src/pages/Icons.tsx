@@ -1,76 +1,65 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
+import Card from '../components/ui/card/Card';
 import Icon from '../components/ui/icon/Icon';
 import IconTile from '../components/ui/icon/IconTile';
 import IconObject from '../components/ui/icon/IconObject';
 import Button from '../components/ui/Button';
 
-const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="bg-neutral-0 dark:bg-neutral-1000 p-6 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-8">
-    <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">{title}</h3>
-    {children}
-  </div>
-);
+const iconList = ['house-door-fill', 'search', 'person-circle', 'gear-fill', 'bell-fill', 'chat-dots-fill', 'trash-fill', 'pencil-fill', 'check-circle-fill', 'x-circle-fill', 'info-circle-fill', 'exclamation-triangle-fill'];
 
 const Icons: React.FC = () => {
-  return (
-    <div>
-      <PageHeader
-        title="Icon Components"
-        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Icons', path: '/icons' }]}
-      />
+    return (
+        <div>
+            <PageHeader
+                title="Icons"
+                breadcrumbs={[{ name: 'UI Components', path: '#' }, { name: 'Icons', path: '/admin/components/icons' }]}
+            />
+            <div className="space-y-6">
+                <Card>
+                    <Card.Header><h3 className="font-semibold">Icon Library (Bootstrap Icons)</h3></Card.Header>
+                    <Card.Body className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        {iconList.map(icon => (
+                            <div key={icon} className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 text-center">
+                                <Icon name={icon} size="xl" />
+                                <span className="text-xs mt-2 text-neutral-600 dark:text-neutral-400 break-all">{icon}</span>
+                            </div>
+                        ))}
+                    </Card.Body>
+                </Card>
 
-      <ComponentSection title="Basic Icons">
-        <p className="mb-4">Use the <code className="text-sm bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">Icon</code> component with any name from the Bootstrap Icons library.</p>
-        <div className="flex flex-wrap items-center gap-4 text-2xl text-neutral-800 dark:text-neutral-200">
-          <Icon name="gear-fill" />
-          <Icon name="check-circle-fill" className="text-success" />
-          <Icon name="exclamation-triangle-fill" className="text-warning-dark" />
-          <Icon name="shield-lock-fill" className="text-primary" />
-          <Icon name="trash-fill" className="text-danger" />
-        </div>
-      </ComponentSection>
+                 <Card>
+                    <Card.Header><h3 className="font-semibold">Icon Tiles</h3></Card.Header>
+                    <Card.Body className="flex items-center flex-wrap gap-4">
+                        <IconTile iconName="check-circle-fill" variant="success" size="lg" />
+                        <IconTile iconName="exclamation-triangle-fill" variant="danger" size="lg" shape="circle" />
+                        <IconTile iconName="info-circle-fill" variant="info" size="md" />
+                        <IconTile iconName="lightbulb-fill" variant="warning" size="md" shape="circle" />
+                        <IconTile iconName="shield-lock-fill" variant="primary" size="sm" />
+                    </Card.Body>
+                </Card>
 
-      <ComponentSection title="Icon Tiles">
-        <p className="mb-4">The <code className="text-sm bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">IconTile</code> component places an icon within a styled container.</p>
-        <h4 className="font-semibold mb-2">Variants</h4>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
-          <IconTile iconName="grid-1x2-fill" variant="primary" />
-          <IconTile iconName="check-all" variant="success" />
-          <IconTile iconName="exclamation-diamond-fill" variant="warning" />
-          <IconTile iconName="x-octagon-fill" variant="danger" />
-          <IconTile iconName="info-circle-fill" variant="info" />
+                 <Card>
+                    <Card.Header><h3 className="font-semibold">Icon Objects</h3></Card.Header>
+                    <Card.Body className="space-y-4">
+                        <IconObject 
+                            iconTileProps={{ iconName: 'file-earmark-bar-graph-fill', variant: 'primary' }}
+                            title="New Report Generated"
+                            description="A new sales report for Q4 is now available."
+                        />
+                         <IconObject 
+                            iconTileProps={{ iconName: 'server', variant: 'danger', shape: 'circle' }}
+                            title="Server Overload"
+                            description="High CPU usage detected on server #5."
+                        >
+                            <Button size="sm" variant="secondary">Investigate</Button>
+                        </IconObject>
+                    </Card.Body>
+                </Card>
+            </div>
         </div>
-        <h4 className="font-semibold mb-2">Shapes & Sizes</h4>
-        <div className="flex flex-wrap items-center gap-3">
-          <IconTile iconName="gear-fill" variant="primary" size="sm" shape="circle" />
-          <IconTile iconName="gear-fill" variant="primary" size="md" shape="circle" />
-          <IconTile iconName="gear-fill" variant="primary" size="lg" shape="circle" />
-          <IconTile iconName="people-fill" variant="success" size="sm" shape="square" />
-          <IconTile iconName="people-fill" variant="success" size="md" shape="square" />
-          <IconTile iconName="people-fill" variant="success" size="lg" shape="square" />
-        </div>
-      </ComponentSection>
-
-      <ComponentSection title="Icon Object Layout">
-        <p className="mb-4">The <code className="text-sm bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">IconObject</code> component is perfect for feature lists.</p>
-        <div className="space-y-4 max-w-md">
-          <IconObject
-            iconTileProps={{ iconName: 'shield-check', variant: 'success', shape: 'circle' }}
-            title="Advanced Security"
-            description="Your data is protected with end-to-end encryption."
-          />
-          <IconObject
-            iconTileProps={{ iconName: 'cloud-arrow-up-fill', variant: 'primary', shape: 'circle' }}
-            title="Cloud Backups"
-            description="All changes are automatically saved to the cloud."
-          >
-            <Button size="sm" variant="secondary">Configure</Button>
-          </IconObject>
-        </div>
-      </ComponentSection>
-    </div>
-  );
+    );
 };
 
 export default Icons;

@@ -1,93 +1,74 @@
+
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
-import { USERS_DATA, TIMELINE_DATA } from '../constants';
+import { useParams } from 'react-router-dom';
+import { USERS_DATA, TIMELINE_EVENTS_DATA } from '../constants';
 import PageHeader from '../components/ui/PageHeader';
 import Card from '../components/ui/card/Card';
 import Avatar from '../components/ui/avatar/Avatar';
 import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Tabs from '../components/ui/navigation/Tabs';
 import Timeline from '../components/ui/Timeline';
 
+const iconMap: Record<string, { icon: React.ReactNode, bg: string }> = {
+    comment: { icon: <i className="bi bi-chat-dots-fill"></i>, bg: 'bg-primary' },
+    upload: { icon: <i className="bi bi-upload"></i>, bg: 'bg-success' },
+    user: { icon: <i className="bi bi-person-plus-fill"></i>, bg: 'bg-info' }
+}
+
 const Profile: React.FC = () => {
-    const { userId } = useParams<{ userId: string }>();
-    const user = USERS_DATA.find(u => u.id === parseInt(userId || ''));
+  const { userId } = useParams<{ userId: string }>();
+  const user = USERS_DATA.find(u => u.id === parseInt(userId || '1'));
 
-    if (!user) {
-        return <Navigate to="/users" replace />;
-    }
-    
-    const iconMap = {
-        task_completed: { icon: <i className="bi bi-check-lg" />, bg: 'bg-success' },
-        task_moved: { icon: <i className="bi bi-arrow-right" />, bg: 'bg-primary' },
-        user_added: { icon: <i className="bi bi-person-plus-fill" />, bg: 'bg-info' },
-    }
+  if (!user) {
+    return <div>User not found</div>;
+  }
 
-    return (
-        <div>
-            <PageHeader
-                title="User Profile"
-                breadcrumbs={[
-                    { name: 'Home', path: '/' },
-                    { name: 'Users', path: '/users' },
-                    { name: user.name, path: `/profile/${user.id}` }
-                ]}
-            />
+  return (
+    <div>
+      <PageHeader
+        title="User Profile"
+        breadcrumbs={[{ name: 'Users', path: '/admin/users' }, { name: 'Profile', path: `/admin/profile/${user.id}` }]}
+      />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Profile Card */}
-                <div className="lg:col-span-1">
-                    <Card>
-                        <Card.Body className="flex flex-col items-center text-center">
-                            <Avatar name={user.name} size="xl" src={`https://picsum.photos/200/200?random=${user.id}`} />
-                            <h2 className="text-xl font-bold mt-4">{user.name}</h2>
-                            <p className="text-neutral-600 dark:text-neutral-400">{user.role}</p>
-                            <Badge variant={user.status === 'active' ? 'success' : 'neutral'} >
-                                {user.status}
-                            </Badge>
-                            <p className="text-sm mt-4 text-neutral-700 dark:text-neutral-300">{user.bio}</p>
-                            <Button className="mt-4" fullWidth>Edit Profile</Button>
-                        </Card.Body>
-                    </Card>
-                </div>
-
-                {/* Details and Activity */}
-                <div className="lg:col-span-2">
-                    <Card>
-                        <Tabs tabs={[{ id: 'activity', label: 'Activity' }, { id: 'details', label: 'Details' }]}>
-                            {(activeTab) => (
-                                <div className="p-4">
-                                    {activeTab === 'activity' && (
-                                        <Timeline>
-                                            {TIMELINE_DATA.map(event => (
-                                                <Timeline.Item
-                                                    key={event.id}
-                                                    icon={iconMap[event.type as keyof typeof iconMap].icon}
-                                                    iconBgClass={iconMap[event.type as keyof typeof iconMap].bg}
-                                                    title={event.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                                    timestamp={event.timestamp}
-                                                >
-                                                    <p>{event.description}</p>
-                                                </Timeline.Item>
-                                            ))}
-                                        </Timeline>
-                                    )}
-                                    {activeTab === 'details' && (
-                                        <ul className="space-y-2 text-sm">
-                                            <li className="flex justify-between"><span className="font-semibold">Full Name:</span> <span>{user.name}</span></li>
-                                            <li className="flex justify-between"><span className="font-semibold">Email:</span> <span>{user.email}</span></li>
-                                            <li className="flex justify-between"><span className="font-semibold">Role:</span> <span>{user.role}</span></li>
-                                            <li className="flex justify-between"><span className="font-semibold">Status:</span> <span>{user.status}</span></li>
-                                        </ul>
-                                    )}
-                                </div>
-                            )}
-                        </Tabs>
-                    </Card>
-                </div>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Profile Card */}
+        <div className="lg:col-span-1">
+          <Card>
+            <Card.Body className="flex flex-col items-center text-center">
+              <Avatar name={user.name} src={`https://i.pravatar.cc/150?u=${user.email}`} size="xl" />
+              <h2 className="mt-4 text-xl font-bold">{user.name}</h2>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">{user.role}</p>
+              <p className="mt-4 text-sm">{user.bio}</p>
+              <Button className="mt-6" fullWidth>Follow</Button>
+            </Card.Body>
+          </Card>
         </div>
-    );
+
+        {/* Right Column: Activity Timeline */}
+        <div className="lg:col-span-2">
+          <Card>
+            <Card.Header>
+              <h3 className="font-semibold">Activity Timeline</h3>
+            </Card.Header>
+            <Card.Body>
+              <Timeline>
+                {TIMELINE_EVENTS_DATA.map(event => (
+                  <Timeline.Item 
+                    key={event.id}
+                    icon={iconMap[event.type].icon}
+                    iconBgClass={iconMap[event.type].bg}
+                    title={event.user}
+                    timestamp={event.timestamp}
+                  >
+                    <p>{event.description}</p>
+                  </Timeline.Item>
+                ))}
+              </Timeline>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Profile;

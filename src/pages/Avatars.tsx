@@ -1,84 +1,68 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
+import Card from '../components/ui/card/Card';
 import Avatar from '../components/ui/avatar/Avatar';
 import AvatarGroup from '../components/ui/avatar/AvatarGroup';
 import AvatarItem from '../components/ui/avatar/AvatarItem';
 import AvatarSkeleton from '../components/ui/avatar/AvatarSkeleton';
+import { USERS_DATA } from '../constants';
 import Button from '../components/ui/Button';
-
-const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="bg-neutral-0 dark:bg-neutral-1000 p-6 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-8">
-    <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">{title}</h3>
-    {children}
-  </div>
-);
-
-const userList = [
-    { name: 'Alice Johnson', src: 'https://picsum.photos/50/50?random=1' },
-    { name: 'Bob Smith', src: 'https://picsum.photos/50/50?random=2' },
-    { name: 'Charlie Brown' },
-    { name: 'Diana Prince', src: 'https://picsum.photos/50/50?random=4' },
-    { name: 'Ethan Hunt', src: 'https://picsum.photos/50/50?random=5' },
-];
 
 const Avatars: React.FC = () => {
     return (
         <div>
             <PageHeader
-                title="Avatar Components"
-                breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Avatars', path: '/avatars' }]}
+                title="Avatars"
+                breadcrumbs={[{ name: 'UI Components', path: '#' }, { name: 'Avatars', path: '/admin/components/avatars' }]}
             />
 
-            <ComponentSection title="Standard Avatars">
-                <div className="flex flex-wrap items-center gap-4">
-                    <Avatar name="Alice Johnson" src="https://picsum.photos/200/200?random=1" size="xl" />
-                    <Avatar name="Bob Smith" src="https://picsum.photos/200/200?random=2" size="lg" />
-                    <Avatar name="Charlie Brown" size="md" />
-                    <Avatar name="Diana Prince" src="https://picsum.photos/200/200?random=4" size="sm" />
-                </div>
-            </ComponentSection>
-            
-            <ComponentSection title="Avatars with Presence">
-                <div className="flex flex-wrap items-center gap-4">
-                    <Avatar name="Alice Johnson" src="https://picsum.photos/200/200?random=1" size="lg" presence="online" />
-                    <Avatar name="Bob Smith" src="https://picsum.photos/200/200?random=2" size="lg" presence="away" />
-                    <Avatar name="Charlie Brown" size="lg" presence="busy" />
-                    <Avatar name="Diana Prince" src="https://picsum.photos/200/200?random=4" size="lg" presence="offline" />
-                </div>
-            </ComponentSection>
+            <div className="space-y-6">
+                <Card>
+                    <Card.Header><h3 className="font-semibold">Sizes & Presence</h3></Card.Header>
+                    <Card.Body className="flex items-center gap-6">
+                        <Avatar name="Alice Johnson" size="sm" presence="online" src="https://i.pravatar.cc/150?u=a" />
+                        <Avatar name="Bob Williams" size="md" presence="away" />
+                        <Avatar name="Charlie Brown" size="lg" presence="busy" src="https://i.pravatar.cc/150?u=c" />
+                        <Avatar name="Diana Miller" size="xl" presence="offline" />
+                    </Card.Body>
+                </Card>
 
-            <ComponentSection title="Avatar Group">
-                <div className="flex flex-wrap items-center gap-8">
-                    <AvatarGroup users={userList} size="lg" />
-                    <AvatarGroup users={userList} max={4} size="md" />
-                    <AvatarGroup users={userList.slice(0, 2)} size="sm" />
-                </div>
-            </ComponentSection>
-            
-            <ComponentSection title="Avatar Item Layout">
-                <div className="space-y-4 max-w-md">
-                   <AvatarItem
-                        avatarProps={{ name: 'Alice Johnson', src: 'https://picsum.photos/50/50?random=1', size: 'lg', presence: 'online' }}
-                        name="Alice Johnson"
-                        description="alice@example.com"
-                    >
-                        <Button size="sm" variant="secondary">Message</Button>
-                    </AvatarItem>
-                    <AvatarItem
-                        avatarProps={{ name: 'Charlie Brown', size: 'lg' }}
-                        name="Charlie Brown"
-                        description="Lead Developer"
-                    />
-                </div>
-            </ComponentSection>
+                <Card>
+                    <Card.Header><h3 className="font-semibold">Avatar Group</h3></Card.Header>
+                    <Card.Body>
+                         <AvatarGroup users={USERS_DATA} size="md" max={4} />
+                    </Card.Body>
+                </Card>
 
-            <ComponentSection title="Avatar Skeleton (Loading State)">
-                 <div className="space-y-6 max-w-md">
-                    <AvatarSkeleton size="lg" showText />
-                    <AvatarSkeleton size="md" showText />
-                    <AvatarSkeleton size="sm" />
-                 </div>
-            </ComponentSection>
+                <Card>
+                    <Card.Header><h3 className="font-semibold">Avatar Item</h3></Card.Header>
+                    <Card.Body className="space-y-4">
+                        <AvatarItem
+                            avatarProps={{ name: USERS_DATA[0].name, src: `https://i.pravatar.cc/150?u=${USERS_DATA[0].email}`, presence: 'online' }}
+                            name={USERS_DATA[0].name}
+                            description={USERS_DATA[0].role}
+                        >
+                            <Button size="sm">Message</Button>
+                        </AvatarItem>
+                        <AvatarItem
+                            avatarProps={{ name: USERS_DATA[1].name, presence: 'away' }}
+                            name={USERS_DATA[1].name}
+                            description={USERS_DATA[1].role}
+                        >
+                            <Button size="sm" variant="secondary">View Profile</Button>
+                        </AvatarItem>
+                    </Card.Body>
+                </Card>
+                
+                 <Card>
+                    <Card.Header><h3 className="font-semibold">Skeleton Loaders</h3></Card.Header>
+                    <Card.Body className="flex items-center gap-8">
+                        <AvatarSkeleton size="md" />
+                        <AvatarSkeleton size="lg" showText />
+                    </Card.Body>
+                </Card>
+            </div>
         </div>
     );
 };

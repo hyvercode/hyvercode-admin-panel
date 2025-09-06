@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -66,6 +67,7 @@ const Settings: React.FC = () => {
             <div className="md:col-span-2">
                <Textarea
                   label="Biography"
+                  id="bio"
                   rows={4}
                   {...getFieldProps('bio')}
                 />

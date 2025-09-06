@@ -1,84 +1,84 @@
+
 import React, { useState } from 'react';
 import PageHeader from '../components/ui/PageHeader';
+import Card from '../components/ui/card/Card';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/overlay/Modal';
 import Drawer from '../components/ui/overlay/Drawer';
+import Tooltip from '../components/ui/Tooltip';
 import { useToast } from '../contexts/ToastContext';
 
-const ComponentSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="bg-neutral-0 dark:bg-neutral-1000 p-6 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900 mb-8">
-    <h3 className="text-xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">{title}</h3>
-    {children}
-  </div>
-);
-
 const Overlays: React.FC = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const { addToast } = useToast();
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [isDrawerOpen, setDrawerOpen] = useState(false);
+    const { addToast } = useToast();
 
-  return (
-    <div>
-      <PageHeader
-        title="Overlay Components"
-        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Overlays', path: '/overlays' }]}
-      />
+    return (
+        <div>
+            <PageHeader
+                title="Overlays"
+                breadcrumbs={[{ name: 'UI Components', path: '#' }, { name: 'Overlays', path: '/admin/components/overlays' }]}
+            />
+            <Card>
+                <Card.Header><h3 className="font-semibold">Overlay Components</h3></Card.Header>
+                <Card.Body className="space-y-6">
+                    {/* Modal */}
+                    <div>
+                        <h4 className="font-medium mb-2">Modal</h4>
+                        <Button onClick={() => setModalOpen(true)}>Open Modal</Button>
+                        <Modal
+                            isOpen={isModalOpen}
+                            onClose={() => setModalOpen(false)}
+                            title="Terms of Service"
+                            footer={
+                                <>
+                                    <Button variant="secondary" onClick={() => setModalOpen(false)}>Decline</Button>
+                                    <Button onClick={() => setModalOpen(false)}>Accept</Button>
+                                </>
+                            }
+                        >
+                            <p>This is the content of the modal. You can put any React components here.</p>
+                        </Modal>
+                    </div>
 
-      <ComponentSection title="Modal / Dialog">
-        <p className="mb-4">A classic modal dialog that appears over the page content.</p>
-        <Button onClick={() => setModalOpen(true)}>Open Modal</Button>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
-          title="Sample Modal"
-          footer={
-            <>
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>
-              <Button onClick={() => { setModalOpen(false); addToast('Action confirmed!', 'success'); }}>Confirm</Button>
-            </>
-          }
-        >
-          <p className="text-neutral-800 dark:text-neutral-300">
-            This is the main content of the modal. You can put any React components here.
-          </p>
-        </Modal>
-      </ComponentSection>
+                     {/* Drawer */}
+                    <div>
+                        <h4 className="font-medium mb-2">Drawer</h4>
+                        <Button onClick={() => setDrawerOpen(true)}>Open Drawer</Button>
+                        <Drawer
+                            isOpen={isDrawerOpen}
+                            onClose={() => setDrawerOpen(false)}
+                            title="Notifications"
+                        >
+                            <p>This is the content of the drawer. Perfect for side panels, settings, or notifications.</p>
+                        </Drawer>
+                    </div>
 
-      <ComponentSection title="Drawer / Side Panel">
-        <p className="mb-4">A panel that slides in from the side of the screen.</p>
-        <Button onClick={() => setDrawerOpen(true)}>Open Drawer</Button>
-        <Drawer
-          isOpen={isDrawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          title="Navigation"
-        >
-          <p className="text-neutral-800 dark:text-neutral-300">
-            Drawers are great for navigation, settings, or forms that shouldn't interrupt the main flow.
-          </p>
-          <Button fullWidth className="mt-4">Some Action</Button>
-        </Drawer>
-      </ComponentSection>
-      
-       <ComponentSection title="Toast / Snackbar Notifications">
-        <p className="mb-4">Use the `useToast` hook to trigger non-intrusive notifications.</p>
-        <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" onClick={() => addToast('This is an info toast.', 'info')}>
-                Show Info Toast
-            </Button>
-             <Button variant="secondary" onClick={() => addToast('Your changes were saved.', 'success')}>
-                Show Success Toast
-            </Button>
-             <Button variant="secondary" onClick={() => addToast('Please check your input.', 'warning')}>
-                Show Warning Toast
-            </Button>
-            <Button variant="secondary" onClick={() => addToast('Failed to connect to server.', 'danger')}>
-                Show Error Toast
-            </Button>
+                    {/* Toasts */}
+                     <div>
+                        <h4 className="font-medium mb-2">Toasts (Notifications)</h4>
+                        <div className="flex flex-wrap gap-2">
+                            <Button onClick={() => addToast('This is an info toast.', 'info')}>Info Toast</Button>
+                            <Button onClick={() => addToast('Action successful!', 'success')} variant="secondary">Success Toast</Button>
+                            <Button onClick={() => addToast('Something might be wrong.', 'warning')} variant="secondary">Warning Toast</Button>
+                            <Button onClick={() => addToast('An error occurred.', 'danger')} variant="danger">Error Toast</Button>
+                        </div>
+                    </div>
+                    
+                    {/* Tooltips */}
+                    <div>
+                        <h4 className="font-medium mb-2">Tooltips</h4>
+                         <div className="flex flex-wrap gap-4">
+                            <Tooltip content="Tooltip on top"><Button>Top</Button></Tooltip>
+                            <Tooltip content="Tooltip on bottom" position="bottom"><Button>Bottom</Button></Tooltip>
+                            <Tooltip content="Tooltip on left" position="left"><Button>Left</Button></Tooltip>
+                            <Tooltip content="Tooltip on right" position="right"><Button>Right</Button></Tooltip>
+                        </div>
+                    </div>
+                </Card.Body>
+            </Card>
         </div>
-      </ComponentSection>
-
-    </div>
-  );
+    );
 };
 
 export default Overlays;

@@ -1,76 +1,25 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-// FIX: Use a static import for GoogleGenAI and its type.
 import { GoogleGenAI } from "@google/genai";
 import { ChatMessage } from '../../types';
-import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/card/Card';
 import Avatar from '../../components/ui/avatar/Avatar';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/loading/Spinner';
-import Alert from '../../components/ui/Alert';
-import { useAuth } from '../../contexts/AuthContext';
-
-const MessageBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
-    const { user } = useAuth();
-    const isUser = message.role === 'user';
-
-    if (isUser) {
-        return (
-            <div className="flex items-end gap-2 justify-end">
-                <div className="max-w-xs md:max-w-md p-3 bg-primary text-white self-end rounded-l-lg rounded-br-lg">
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                </div>
-                <Avatar name={user?.name || 'You'} size="sm" />
-            </div>
-        );
-    }
-
-    return (
-        <div className="flex items-end gap-2 justify-start">
-            <Avatar name="AI" size="sm" src="/favicon.svg" />
-            <div className="max-w-xs md:max-w-md p-3 bg-neutral-200 dark:bg-neutral-800 self-start rounded-r-lg rounded-bl-lg">
-                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-            </div>
-        </div>
-    );
-};
 
 const AIChatAssistant: React.FC = () => {
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        { role: 'model', content: 'Hello! How can I help you today?' }
-    ]);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    // FIX: Use the imported GoogleGenAI type directly.
-    const [ai, setAi] = useState<GoogleGenAI | null>(null);
-    const chatEndRef = useRef<HTMLDivElement>(null);
-    const apiKey = process.env.API_KEY;
-    
-    useEffect(() => {
-        // FIX: Initialize the AI client directly without dynamic import.
-        function initializeAi() {
-            if (!apiKey) {
-                setError("AI service is not configured. An API key is required.");
-                return;
-            }
-            try {
-                // FIX: Correctly initialize GoogleGenAI with a named apiKey parameter.
-                setAi(new GoogleGenAI({ apiKey }));
-            } catch(e) {
-                console.error("Failed to initialize AI:", e);
-                setError("Could not load the AI service. Please check the console for details.");
-            }
-        }
-        initializeAi();
-    }, [apiKey]);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
-    useEffect(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    useEffect(scrollToBottom, [messages]);
 
-    const handleSendMessage = async (e: React.FormEvent) => {
+    const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
 
@@ -78,79 +27,70 @@ const AIChatAssistant: React.FC = () => {
         setMessages(prev => [...prev, userMessage]);
         setInput('');
         setIsLoading(true);
-        setError('');
-
-        if (!ai) {
-            setError("AI service is not available or still loading.");
-            setIsLoading(false);
-            return;
-        }
 
         try {
-            // FIX: Correctly structure the generateContent call according to SDK guidelines.
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: input,
-            });
-            // FIX: Correctly access the response text.
-            const aiMessage: ChatMessage = { role: 'model', content: response.text };
-            setMessages(prev => [...prev, aiMessage]);
-        } catch (err) {
-            console.error(err);
-            setError('Sorry, something went wrong. Please try again.');
+            // NOTE: This is a mock API call for demonstration.
+            // Replace with your actual Gemini API call.
+            // Ensure you have set up your API key in the environment.
+            // const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            // const response = await ai.models.generateContent({ model: 'gemini-2.5-flash', contents: input });
+            // const modelResponse = response.text;
+
+            // Mock response:
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            const modelResponse = `This is a mocked response for: "${input}". In a real application, this would be a generated response from the Gemini API.`;
+
+            const modelMessage: ChatMessage = { role: 'model', content: modelResponse };
+            setMessages(prev => [...prev, modelMessage]);
+        } catch (error) {
+            console.error("Error calling Gemini API:", error);
+            const errorMessage: ChatMessage = { role: 'model', content: 'Sorry, I encountered an error. Please try again.' };
+            setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div>
-            <PageHeader
-                title="AI Chat Assistant"
-                breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'AI Chat', path: '/sample/ai-chat' }]}
-            />
-            <Card className="h-[calc(100vh-180px)] flex flex-col">
+        <div className="container mx-auto p-4 md:p-8 flex justify-center">
+            <Card className="w-full max-w-2xl h-[calc(100vh-120px)] flex flex-col">
                 <Card.Header>
-                    <div className="flex items-center">
-                        <Avatar name="AI Assistant" src="/favicon.svg" size="md" presence="online" />
-                        <div className="ml-3">
-                            <h3 className="font-bold">AI Assistant</h3>
-                            <p className="text-sm text-neutral-600 dark:text-neutral-400">Online</p>
-                        </div>
-                    </div>
+                    <h2 className="font-semibold text-lg">AI Chat Assistant</h2>
                 </Card.Header>
-
-                <Card.Body className="flex-grow overflow-y-auto p-4 space-y-4">
+                <div className="flex-grow overflow-y-auto p-4 space-y-4">
                     {messages.map((msg, index) => (
-                        <MessageBubble key={index} message={msg} />
+                        <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
+                            {msg.role === 'model' && <Avatar name="AI" size="sm" />}
+                            <div className={`max-w-md p-3 rounded-lg ${msg.role === 'user' ? 'bg-primary text-white' : 'bg-neutral-100 dark:bg-neutral-900'}`}>
+                                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                            </div>
+                        </div>
                     ))}
                     {isLoading && (
-                        <div className="flex items-end gap-2 justify-start">
-                           <Avatar name="AI" size="sm" src="/favicon.svg" />
-                            <div className="p-3 bg-neutral-200 dark:bg-neutral-800 rounded-r-lg rounded-bl-lg">
-                               <Spinner size="sm" />
+                         <div className="flex items-start gap-3">
+                            <Avatar name="AI" size="sm" />
+                            <div className="max-w-md p-3 rounded-lg bg-neutral-100 dark:bg-neutral-900">
+                                <Spinner size="sm" />
                             </div>
                         </div>
                     )}
-                    <div ref={chatEndRef} />
-                </Card.Body>
-
-                <Card.Footer>
-                    {error && <Alert variant="danger" title="Error">{error}</Alert>}
-                    <form onSubmit={handleSendMessage} className="flex gap-2 mt-2">
+                    <div ref={messagesEndRef} />
+                </div>
+                <div className="p-4 border-t dark:border-neutral-800">
+                    <form onSubmit={handleSend} className="flex gap-2">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Type your message..."
-                            disabled={isLoading || !ai}
-                            className="flex-grow w-full px-3 py-2 border rounded-md shadow-sm bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary"
+                            placeholder="Ask me anything..."
+                            className="w-full pl-4 pr-4 py-2 border rounded-md bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200 border-neutral-300 dark:border-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            disabled={isLoading}
                         />
-                        <Button type="submit" size="icon" disabled={isLoading || !input.trim() || !ai}>
+                        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                             <i className="bi bi-send-fill"></i>
                         </Button>
                     </form>
-                </Card.Footer>
+                </div>
             </Card>
         </div>
     );

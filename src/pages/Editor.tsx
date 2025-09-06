@@ -1,69 +1,61 @@
+
 import React from 'react';
 import PageHeader from '../components/ui/PageHeader';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-import Textarea from '../components/ui/textarea/Textarea';
-import RichTextArea from '../components/ui/textarea/RichTextArea';
+import Card from '../components/ui/card/Card';
 import { useForm, FormErrors } from '../hooks/useForm';
+import RichTextArea from '../components/ui/textarea/RichTextArea';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const validate = (values: any): FormErrors => {
     const errors: FormErrors = {};
-    if (!values.title) errors.title = 'A title is required.';
-    if (!values.summary) errors.summary = 'A summary is required.';
-    // For rich text, check for empty content (browser might leave <p><br></p>)
-    if (!values.content || values.content === '<p><br></p>' || values.content.trim().length < 10) {
-        errors.content = 'Content must be at least 10 characters long.';
+    if (!values.title) errors.title = 'Title is required.';
+    // Basic check to see if there's any content besides empty tags
+    if (!values.content || values.content.replace(/<[^>]*>?/gm, '').trim().length === 0) {
+        errors.content = 'Content is required.';
     }
     return errors;
 };
 
 const Editor: React.FC = () => {
-    const handleSubmit = (values: Record<string, any>) => {
-        console.log('Editor Form Submitted:', values);
-        alert('Content published! Check the console for data.');
+    const handleSubmit = (values: any) => {
+        alert('Editor content submitted! Check console.');
+        console.log('Editor Data:', values);
     };
-    
-    // FIX: Destructure `values` to explicitly pass to RichTextArea.
-    const { getFieldProps, handleSubmit: handleFormSubmit, values } = useForm(
+
+    const { getFieldProps, handleSubmit: handleFormSubmit } = useForm(
         {
-            title: '',
-            summary: '',
-            content: '',
+            title: 'Sample Post Title',
+            content: '<p>This is some <b>initial</b> content for the editor.</p>',
         },
         validate,
         handleSubmit
     );
-
+    
     return (
         <div>
             <PageHeader
-                title="Content Editor"
-                breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Editor', path: '/editor' }]}
+                title="Rich Text Editor"
+                breadcrumbs={[{ name: 'UI Components', path: '#' }, { name: 'Editor', path: '/admin/components/editor' }]}
             />
-            <div className="bg-neutral-0 dark:bg-neutral-1000 p-8 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-900">
-                <form onSubmit={handleFormSubmit} className="space-y-6">
-                    <Input
-                        label="Post Title"
-                        {...getFieldProps('title')}
-                    />
-                    <Textarea
-                        label="Summary"
-                        rows={3}
-                        {...getFieldProps('summary')}
-                    />
-                    <RichTextArea
-                        label="Main Content"
-                        {...getFieldProps('content')}
-                        // FIX: Explicitly pass value to satisfy the component's props interface,
-                        // as getFieldProps returns a union type that TS can't resolve when spread.
-                        value={values.content}
-                    />
-                    <div className="pt-4 flex justify-end space-x-2">
-                        <Button type="button" variant="secondary">Save Draft</Button>
-                        <Button type="submit">Publish</Button>
-                    </div>
-                </form>
-            </div>
+            <Card>
+                <Card.Header><h3 className="font-semibold">Blog Post Editor</h3></Card.Header>
+                <Card.Body>
+                     <form onSubmit={handleFormSubmit} className="space-y-6">
+                        <Input
+                            label="Post Title"
+                            {...getFieldProps('title')}
+                        />
+                        <RichTextArea
+                            label="Post Content"
+                            {...getFieldProps('content')}
+                        />
+                        <div className="flex justify-end">
+                            <Button type="submit">Save Post</Button>
+                        </div>
+                    </form>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

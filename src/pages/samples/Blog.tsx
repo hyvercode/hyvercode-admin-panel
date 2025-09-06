@@ -1,93 +1,46 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+
+import React from 'react';
 import { BLOG_POSTS_DATA, USERS_DATA } from '../../constants';
-import { BlogPost } from '../../types';
-import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/card/Card';
 import Image from '../../components/ui/image/Image';
-import Pagination from '../../components/ui/navigation/Pagination';
-import AvatarItem from '../../components/ui/avatar/AvatarItem';
-import Input from '../../components/ui/Input';
-import ListGroup from '../../components/ui/navigation/ListGroup';
-
-const PostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
-    const author = USERS_DATA.find(u => u.id === post.authorId);
-    return (
-        <Card>
-            <Image src={post.imageUrl} alt={post.title} aspectRatio="16/9" rounded="none" />
-            <Card.Body>
-                <p className="text-sm text-primary font-semibold">{post.category}</p>
-                <h3 className="text-xl font-bold mt-2 text-neutral-900 dark:text-neutral-100 hover:text-primary transition-colors">
-                    <Link to="#">{post.title}</Link>
-                </h3>
-                <p className="text-neutral-700 dark:text-neutral-400 mt-2 text-sm">{post.excerpt}</p>
-            </Card.Body>
-            <Card.Footer>
-                {author && (
-                    <AvatarItem
-                        avatarProps={{ name: author.name, src: `https://picsum.photos/40/40?random=${author.id}`, size: 'md' }}
-                        name={author.name}
-                        description={post.publishDate}
-                    />
-                )}
-            </Card.Footer>
-        </Card>
-    );
-};
-
-const POSTS_PER_PAGE = 2;
+import Avatar from '../../components/ui/avatar/Avatar';
+import Badge from '../../components/ui/Badge';
+import Button from '../../components/ui/Button';
 
 const Blog: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    
-    const paginatedPosts = useMemo(() => {
-        const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-        return BLOG_POSTS_DATA.slice(startIndex, startIndex + POSTS_PER_PAGE);
-    }, [currentPage]);
-    
-    const totalPages = Math.ceil(BLOG_POSTS_DATA.length / POSTS_PER_PAGE);
-    const categories = Array.from(new Set(BLOG_POSTS_DATA.map(p => p.category)));
-    const recentPosts = BLOG_POSTS_DATA.slice(0, 2);
-
     return (
-        <div className="container mx-auto px-6 py-8">
-            <PageHeader title="Our Blog" />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Posts */}
-                <main className="lg:col-span-2">
-                    <div className="space-y-8">
-                        {paginatedPosts.map(post => <PostCard key={post.id} post={post} />)}
-                    </div>
-                    <div className="mt-8 flex justify-center">
-                        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-                    </div>
-                </main>
+        <div className="bg-neutral-100 dark:bg-neutral-1100">
+            <div className="container mx-auto px-6 py-12">
+                <div className="text-center">
+                    <h1 className="text-4xl font-extrabold">Our Blog</h1>
+                    <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Insights, tutorials, and updates from our team.</p>
+                </div>
 
-                {/* Sidebar */}
-                <aside className="lg:col-span-1 space-y-6">
-                    <Card>
-                        <Card.Body>
-                            <Input id="search" label="Search" placeholder="Search blog..."/>
-                        </Card.Body>
-                    </Card>
-                    <Card>
-                        <Card.Header><h3 className="font-bold">Categories</h3></Card.Header>
-                        <ListGroup>
-                            {categories.map(cat => <ListGroup.Item as="Link" to="#" key={cat}>{cat}</ListGroup.Item>)}
-                        </ListGroup>
-                    </Card>
-                     <Card>
-                        <Card.Header><h3 className="font-bold">Recent Posts</h3></Card.Header>
-                        <Card.Body className="space-y-4">
-                           {recentPosts.map(post => (
-                               <Link key={post.id} to="#" className="block hover:text-primary">
-                                   <p className="font-semibold">{post.title}</p>
-                                   <p className="text-xs text-neutral-500">{post.publishDate}</p>
-                               </Link>
-                           ))}
-                        </Card.Body>
-                    </Card>
-                </aside>
+                <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {BLOG_POSTS_DATA.map(post => {
+                        const author = USERS_DATA.find(u => u.id === post.authorId);
+                        return (
+                            <Card key={post.id} className="flex flex-col">
+                                <Image src={post.imageUrl} alt={post.title} aspectRatio="16/9" />
+                                <Card.Body className="flex flex-col flex-grow">
+                                    <Badge variant="primary" className="self-start">{post.category}</Badge>
+                                    <h2 className="text-xl font-bold mt-3 hover:text-primary transition-colors cursor-pointer">{post.title}</h2>
+                                    <p className="mt-2 text-neutral-600 dark:text-neutral-400 flex-grow">{post.excerpt}</p>
+                                    <div className="mt-6 flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            {author && <Avatar name={author.name} src={`https://i.pravatar.cc/40?u=${author.email}`} size="sm" />}
+                                            <div className="ml-3 text-sm">
+                                                <p className="font-semibold">{author?.name}</p>
+                                                <p className="text-neutral-500">{post.publishDate}</p>
+                                            </div>
+                                        </div>
+                                        <Button variant="link">Read More</Button>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     );
