@@ -63,7 +63,7 @@ const Forms: React.FC = () => {
     <div>
       <PageHeader
         title="Form Layouts"
-        breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Forms', path: '/forms' }]}
+        breadcrumbs={[{ name: 'Home', path: '/admin/dashboard' }, { name: 'Forms', path: '/admin/forms' }]}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

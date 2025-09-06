@@ -1,12 +1,12 @@
 import { User, Product, Review, BlogPost, CalendarEvent, Task, Conversation, Message, POSProduct, ERPProduct, ERPOrder, ERPCustomer, OnlineCourse, TimelineEvent, HierarchicalData } from './types';
 
 // --- NAVIGATION ---
-interface NavItem {
+export interface NavItem {
   to: string;
   icon: string;
   label: string;
 }
-interface NavGroup {
+export interface NavGroup {
   title: string;
   icon: string;
   items: NavItem[];
@@ -50,9 +50,9 @@ export const NAV_ITEMS: NavStructure = [
     icon: 'bi-file-earmark-richtext-fill',
     items: [
       { to: '/admin/sample/pos', icon: 'bi-printer-fill', label: 'Point of Sale' },
-      { to: '/admin/sample/course', icon: 'bi-book-fill', label: 'Online Course' },
       { to: '/admin/sample/chat', icon: 'bi-chat-dots-fill', label: 'Chat' },
       { to: '/admin/sample/ai-chat', icon: 'bi-robot', label: 'AI Assistant' },
+      { to: '/sample/course', icon: 'bi-book-fill', label: 'Online Course' },
       { to: '/sample/products', icon: 'bi-shop', label: 'Product Catalog' },
       { to: '/sample/checkout', icon: 'bi-credit-card-fill', label: 'Checkout' },
       { to: '/sample/blog', icon: 'bi-journal-richtext', label: 'Blog' },

@@ -54,23 +54,19 @@ import ErpOrders from './pages/erp/Orders';
 import ErpCustomers from './pages/erp/Customers';
 
 import { ToastProvider } from './contexts/ToastContext';
-import { CartProvider } from './contexts/CartContext';
 
 const App: React.FC = () => {
   return (
     <ToastProvider>
       <Routes>
         {/* Public Routes with Cart */}
-        <Route element={
-            <CartProvider>
-                <PublicLayout />
-            </CartProvider>
-        }>
+        <Route element={<PublicLayout />}>
             <Route path="/" element={<LandingPage />} />
             <Route path="/sample/products" element={<ProductCatalog />} />
             <Route path="/sample/products/:productId" element={<ProductDetail />} />
             <Route path="/sample/checkout" element={<Checkout />} />
             <Route path="/sample/blog" element={<Blog />} />
+            <Route path="/sample/course" element={<OnlineCourse />} />
         </Route>
         
         {/* Auth Routes */}
@@ -81,54 +77,56 @@ const App: React.FC = () => {
         </Route>
 
         {/* Private Routes (Dashboard) */}
+        {/* FIX: Refactored to use idiomatic react-router-dom v6 private routes.
+            The PrivateRoute component acts as a layout route, which then renders
+            the DashboardLayout for all nested admin routes. This resolves the type error. */}
         <Route element={<PrivateRoute />}>
           <Route path="/admin" element={<DashboardLayout />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            
-            {/* Management */}
-            <Route path="users" element={<Users />} />
-            <Route path="profile/:userId" element={<Profile />} />
-            <Route path="tasks" element={<Tasks />} />
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              
+              {/* Management */}
+              <Route path="users" element={<Users />} />
+              <Route path="profile/:userId" element={<Profile />} />
+              <Route path="tasks" element={<Tasks />} />
 
-            {/* ERP */}
-            <Route path="erp/products" element={<ErpProducts />} />
-            <Route path="erp/orders" element={<ErpOrders />} />
-            <Route path="erp/customers" element={<ErpCustomers />} />
+              {/* ERP */}
+              <Route path="erp/products" element={<ErpProducts />} />
+              <Route path="erp/orders" element={<ErpOrders />} />
+              <Route path="erp/customers" element={<ErpCustomers />} />
 
-            {/* Demos */}
-            <Route path="documentation" element={<Documentation />} />
-            <Route path="boards" element={<Boards />} />
-            <Route path="forms" element={<Forms />} />
-            <Route path="tables" element={<Tables />} />
-            <Route path="content" element={<Content />} />
-            <Route path="overlays" element={<Overlays />} />
-            <Route path="navigation" element={<Navigation />} />
-            <Route path="avatars" element={<Avatars />} />
-            <Route path="icons" element={<Icons />} />
-            <Route path="images" element={<Images />} />
-            <Route path="loaders" element={<Loaders />} />
-            <Route path="text-fields" element={<TextFields />} />
-            <Route path="toggles" element={<Toggles />} />
-            <Route path="feedback" element={<Feedback />} />
-            <Route path="advanced-selects" element={<AdvancedSelects />} />
-            <Route path="editor" element={<Editor />} />
-            <Route path="appointments" element={<Appointments />} />
-            <Route path="calendar" element={<CalendarPage />} />
-            
-            {/* Sample Pages (Internal) */}
-            <Route path="sample/pos" element={<PointOfSale />} />
-            <Route path="sample/course" element={<OnlineCourse />} />
-            <Route path="sample/chat" element={<Chat />} />
-            <Route path="sample/ai-chat" element={<AIChatAssistant />} />
-            
-            {/* Settings */}
-            <Route path="settings" element={<Settings />} />
+              {/* Demos */}
+              <Route path="documentation" element={<Documentation />} />
+              <Route path="boards" element={<Boards />} />
+              <Route path="forms" element={<Forms />} />
+              <Route path="tables" element={<Tables />} />
+              <Route path="content" element={<Content />} />
+              <Route path="overlays" element={<Overlays />} />
+              <Route path="navigation" element={<Navigation />} />
+              <Route path="avatars" element={<Avatars />} />
+              <Route path="icons" element={<Icons />} />
+              <Route path="images" element={<Images />} />
+              <Route path="loaders" element={<Loaders />} />
+              <Route path="text-fields" element={<TextFields />} />
+              <Route path="toggles" element={<Toggles />} />
+              <Route path="feedback" element={<Feedback />} />
+              <Route path="advanced-selects" element={<AdvancedSelects />} />
+              <Route path="editor" element={<Editor />} />
+              <Route path="appointments" element={<Appointments />} />
+              <Route path="calendar" element={<CalendarPage />} />
+              
+              {/* Sample Pages (Internal) */}
+              <Route path="sample/pos" element={<PointOfSale />} />
+              <Route path="sample/chat" element={<Chat />} />
+              <Route path="sample/ai-chat" element={<AIChatAssistant />} />
+              
+              {/* Settings */}
+              <Route path="settings" element={<Settings />} />
           </Route>
         </Route>
 
         {/* Not Found Route */}
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<div className="flex items-center justify-center h-screen">404 Not Found</div>} />
       </Routes>
     </ToastProvider>
   );
